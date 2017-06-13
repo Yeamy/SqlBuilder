@@ -4,7 +4,8 @@ SQL Statement Builder
 English | [中文](README-CN.md)
 
 This project is a SQL statement builder, allow you write SQL in Java.  
-It's not a fast way to build SQL statement, but it may make codes more intuitive.
+
+It's not a fast way to build SQL statement, but it may make your codes more clear and more intuitive.
 
 ### 0. Example
 The simple demo like this:

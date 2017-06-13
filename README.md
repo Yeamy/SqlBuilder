@@ -1,17 +1,19 @@
 SQL Statement Builder
 ===================================
 
+English | [中文](README-CN.md)
+
 This project is a SQL statement builder, allow you write SQL in Java.  
 It's not a fast way to build SQL statement, but it may make codes more intuitive.
 
 ### 0. Example
-The java code is:
+The simple demo like this:
 
 ```java
 Column fruit_name = new Column("name");
 SQL.delete("fruit", Clause.equal(fruit_name, "apple"));
 ```
-The output sql is:
+As the output sql is:
 
 ```sql
 DELETE FROM `fruit` WHERE `name` = "apple";
@@ -47,8 +49,9 @@ Simple way to select all colunm in one table.
 SQL.select(String table, Clause where, int limit);
 ```
 
-Most of time you may use the select builder for complex query.  
-You're no need to input the table name for the Select, but the Column `MUST` be constructed with table name, especially in multi-table queries!
+Most of time you may use the Select Builder for complex query.  
+
+You're no need to input the table name for the Builder, but the table name of the Column must be `NON-NULL`, especially in multi-table queries!
 
 ```java
 Column price_fruitId = new Column("price", "fruitId");
@@ -56,13 +59,13 @@ Column fruit_fruitId = new Column("fruit", "fruitId");
 Column fruit_name = new Column("fruit", "name");
 
 String sql = new Select()
-		.addColumn(new Column("fruit", "*"))     // all column in `fruit`
-		.addColumn(new Column("price", "rmb"))   // the column in `price`
-		.innerJoin(price_fruitId, fruit_fruitId) // join
-		.where(Clause.like(fruit_name, "apple")) // where
-		.orderBy(new Asc(price_fruitId))         // order by
-		.limit(2)                                // limit
-		.toString();
+		.addColumn(new Column("mylike", null))     // no column
+		.addColumn(new Column("fruit", "*"))       // all column in table
+		.addColumn(new Column("price", xxx))       // any column in table
+		.innerJoin(price_fruitId, fruit_fruitId)   // join
+		.where(Clause.like(fruit_name, "apple"))   // where
+		.orderBy(new Asc(price_fruitId).desc(xxx)) // order by
+		.limit(2)                                  // limit
 ```
 
 ### 5. WHERE
@@ -79,8 +82,8 @@ MultiClause clause = new MultiClause(clause1)
 ```
 ### 6. Column
 ```java
-Column(String name);                                // no table
-Column(String table, String name);                  // multi-table query
-Column(table, name).as(String alias);               // with column alias
-Column(table, name).as(tableAlias, nameAlias);      // with table alias
+Column(String name);                              // no table
+Column(String table, String name);                // with table
+Column(table, name).as(String alias);             // with column alias
+Column(table, name).as(tableAlias, nameAlias);    // with table alias
 ```

@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement;
 
 import java.util.Collection;
+import java.util.List;
 
 public abstract class Clause implements SQLString {
 
@@ -87,6 +88,46 @@ public abstract class Clause implements SQLString {
 			SQLString.appendValue(sb, start);
 			sb.append(" AND ");
 			SQLString.appendValue(sb, end);
+		}
+	}
+
+	public static Clause andAll(List<Clause> list) {
+		switch (list.size()) {
+		case 0:
+			return null;
+		case 1:
+			return list.get(0);
+		default:
+			boolean f = true;
+			MultiClause clause = null;
+			for (Clause li : list) {
+				if (f) {
+					clause = new MultiClause(list.get(0));
+					f = false;
+				}
+				clause.and(li);
+			}
+			return clause;
+		}
+	}
+
+	public static Clause orAll(List<Clause> list) {
+		switch (list.size()) {
+		case 0:
+			return null;
+		case 1:
+			return list.get(0);
+		default:
+			boolean f = true;
+			MultiClause clause = null;
+			for (Clause li : list) {
+				if (f) {
+					clause = new MultiClause(list.get(0));
+					f = false;
+				}
+				clause.or(li);
+			}
+			return clause;
 		}
 	}
 

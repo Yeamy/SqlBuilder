@@ -22,20 +22,28 @@ public class Union implements SQLString {
 		list.add(new UnionLi(select, null));
 	}
 
-	public void union(String select) {
+	public Union(Select select) {
+		list.add(new UnionLi(select, null));
+	}
+
+	public Union union(String select) {
 		list.add(new UnionLi(select, " UNION "));
+		return this;
 	}
 
-	public void union(Select select) {
+	public Union union(Select select) {
 		list.add(new UnionLi(select, " UNION "));
+		return this;
 	}
 
-	public void unionAll(Select select) {
+	public Union unionAll(Select select) {
 		list.add(new UnionLi(select, " UNION ALL "));
+		return this;
 	}
 
-	public void unionAll(String select) {
+	public Union unionAll(String select) {
 		list.add(new UnionLi(select, " UNION ALL "));
+		return this;
 	}
 
 	@Override
@@ -50,6 +58,13 @@ public class Union implements SQLString {
 				sql.append(li.select);
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sql = new StringBuilder();
+		toSQL(sql);
+		return sql.toString();
 	}
 
 }

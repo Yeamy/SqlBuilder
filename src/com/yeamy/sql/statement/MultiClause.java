@@ -24,12 +24,12 @@ public class MultiClause extends Clause {
 	}
 
 	public MultiClause and(Clause clause) {
-		clauses.add(new ClauseLi(clause, "AND "));
+		clauses.add(new ClauseLi(clause, " AND "));
 		return this;
 	}
 
 	public MultiClause or(Clause clause) {
-		clauses.add(new ClauseLi(clause, "OR "));
+		clauses.add(new ClauseLi(clause, " OR "));
 		return this;
 	}
 
@@ -38,7 +38,7 @@ public class MultiClause extends Clause {
 		boolean m = true;
 		for (ClauseLi li : clauses) {
 			if (m) {
-				m = true;
+				m = false;
 			} else {
 				sql.append(li.logic);
 			}

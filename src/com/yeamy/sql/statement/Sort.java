@@ -38,7 +38,7 @@ public class Sort implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			sql.append(cell.getKey());
+			cell.getKey().nameInWhere(sql);
 			String sc = cell.getValue();
 			if (sc != null) {
 				sql.append(" ");

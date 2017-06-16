@@ -23,6 +23,11 @@ public class Column implements SQLString {
 		return this;
 	}
 
+	public Column tableAs(String tableAlias) {
+		this.tableAlias = tableAlias;
+		return this;
+	}
+
 	public Column as(String nameAlias) {
 		this.nameAlias = nameAlias;
 		return this;
@@ -77,6 +82,13 @@ public class Column implements SQLString {
 				sb.append(" AS `").append(nameAlias).append('`');
 			}
 		}
+	}
+
+	public String tableName() {
+		if (tableAlias != null) {
+			return tableAlias;
+		}
+		return table;
 	}
 
 	/**

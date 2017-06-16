@@ -6,18 +6,14 @@ class Join implements SQLString {
 	static final String RIGHT_JOIN = " RIGHT JOIN ";
 	static final String FULL_JOIN = " FULL JOIN ";
 
-	private String type;
-	private Column column;
-	private Column pattern;
+	final String type;
+	final Column column;
+	final Column pattern;
 
 	Join(String type, Column column, Column pattern) {
 		this.type = type;
 		this.column = column;
 		this.pattern = pattern;
-	}
-	
-	Column getPattern() {
-		return pattern;
 	}
 
 	@Override

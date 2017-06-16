@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 import com.yeamy.sql.statement.function.Having;
 
@@ -18,7 +19,7 @@ import com.yeamy.sql.statement.function.Having;
  */
 public class Select implements SQLString {
 	private LinkedHashSet<Column> columns = new LinkedHashSet<>();
-	private ArrayList<Join> joins;
+	private LinkedList<Join> joins;
 	private ArrayList<Column> groupBy;
 	private Clause where;
 	private Having having;
@@ -43,34 +44,32 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public Select innerJoin(Column src, Column pattern) {
+	private void initJoins() {
 		if (joins == null) {
-			joins = new ArrayList<>();
+			joins = new LinkedList<>();
 		}
+	}
+
+	public Select innerJoin(Column src, Column pattern) {
+		initJoins();
 		joins.add(new Join(INNER_JOIN, src, pattern));
 		return this;
 	}
 
 	public Select leftJoin(Column src, Column pattern) {
-		if (joins == null) {
-			joins = new ArrayList<>();
-		}
+		initJoins();
 		joins.add(new Join(LEFT_JOIN, src, pattern));
 		return this;
 	}
 
 	public Select rightJoin(Column src, Column pattern) {
-		if (joins == null) {
-			joins = new ArrayList<>();
-		}
+		initJoins();
 		joins.add(new Join(RIGHT_JOIN, src, pattern));
 		return this;
 	}
 
 	public Select fullJoin(Column src, Column pattern) {
-		if (joins == null) {
-			joins = new ArrayList<>();
-		}
+		initJoins();
 		joins.add(new Join(FULL_JOIN, src, pattern));
 		return this;
 	}
@@ -180,15 +179,19 @@ public class Select implements SQLString {
 	private void from(StringBuilder sql) {
 		// table
 		LinkedHashMap<String, Column> tables = new LinkedHashMap<>();
+		if (joins != null && joins.size() > 0) {
+			Column src = joins.get(0).column;
+			tables.put(src.tableName(), src);
+		}
 		for (Column column : columns) {// add all-table
 			String table = column.table;
 			if (table != null) {
-				tables.put(column.table, column);
+				tables.put(column.tableName(), column);
 			}
 		}
 		if (joins != null) {
 			for (Join join : joins) {// remove join-table
-				tables.remove(join.getPattern().table);
+				tables.remove(join.pattern.tableName());
 			}
 		}
 		// from

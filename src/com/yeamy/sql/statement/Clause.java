@@ -46,17 +46,19 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
-	private static class ClauseIn extends NormalClause {
+	private static class ClauseIn extends Clause {
+		private Column column;
+		private Object[] array;
 
-		ClauseIn(Column column, Object... pattern) {
-			super(column, " in ", pattern);
+		ClauseIn(Column column, Object[] array) {
+			this.column = column;
+			this.array = array;
 		}
 
 		@Override
 		public void toSQL(StringBuilder sb) {
 			column.nameInWhere(sb);
-			sb.append(cal).append('(');
-			Object[] array = (Object[]) pattern;
+			sb.append(" IN (");
 			boolean f = true;
 			for (Object li : array) {
 				if (f) {
@@ -64,6 +66,7 @@ public abstract class Clause implements SQLString {
 				} else {
 					sb.append(", ");
 				}
+				System.out.println(li.getClass().getName() + "    " + li);// XXX
 				SQLString.appendValue(sb, li);
 			}
 			sb.append(')');
@@ -176,12 +179,32 @@ public abstract class Clause implements SQLString {
 		return new NormalClause(column, " LIKE ", pattern);
 	}
 
+	public static Clause in(Column column, int... array) {
+		return new Clause() {
+			@Override
+			public void toSQL(StringBuilder sb) {
+				column.nameInWhere(sb);
+				sb.append(" IN (");
+				boolean f = true;
+				for (int li : array) {
+					if (f) {
+						f = false;
+					} else {
+						sb.append(", ");
+					}
+					SQLString.appendValue(sb, li);
+				}
+				sb.append(')');
+			}
+		};
+	}
+
 	public static Clause in(Column column, Object... pattern) {
 		return new ClauseIn(column, pattern);
 	}
 
-	public static Clause in(Column column, Collection<Object> pattern) {
-		return in(column, pattern.toArray());
+	public static Clause in(Column column, Collection<?> pattern) {
+		return new ClauseIn(column, pattern.toArray());
 	}
 
 	// BETWEEN 在某个范围内

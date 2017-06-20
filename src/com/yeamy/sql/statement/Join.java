@@ -1,10 +1,7 @@
 package com.yeamy.sql.statement;
 
-class Join implements SQLString {
-	static final String INNER_JOIN = " INNER JOIN ";
-	static final String LEFT_JOIN = " LEFT JOIN ";
-	static final String RIGHT_JOIN = " RIGHT JOIN ";
-	static final String FULL_JOIN = " FULL JOIN ";
+abstract class Join implements SQLString {
+	private MultiClause clause;
 
 	final String type;
 	final Column column;
@@ -14,6 +11,7 @@ class Join implements SQLString {
 		this.type = type;
 		this.column = column;
 		this.pattern = pattern;
+		clause = new MultiClause(Clause.equal(column, pattern));
 	}
 
 	@Override
@@ -21,8 +19,11 @@ class Join implements SQLString {
 		sb.append(type);
 		pattern.tableInFrom(sb);
 		sb.append(" ON ");
-		column.nameInWhere(sb);
-		sb.append(" = ");
-		pattern.nameInWhere(sb);
+		clause.toSQL(sb);
+	}
+
+	public Join and(Clause clause) {
+		this.clause.and(clause);
+		return this;
 	}
 }

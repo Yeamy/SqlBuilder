@@ -1,10 +1,5 @@
 package com.yeamy.sql.statement;
 
-import static com.yeamy.sql.statement.Join.FULL_JOIN;
-import static com.yeamy.sql.statement.Join.INNER_JOIN;
-import static com.yeamy.sql.statement.Join.LEFT_JOIN;
-import static com.yeamy.sql.statement.Join.RIGHT_JOIN;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,27 +45,33 @@ public class Select implements SQLString {
 		}
 	}
 
+	public Select join(Join join) {
+		initJoins();
+		joins.add(join);
+		return this;
+	}
+
 	public Select innerJoin(Column src, Column pattern) {
 		initJoins();
-		joins.add(new Join(INNER_JOIN, src, pattern));
+		joins.add(new InnerJoin(src, pattern));
 		return this;
 	}
 
 	public Select leftJoin(Column src, Column pattern) {
 		initJoins();
-		joins.add(new Join(LEFT_JOIN, src, pattern));
+		joins.add(new LeftJoin(src, pattern));
 		return this;
 	}
 
 	public Select rightJoin(Column src, Column pattern) {
 		initJoins();
-		joins.add(new Join(RIGHT_JOIN, src, pattern));
+		joins.add(new RightJoin(src, pattern));
 		return this;
 	}
 
 	public Select fullJoin(Column src, Column pattern) {
 		initJoins();
-		joins.add(new Join(FULL_JOIN, src, pattern));
+		joins.add(new FullJoin(src, pattern));
 		return this;
 	}
 

@@ -98,10 +98,6 @@ public class Column implements SQLString {
 		if (name == null) {
 			return;
 		}
-		if (nameAlias != null) {
-			sb.append('`').append(nameAlias).append('`');
-			return;
-		}
 		if (tableAlias != null) {
 			sb.append('`').append(tableAlias).append('`').append('.');
 		} else if (table != null) {

@@ -18,6 +18,33 @@ public class Update implements SQLString {
 		return this;
 	}
 
+	public Update increase(String column, int number) {
+		map.put(column, new Modify(column, '+', number));
+		return this;
+	}
+
+	public Update reduce(String column, int number) {
+		map.put(column, new Modify(column, '-', number));
+		return this;
+	}
+
+	private class Modify implements SQLString {
+		private String column;
+		private int number;
+		private char sign;
+
+		public Modify(String column, char sign, int number) {
+			this.column = column;
+			this.sign = sign;
+			this.number = number;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sql) {
+			sql.append('`').append(column).append('`').append(sign).append(' ').append(number);
+		}
+	}
+
 	public Update addAll(Map<String, Object> cv) {
 		map.putAll(cv);
 		return this;

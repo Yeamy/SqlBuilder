@@ -1,7 +1,6 @@
 package com.yeamy.sql.statement;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class SQL {
 
@@ -17,27 +16,12 @@ public class SQL {
 	}
 
 	public static String update(String table, Map<String, Object> map, Clause where) {
-		StringBuilder sql = new StringBuilder("UPDATE `").append(table).append("` SET ");
-		boolean f = true;
-		for (Entry<String, Object> li : map.entrySet()) {
-			if (f) {
-				f = false;
-			} else {
-				sql.append(", ");
-			}
-			sql.append('`').append(li.getKey()).append('`');
-			sql.append('=');
-			SQLString.appendValue(sql, li.getValue());
-		}
-		sql.append(" WHERE ");
-		where.toSQL(sql);
-		sql.append(';');
-		return sql.toString();
+		return new Update(table).addAll(map).where(where).toString();
 	}
 
 	/**
 	 * select all from table limt x
-	 * 
+	 *
 	 * @see {@link Select}
 	 */
 	public static String select(String table, Clause where, int limit) {

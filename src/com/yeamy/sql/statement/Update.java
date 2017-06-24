@@ -24,6 +24,7 @@ public class Update implements SQLString {
 	}
 
 	public Update reduce(String column, int number) {
+		number = number < 0 ? -number : number;
 		map.put(column, new Modify(column, '-', number));
 		return this;
 	}
@@ -41,7 +42,7 @@ public class Update implements SQLString {
 
 		@Override
 		public void toSQL(StringBuilder sql) {
-			sql.append('`').append(column).append('`').append(sign).append(' ').append(number);
+			sql.append('`').append(column).append('`').append(' ').append(sign).append(' ').append(number);
 		}
 	}
 
@@ -65,7 +66,7 @@ public class Update implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			sql.append('`').append(li.getKey()).append('`').append('=');
+			sql.append('`').append(li.getKey()).append("` = ");
 			Object value = li.getValue();
 			if (value instanceof SQLString) {
 				((SQLString) value).toSQL(sql);

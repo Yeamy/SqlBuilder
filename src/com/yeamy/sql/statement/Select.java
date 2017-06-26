@@ -159,7 +159,6 @@ public class Select implements SQLString {
 		if (limit > 0) {
 			sql.append(" LIMIT ").append(limit);
 		}
-		sql.append(';');
 	}
 
 	private void columns(StringBuilder sql) {
@@ -228,6 +227,7 @@ public class Select implements SQLString {
 	public String toString() {
 		StringBuilder sql = new StringBuilder();
 		toSQL(sql);
+		sql.append(';');
 		return sql.toString();
 	}
 

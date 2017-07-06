@@ -155,7 +155,7 @@ public abstract class Clause implements SQLString {
 	}
 
 	// > 大于
-	public static Clause moreThan(Column column, Object pattern) {
+	public static Clause greaterThan(Column column, Object pattern) {
 		return new NormalClause(column, " > ", pattern);
 	}
 

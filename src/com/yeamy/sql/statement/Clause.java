@@ -40,9 +40,32 @@ public abstract class Clause implements SQLString {
 			if (pattern instanceof Column) {
 				Column column = (Column) pattern;
 				column.nameInWhere(sb);
+			} else if (pattern instanceof Select) {
+				Select select = (Select) pattern;
+				sb.append('(');
+				select.toSQL(sb);
+				sb.append(')');
 			} else {
 				SQLString.appendValue(sb, pattern);
 			}
+		}
+	}
+
+	private static class ClauseSelectIn extends Clause {
+		private Column column;
+		private Select pattern;
+
+		ClauseSelectIn(Column column, Select pattern) {
+			this.column = column;
+			this.pattern = pattern;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			column.nameInWhere(sb);
+			sb.append(" IN (");
+			pattern.toSQL(sb);
+			sb.append(')');
 		}
 	}
 
@@ -205,6 +228,10 @@ public abstract class Clause implements SQLString {
 
 	public static Clause in(Column column, Collection<?> pattern) {
 		return new ClauseIn(column, pattern.toArray());
+	}
+
+	public static Clause in(Column column, Select pattern) {
+		return new ClauseSelectIn(column, pattern);
 	}
 
 	// BETWEEN 在某个范围内

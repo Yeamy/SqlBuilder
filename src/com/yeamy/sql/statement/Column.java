@@ -3,17 +3,26 @@ package com.yeamy.sql.statement;
 public class Column implements SQLString {
 	public static final String ALL = "*";
 	public final String table;
+	public final Select select;
 	public final String name;
 	public String tableAlias;
 	public String nameAlias;
 
 	public Column(String name) {
+		this.select = null;
 		this.table = null;
 		this.name = name;
 	}
 
 	public Column(String table, String name) {
+		this.select = null;
 		this.table = table;
+		this.name = name;
+	}
+
+	public Column(Select select, String name) {
+		this.select = select;
+		this.table = null;
 		this.name = name;
 	}
 
@@ -37,7 +46,13 @@ public class Column implements SQLString {
 	 * table as tableAlias
 	 */
 	public void tableInFrom(StringBuilder sb) {
-		sb.append('`').append(table).append('`');
+		if (select != null) {
+			sb.append('(');
+			select.toSQL(sb);
+			sb.append(')');
+		} else {
+			sb.append('`').append(table).append('`');
+		}
 		if (tableAlias != null) {
 			sb.append(" AS `").append(tableAlias).append('`');
 		}

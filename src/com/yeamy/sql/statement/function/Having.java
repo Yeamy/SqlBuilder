@@ -29,11 +29,11 @@ public class Having implements SQLString {
 		return new Having(column, " = ", num);
 	}
 
-	public static Having moreThan(AggregateColumn column, Number num) {
+	public static Having greaterThan(AggregateColumn column, Number num) {
 		return new Having(column, " > ", num);
 	}
 
-	public static Having moreEqual(AggregateColumn column, Number num) {
+	public static Having greaterEqual(AggregateColumn column, Number num) {
 		return new Having(column, " >= ", num);
 	}
 

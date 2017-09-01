@@ -4,6 +4,38 @@ import java.util.Map;
 
 public class SQL {
 
+	public static String insert(String table, Select select, String... targetColumn) {
+		StringBuilder sql = new StringBuilder("INSERT INTO `").append(table).append('`');
+		boolean f = true;
+		for (String column : targetColumn) {
+			if (f) {
+				f = false;
+			} else {
+				sql.append(", ");
+			}
+			sql.append('`').append(column).append('`');
+		}
+		sql.append(' ');
+		select.toSQL(sql);
+		return sql.toString();
+	}
+
+	public static String insert(String table, String select, String... targetColumn) {
+		StringBuilder sql = new StringBuilder("INSERT INTO `").append(table).append('`');
+		boolean f = true;
+		for (String column : targetColumn) {
+			if (f) {
+				f = false;
+			} else {
+				sql.append(", ");
+			}
+			sql.append('`').append(column).append('`');
+		}
+		sql.append(' ');
+		sql.append(select);
+		return sql.toString();
+	}
+
 	/**
 	 * @return delete-sql
 	 */

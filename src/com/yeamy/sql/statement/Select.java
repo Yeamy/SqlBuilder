@@ -19,7 +19,7 @@ public class Select implements SQLString {
 	private Clause where;
 	private Having having;
 	private Sort orderBy;
-	private int limit = 0;
+	private int limitOffset = 0, limit = 0;
 
 	public Select() {
 	}
@@ -128,6 +128,12 @@ public class Select implements SQLString {
 		return this;
 	}
 
+	public Select limit(int offset, int limit) {
+		this.limitOffset = offset;
+		this.limit = limit;
+		return this;
+	}
+
 	@Override
 	public void toSQL(StringBuilder sql) {
 		sql.append("SELECT ");
@@ -157,7 +163,11 @@ public class Select implements SQLString {
 		}
 		// limit
 		if (limit > 0) {
-			sql.append(" LIMIT ").append(limit);
+			sql.append(" LIMIT ");
+			if (limitOffset > 0) {
+				sql.append(limitOffset).append(',');
+			}
+			sql.append(limit);
 		}
 	}
 

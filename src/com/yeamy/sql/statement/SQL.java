@@ -33,6 +33,15 @@ public class SQL {
 		return sql.toString();
 	}
 
+	public static String select(String table, Clause where, int limitOffset, int limit) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM `").append(table).append('`');
+		sql.append(" WHERE ");
+		where.toSQL(sql);
+		sql.append(" LIMIT ").append(limitOffset).append(',').append(limit);
+		sql.append(';');
+		return sql.toString();
+	}
+
 	public static String select(String table, Clause where) {
 		StringBuilder sql = new StringBuilder("SELECT * FROM `").append(table).append('`');
 		sql.append(" WHERE ");

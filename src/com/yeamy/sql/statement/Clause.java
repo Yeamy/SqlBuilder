@@ -40,11 +40,6 @@ public abstract class Clause implements SQLString {
 			if (pattern instanceof Column) {
 				Column column = (Column) pattern;
 				column.nameInWhere(sb);
-			} else if (pattern instanceof Select) {
-				Select select = (Select) pattern;
-				sb.append('(');
-				select.toSQL(sb);
-				sb.append(')');
 			} else {
 				SQLString.appendValue(sb, pattern);
 			}
@@ -89,7 +84,6 @@ public abstract class Clause implements SQLString {
 				} else {
 					sb.append(", ");
 				}
-				System.out.println(li.getClass().getName() + "    " + li);// XXX
 				SQLString.appendValue(sb, li);
 			}
 			sb.append(')');

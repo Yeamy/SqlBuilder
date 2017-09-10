@@ -18,6 +18,11 @@ public interface SQLString {
 			sb.append("NULL");
 		} else if (value instanceof Number) {
 			sb.append(value);
+		} else if (value instanceof Select) {
+			Select select = (Select) value;
+			sb.append('(');
+			select.toSQL(sb);
+			sb.append(')');
 		} else if (value instanceof SQLString) {
 			((SQLString) value).toSQL(sb);
 		} else {

@@ -67,12 +67,7 @@ public class Update implements SQLString {
 				sql.append(", ");
 			}
 			sql.append('`').append(li.getKey()).append("` = ");
-			Object value = li.getValue();
-			if (value instanceof SQLString) {
-				((SQLString) value).toSQL(sql);
-			} else {
-				SQLString.appendValue(sql, li.getValue());
-			}
+			SQLString.appendValue(sql, li.getValue());
 		}
 		sql.append(" WHERE ");
 		where.toSQL(sql);

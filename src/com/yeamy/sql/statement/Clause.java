@@ -122,10 +122,11 @@ public abstract class Clause implements SQLString {
 			MultiClause clause = null;
 			for (Clause li : list) {
 				if (f) {
-					clause = new MultiClause(list.get(0));
+					clause = new MultiClause(li);
 					f = false;
+				} else {
+					clause.and(li);
 				}
-				clause.and(li);
 			}
 			return clause;
 		}
@@ -142,10 +143,11 @@ public abstract class Clause implements SQLString {
 			MultiClause clause = null;
 			for (Clause li : list) {
 				if (f) {
-					clause = new MultiClause(list.get(0));
+					clause = new MultiClause(li);
 					f = false;
+				} else {
+					clause.and(li);
 				}
-				clause.or(li);
 			}
 			return clause;
 		}

@@ -198,6 +198,18 @@ public abstract class Clause implements SQLString {
 		return new NormalClause(column, " LIKE ", pattern);
 	}
 
+	public static Clause contains(Column column, String pattern) {
+		return new NormalClause(column, " LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause startWith(Column column, String pattern) {
+		return new NormalClause(column, " LIKE ", pattern + '%');
+	}
+
+	public static Clause endWith(Column column, String pattern) {
+		return new NormalClause(column, " LIKE ", '%' + pattern);
+	}
+
 	public static Clause in(Column column, int... array) {
 		return new Clause() {
 			@Override

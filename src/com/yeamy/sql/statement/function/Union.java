@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Sort;
 
 public class Union implements SQLString {
+	private Sort orderBy;
+	private int limitOffset = 0, limit = 0;
+
 	private class UnionLi {
 		Object select;
 		String logic;
@@ -46,6 +50,27 @@ public class Union implements SQLString {
 		return this;
 	}
 
+	/**
+	 * @see {@link #Sort}
+	 * @see {@link #Asc}
+	 * @see {@link #Desc}
+	 */
+	public Union orderBy(Sort orderBy) {
+		this.orderBy = orderBy;
+		return this;
+	}
+
+	public Union limit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+
+	public Union limit(int offset, int limit) {
+		this.limitOffset = offset;
+		this.limit = limit;
+		return this;
+	}
+
 	@Override
 	public void toSQL(StringBuilder sql) {
 		for (UnionLi li : list) {
@@ -53,10 +78,24 @@ public class Union implements SQLString {
 				sql.append(li.logic);
 			}
 			if (li.select instanceof SQLString) {
+				sql.append('(');
 				((SQLString) li.select).toSQL(sql);
+				sql.append(')');
 			} else {
-				sql.append(li.select);
+				sql.append('(').append(li.select).append(')');
 			}
+		}
+		// order by
+		if (orderBy != null) {
+			orderBy.toSQL(sql);
+		}
+		// limit
+		if (limit > 0) {
+			sql.append(" LIMIT ");
+			if (limitOffset > 0) {
+				sql.append(limitOffset).append(',');
+			}
+			sql.append(limit);
 		}
 	}
 

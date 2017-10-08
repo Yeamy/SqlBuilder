@@ -27,6 +27,7 @@ public class AggregateColumn extends Column {
 
 	@Override
 	public void nameInWhere(StringBuilder sb) {
+		sb.append('`').append(nameAlias).append('`');
 	}
 
 }

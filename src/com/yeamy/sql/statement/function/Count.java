@@ -1,5 +1,7 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Select;
+
 public class Count extends AggregateColumn {
 
 	public Count(String name) {
@@ -8,6 +10,10 @@ public class Count extends AggregateColumn {
 
 	public Count(String table, String name) {
 		super("COUNT", table, name);
+	}
+
+	public Count(Select select, String name) {
+		super("COUNT", select, name);
 	}
 
 }

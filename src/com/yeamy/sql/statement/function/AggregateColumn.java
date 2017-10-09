@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.Select;
 
 public class AggregateColumn extends Column {
 	private final String fun;
@@ -12,6 +13,11 @@ public class AggregateColumn extends Column {
 
 	public AggregateColumn(String fun, String table, String name) {
 		super(table, name);
+		this.fun = fun;
+	}
+
+	public AggregateColumn(String fun, Select select, String name) {
+		super(select, name);
 		this.fun = fun;
 	}
 

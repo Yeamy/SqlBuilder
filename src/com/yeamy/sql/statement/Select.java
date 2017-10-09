@@ -194,7 +194,7 @@ public class Select implements SQLString {
 			tables.put(src.tableName(), src);
 		}
 		for (Column column : columns) {// add all-table
-			String table = column.table;
+			String table = column.tableName();
 			if (table != null) {
 				tables.put(column.tableName(), column);
 			}

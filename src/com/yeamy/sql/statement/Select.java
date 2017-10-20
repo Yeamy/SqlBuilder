@@ -24,6 +24,11 @@ public class Select implements SQLString {
 	public Select() {
 	}
 
+	public Select addColumn(String column) {
+		columns.add(new Column(column));
+		return this;
+	}
+
 	public Select addColumn(Column column) {
 		columns.add(column);
 		return this;

@@ -130,4 +130,27 @@ public class Column implements SQLString {
 		nameInWhere(sb);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Column) {
+			Column t = (Column) obj;
+			return compare(name, t.name)//
+					&& compare(table, t.table)//
+					&& compare(nameAlias, t.nameAlias)//
+					&& compare(tableAlias, t.tableAlias);
+		}
+		return super.equals(obj);
+	}
+
+	private boolean compare(String a, String b) {
+		if (a == null) {
+			if (b == null) {
+				return true;
+			}
+		} else if (a.equals(b)) {
+			return true;
+		}
+		return false;
+	}
+
 }

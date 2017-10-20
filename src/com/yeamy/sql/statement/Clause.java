@@ -246,4 +246,206 @@ public abstract class Clause implements SQLString {
 	public static Clause between(Column column, Object start, Object end) {
 		return new ClauseBetween(column, start, end);
 	}
+
+	// ---------------------------------------------------------------------------
+
+	private static class SimpleClause2 extends Clause {
+		protected String column;
+		protected String pattern;
+
+		SimpleClause2(String column, String pattern) {
+			this.column = column;
+			this.pattern = pattern;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append('`').append(column).append('`');
+			sb.append(pattern);
+		}
+	}
+
+	private static class NormalClause2 extends Clause {
+		protected String column;
+		protected String cal;
+		protected Object pattern;
+
+		NormalClause2(String column, String cal, Object pattern) {
+			this.column = column;
+			this.cal = cal;
+			this.pattern = pattern;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append('`').append(column).append('`');
+			sb.append(cal);
+			Object pattern = this.pattern;
+			if (pattern instanceof Column) {
+				Column column = (Column) pattern;
+				sb.append('`').append(column).append('`');
+			} else {
+				SQLString.appendValue(sb, pattern);
+			}
+		}
+	}
+
+	private static class ClauseSelectIn2 extends Clause {
+		private String column;
+		private Select pattern;
+
+		ClauseSelectIn2(String column, Select pattern) {
+			this.column = column;
+			this.pattern = pattern;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append('`').append(column).append('`');
+			sb.append(" IN (");
+			pattern.toSQL(sb);
+			sb.append(')');
+		}
+	}
+
+	private static class ClauseIn2 extends Clause {
+		private String column;
+		private Object[] array;
+
+		ClauseIn2(String column, Object[] array) {
+			this.column = column;
+			this.array = array;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append('`').append(column).append('`');
+			sb.append(" IN (");
+			boolean f = true;
+			for (Object li : array) {
+				if (f) {
+					f = false;
+				} else {
+					sb.append(", ");
+				}
+				SQLString.appendValue(sb, li);
+			}
+			sb.append(')');
+		}
+	}
+
+	private static class ClauseBetween2 extends Clause {
+		protected String column;
+		private Object start;
+		private Object end;
+
+		ClauseBetween2(String column, Object start, Object end) {
+			this.column = column;
+			this.start = start;
+			this.end = end;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append('`').append(column).append('`');
+			sb.append(" BETWEEN ");
+			SQLString.appendValue(sb, start);
+			sb.append(" AND ");
+			SQLString.appendValue(sb, end);
+		}
+	}
+
+	// IS NULL
+	public static Clause isNull(String column) {
+		return new SimpleClause2(column, " IS NULL");
+	}
+
+	// IS NOT NULL
+	public static Clause isNotNull(String column) {
+		return new SimpleClause2(column, " IS NOT NULL");
+	}
+
+	// = 等于
+	public static Clause equal(String column, Object pattern) {
+		return new NormalClause2(column, " = ", pattern);
+	}
+
+	// <> 不等于
+	public static Clause notEqual(String column, Object pattern) {
+		return new NormalClause2(column, " <> ", pattern);
+	}
+
+	// > 大于
+	public static Clause greaterThan(String column, Object pattern) {
+		return new NormalClause2(column, " > ", pattern);
+	}
+
+	// < 小于
+	public static Clause lessThan(String column, Object pattern) {
+		return new NormalClause2(column, " < ", pattern);
+	}
+
+	// >= 大于等于
+	public static Clause greaterEqual(String column, Object pattern) {
+		return new NormalClause2(column, " >= ", pattern);
+	}
+
+	// <= 小于等于
+	public static Clause lessEqual(String column, Object pattern) {
+		return new NormalClause2(column, " <= ", pattern);
+	}
+
+	// LIKE 搜索某种模式
+	public static Clause like(String column, String pattern) {
+		return new NormalClause2(column, " LIKE ", pattern);
+	}
+
+	public static Clause contains(String column, String pattern) {
+		return new NormalClause2(column, " LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause startWith(String column, String pattern) {
+		return new NormalClause2(column, " LIKE ", pattern + '%');
+	}
+
+	public static Clause endWith(String column, String pattern) {
+		return new NormalClause2(column, " LIKE ", '%' + pattern);
+	}
+
+	public static Clause in(String column, int... array) {
+		return new Clause() {
+			@Override
+			public void toSQL(StringBuilder sb) {
+				sb.append('`').append(column).append('`');
+				sb.append(" IN (");
+				boolean f = true;
+				for (int li : array) {
+					if (f) {
+						f = false;
+					} else {
+						sb.append(", ");
+					}
+					SQLString.appendValue(sb, li);
+				}
+				sb.append(')');
+			}
+		};
+	}
+
+	public static Clause in(String column, Object... pattern) {
+		return new ClauseIn2(column, pattern);
+	}
+
+	public static Clause in(String column, Collection<?> pattern) {
+		return new ClauseIn2(column, pattern.toArray());
+	}
+
+	public static Clause in(String column, Select pattern) {
+		return new ClauseSelectIn2(column, pattern);
+	}
+
+	// BETWEEN 在某个范围内
+	public static Clause between(String column, Object start, Object end) {
+		return new ClauseBetween2(column, start, end);
+	}
 }

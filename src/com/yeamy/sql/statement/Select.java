@@ -89,6 +89,24 @@ public class Select implements SQLString {
 		return this;
 	}
 
+	public Select groupBy(String column) {
+		if (groupBy == null) {
+			groupBy = new ArrayList<>();
+		}
+		groupBy.add(new Column(column));
+		return this;
+	}
+
+	public Select groupBy(String... columns) {
+		if (groupBy == null) {
+			groupBy = new ArrayList<>();
+		}
+		for (String column : columns) {
+			groupBy.add(new Column(column));
+		}
+		return this;
+	}
+
 	public Select groupBy(Column column) {
 		if (groupBy == null) {
 			groupBy = new ArrayList<>();
@@ -111,6 +129,10 @@ public class Select implements SQLString {
 		}
 		groupBy.addAll(columns);
 		return this;
+	}
+
+	public boolean removeGroupBy(Column column) {
+		return groupBy != null && groupBy.remove(column);
 	}
 
 	public void having(Having having) {

@@ -347,4 +347,15 @@ public abstract class Clause implements SQLString {
 	public static Clause between(String column, Object start, Object end) {
 		return new ClauseBetween(column, start, end);
 	}
+
+	// Multi ----------------------------------------------------------------------
+
+	public Clause and(Clause clause) {
+		return new MultiClause(this).and(clause);
+	}
+
+	public Clause or(Clause clause) {
+		return new MultiClause(this).or(clause);
+	}
+
 }

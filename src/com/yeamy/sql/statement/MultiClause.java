@@ -3,7 +3,7 @@ package com.yeamy.sql.statement;
 import java.util.ArrayList;
 
 public class MultiClause extends Clause {
-	private class ClauseLi {
+	private static class ClauseLi {
 		Clause clause;
 		String logic;
 
@@ -23,11 +23,13 @@ public class MultiClause extends Clause {
 		clauses.add(new ClauseLi(clause, null));
 	}
 
+	@Override
 	public MultiClause and(Clause clause) {
 		clauses.add(new ClauseLi(clause, " AND "));
 		return this;
 	}
 
+	@Override
 	public MultiClause or(Clause clause) {
 		clauses.add(new ClauseLi(clause, " OR "));
 		return this;

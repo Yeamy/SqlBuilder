@@ -25,16 +25,4 @@ public class Format extends Column {
 		}
 	}
 
-	public static class FormatNow extends Format {
-		public FormatNow(String format) {
-			super(null, format);
-		}
-
-		@Override
-		public void nameInFunction(StringBuilder sb) {
-			sb.append("NOW()");
-		}
-
-	}
-
 }

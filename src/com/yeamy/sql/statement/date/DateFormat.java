@@ -5,6 +5,10 @@ import com.yeamy.sql.statement.Column;
 public class DateFormat extends Column {
 	public String format;
 
+	/**
+	 * @param format
+	 *            <link>https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format</link>
+	 */
 	public DateFormat(String name, String format) {
 		super(name);
 		this.format = format;

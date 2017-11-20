@@ -10,7 +10,7 @@ public abstract class Clause implements SQLString {
 
 		protected void addColumn(StringBuilder sb) {
 			if (column instanceof Column) {
-				sb.append(column);
+				((Column) column).nameInWhere(sb);
 			} else {
 				sb.append('`').append(column).append('`');
 			}
@@ -182,7 +182,7 @@ public abstract class Clause implements SQLString {
 					clause = new MultiClause(li);
 					f = false;
 				} else {
-					clause.and(li);
+					clause.or(li);
 				}
 			}
 			return clause;

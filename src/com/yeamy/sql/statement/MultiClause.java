@@ -1,62 +1,32 @@
 package com.yeamy.sql.statement;
 
-import java.util.ArrayList;
-
 public class MultiClause extends Clause {
-	private static class ClauseLi {
-		Clause clause;
-		String logic;
-
-		private ClauseLi(Clause clause, String logic) {
-			this.clause = clause;
-			this.logic = logic;
-		}
-	}
-
-	protected ArrayList<ClauseLi> clauses = new ArrayList<>();
-
-	protected int size() {
-		return clauses.size();
-	}
+	private Clause clause;
 
 	public MultiClause(Clause clause) {
-		clauses.add(new ClauseLi(clause, null));
+		this.clause = clause;
 	}
 
 	@Override
 	public MultiClause and(Clause clause) {
-		clauses.add(new ClauseLi(clause, " AND "));
+		super.and(clause);
 		return this;
 	}
 
 	@Override
 	public MultiClause or(Clause clause) {
-		clauses.add(new ClauseLi(clause, " OR "));
+		super.or(clause);
 		return this;
 	}
 
 	@Override
-	public void toSQL(StringBuilder sql) {
-		boolean m = true;
-		for (ClauseLi li : clauses) {
-			if (m) {
-				m = false;
-			} else {
-				sql.append(li.logic);
-			}
-			Clause clause = li.clause;
-			if (clause instanceof MultiClause) {
-				MultiClause mc = (MultiClause) clause;
-				if (mc.size() > 0) {
-					sql.append('(');
-					mc.toSQL(sql);
-					sql.append(')');
-				} else {
-					mc.clauses.get(0).clause.toSQL(sql);
-				}
-			} else {
-				clause.toSQL(sql);
-			}
+	public void subSQL(StringBuilder sql) {
+		if (clause.isMulti()) {
+			sql.append('(');
+			clause.subSQL(sql);
+			sql.append(')');
+		} else {
+			clause.subSQL(sql);
 		}
 	}
 

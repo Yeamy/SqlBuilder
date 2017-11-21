@@ -1,5 +1,6 @@
 package com.yeamy.sql.statement;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
+		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(pattern);
 		}
@@ -54,7 +55,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
+		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(cal);
 			SQLString.appendValue(sb, pattern);
@@ -75,7 +76,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
+		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(" IN (");
 			boolean f = true;
@@ -105,7 +106,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
+		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(" IN (");
 			boolean f = true;
@@ -138,7 +139,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
+		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(" BETWEEN ");
 			SQLString.appendValue(sb, start);
@@ -154,12 +155,10 @@ public abstract class Clause implements SQLString {
 		case 1:
 			return list.get(0);
 		default:
-			boolean f = true;
-			MultiClause clause = null;
+			Clause clause = null;
 			for (Clause li : list) {
-				if (f) {
-					clause = new MultiClause(li);
-					f = false;
+				if (clause == null) {
+					clause = li;
 				} else {
 					clause.and(li);
 				}
@@ -175,12 +174,10 @@ public abstract class Clause implements SQLString {
 		case 1:
 			return list.get(0);
 		default:
-			boolean f = true;
-			MultiClause clause = null;
+			Clause clause = null;
 			for (Clause li : list) {
-				if (f) {
-					clause = new MultiClause(li);
-					f = false;
+				if (clause == null) {
+					clause = li;
 				} else {
 					clause.or(li);
 				}
@@ -350,12 +347,56 @@ public abstract class Clause implements SQLString {
 
 	// Multi ----------------------------------------------------------------------
 
+	private static class ClauseLi {
+		Clause clause;
+		String logic;
+
+		private ClauseLi(Clause clause, String logic) {
+			this.clause = clause;
+			this.logic = logic;
+		}
+	}
+
+	private ArrayList<ClauseLi> clauses;
+
+	protected boolean isMulti() {
+		return clauses != null && clauses.size() > 0;
+	}
+
 	public Clause and(Clause clause) {
-		return new MultiClause(this).and(clause);
+		if (clauses == null) {
+			clauses = new ArrayList<>();
+		}
+		clauses.add(new ClauseLi(clause, " AND "));
+		return this;
 	}
 
 	public Clause or(Clause clause) {
-		return new MultiClause(this).or(clause);
+		if (clauses == null) {
+			clauses = new ArrayList<>();
+		}
+		clauses.add(new ClauseLi(clause, " OR "));
+		return this;
 	}
+
+	@Override
+	public final void toSQL(StringBuilder sql) {
+		subSQL(sql);
+		if (isMulti()) {
+			for (ClauseLi li : clauses) {
+				sql.append(li.logic);
+				Clause clause = li.clause;
+				if (clause.isMulti()) {
+					sql.append('(');
+					clause.toSQL(sql);
+					sql.append(')');
+				} else {
+					clause.toSQL(sql);
+				}
+			}
+		}
+	}
+
+	public abstract void subSQL(StringBuilder sql);
 
 }

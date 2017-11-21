@@ -1,7 +1,7 @@
 package com.yeamy.sql.statement;
 
 abstract class Join implements SQLString {
-	private MultiClause clause;
+	private Clause clause;
 
 	final String type;
 	final Column column;
@@ -11,7 +11,7 @@ abstract class Join implements SQLString {
 		this.type = type;
 		this.column = column;
 		this.pattern = pattern;
-		clause = new MultiClause(Clause.equal(column, pattern));
+		clause = Clause.equal(column, pattern);
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 public class Insert implements SQLString {
 	private final String table;
 	private final LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-	private boolean ifNotExists = false;
 
 	public Insert(String table) {
 		this.table = table;
@@ -21,15 +20,6 @@ public class Insert implements SQLString {
 	public Insert addAll(Map<String, Object> cv) {
 		map.putAll(cv);
 		return this;
-	}
-
-	public Insert ifNotExists(boolean b) {
-		ifNotExists = b;
-		return this;
-	}
-
-	public Insert ifNotExists() {
-		return ifNotExists(true);
 	}
 
 	@Override
@@ -64,11 +54,7 @@ public class Insert implements SQLString {
 			}
 			SQLString.appendValue(sql, value);
 		}
-		if (ifNotExists) {
-			sql.append(") IF NOT EXISTS;");
-		} else {
-			sql.append(");");
-		}
+		sql.append(");");
 	}
 
 	@Override

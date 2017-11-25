@@ -20,7 +20,7 @@ public class Sort implements SQLString {
 	}
 
 	public Sort desc(Column column) {
-		sort.put(column, ASC);
+		sort.put(column, DESC);
 		return this;
 	}
 

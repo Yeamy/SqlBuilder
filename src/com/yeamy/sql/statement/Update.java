@@ -1,12 +1,14 @@
 package com.yeamy.sql.statement;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class Update implements SQLString {
 	private final String table;
 	private final LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+	private LinkedList<Join> joins;
 	private Clause where;
 
 	public Update(String table) {
@@ -56,9 +58,32 @@ public class Update implements SQLString {
 		return this;
 	}
 
+	private void initJoins() {
+		if (joins == null) {
+			joins = new LinkedList<>();
+		}
+	}
+
+	public Update leftJoin(String src, Column pattern) {
+		return leftJoin(new Column(table, src), pattern);
+	}
+
+	public Update leftJoin(Column src, Column pattern) {
+		initJoins();
+		joins.add(new LeftJoin(src, pattern));
+		return this;
+	}
+
 	@Override
 	public void toSQL(StringBuilder sql) {
-		sql.append("UPDATE `").append(table).append("` SET ");
+		sql.append("UPDATE `").append(table).append('`');
+		// join on
+		if (joins != null) {
+			for (Join join : joins) {
+				join.toSQL(sql);
+			}
+		}
+		sql.append(" SET ");
 		boolean f = true;
 		for (Entry<String, Object> li : map.entrySet()) {
 			if (f) {
@@ -67,7 +92,13 @@ public class Update implements SQLString {
 				sql.append(", ");
 			}
 			sql.append('`').append(li.getKey()).append("` = ");
-			SQLString.appendValue(sql, li.getValue());
+			Object value = li.getValue();
+			if (value instanceof Column) {
+				Column col = (Column) value;
+				col.nameInColumn(sql);
+			} else {
+				SQLString.appendValue(sql, value);
+			}
 		}
 		sql.append(" WHERE ");
 		where.toSQL(sql);

@@ -6,4 +6,8 @@ public class LeftJoin extends Join {
 		super(" LEFT JOIN ", column, pattern);
 	}
 
+	public LeftJoin and(Clause clause) {
+		return (LeftJoin) super.and(clause);
+	}
+
 }

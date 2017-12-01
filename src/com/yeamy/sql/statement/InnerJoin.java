@@ -6,4 +6,8 @@ public class InnerJoin extends Join {
 		super(" INNER JOIN ", column, pattern);
 	}
 
+	public InnerJoin and(Clause clause) {
+		return (InnerJoin) super.and(clause);
+	}
+
 }

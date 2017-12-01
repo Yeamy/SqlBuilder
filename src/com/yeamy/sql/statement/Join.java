@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement;
 
-abstract class Join implements SQLString {
+public abstract class Join implements SQLString {
 	private Clause clause;
 
 	final String type;

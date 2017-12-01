@@ -6,4 +6,8 @@ public class RightJoin extends Join {
 		super(" RIGHT JOIN ", column, pattern);
 	}
 
+	public RightJoin and(Clause clause) {
+		return (RightJoin) super.and(clause);
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.Select;
 
 public class Ucase extends Column {
 
@@ -10,6 +11,10 @@ public class Ucase extends Column {
 
 	public Ucase(String table, String name) {
 		super(table, name);
+	}
+
+	public Ucase(Select select, String tableAlias, String name) {
+		super(select, tableAlias, name);
 	}
 
 	@Override

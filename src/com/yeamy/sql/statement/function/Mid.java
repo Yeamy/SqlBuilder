@@ -18,8 +18,8 @@ public class Mid extends Column {
 		this.length = length;
 	}
 
-	public Mid(Select select, String name, int start, int length) {
-		super(select, name);
+	public Mid(Select select, String tableAlias, String name, int start, int length) {
+		super(select, tableAlias, name);
 		this.start = start;
 		this.length = length;
 	}

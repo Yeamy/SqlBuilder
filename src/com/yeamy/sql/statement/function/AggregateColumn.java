@@ -16,8 +16,8 @@ public class AggregateColumn extends Column {
 		this.fun = fun;
 	}
 
-	public AggregateColumn(String fun, Select select, String name) {
-		super(select, name);
+	public AggregateColumn(String fun, Select select, String tableAlias, String name) {
+		super(select, tableAlias, name);
 		this.fun = fun;
 	}
 

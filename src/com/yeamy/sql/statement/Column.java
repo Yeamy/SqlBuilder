@@ -1,5 +1,7 @@
 package com.yeamy.sql.statement;
 
+import java.util.Collection;
+
 public class Column implements SQLString {
 	public static final String ALL = "*";
 	public final String table;
@@ -20,9 +22,17 @@ public class Column implements SQLString {
 		this.name = name;
 	}
 
+	@Deprecated
 	public Column(Select select, String name) {
 		this.select = select;
 		this.table = null;
+		this.name = name;
+	}
+
+	public Column(Select select, String tableAlias, String name) {
+		this.select = select;
+		this.table = null;
+		this.tableAlias = tableAlias;
 		this.name = name;
 	}
 
@@ -153,4 +163,63 @@ public class Column implements SQLString {
 		return false;
 	}
 
+	public Clause isNotNull() {
+		return Clause.isNotNull(this);
+	}
+
+	public Clause isNull() {
+		return Clause.isNull(this);
+	}
+
+	public Clause equalsWith(Object obj) {
+		return Clause.equal(this, obj);
+	}
+
+	public Clause greaterEqual(Object pattern) {
+		return Clause.greaterEqual(this, pattern);
+	}
+
+	public Clause greaterThan(Object pattern) {
+		return Clause.greaterThan(this, pattern);
+	}
+
+	public Clause lessEqual(Object pattern) {
+		return Clause.lessEqual(this, pattern);
+	}
+
+	public Clause lessThan(Object pattern) {
+		return Clause.lessThan(this, pattern);
+	}
+
+	public Clause in(Collection<?> pattern) {
+		return Clause.in(this, pattern);
+	}
+
+	public Clause in(Object... pattern) {
+		return Clause.in(this, pattern);
+	}
+
+	public Clause in(int... array) {
+		return Clause.in(this, array);
+	}
+
+	public Clause in(Select pattern) {
+		return Clause.in(this, pattern);
+	}
+
+	public Clause like(String pattern) {
+		return Clause.like(this, pattern);
+	}
+
+	public Clause contains(String pattern) {
+		return Clause.contains(this, pattern);
+	}
+
+	public Clause startWith(String pattern) {
+		return Clause.startWith(this, pattern);
+	}
+
+	public Clause endWith(String pattern) {
+		return Clause.endWith(this, pattern);
+	}
 }

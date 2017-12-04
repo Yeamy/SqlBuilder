@@ -12,8 +12,8 @@ public class Count extends AggregateColumn {
 		super("COUNT", table, name);
 	}
 
-	public Count(Select select, String name) {
-		super("COUNT", select, name);
+	public Count(Select select, String tableAlias, String name) {
+		super("COUNT", select, tableAlias, name);
 	}
 
 }

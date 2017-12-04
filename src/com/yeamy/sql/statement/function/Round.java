@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.Select;
 
 public class Round extends Column {
 	public int decimals;
@@ -12,6 +13,11 @@ public class Round extends Column {
 
 	public Round(String table, String name, int decimals) {
 		super(table, name);
+		this.decimals = decimals;
+	}
+
+	public Round(Select select, String tableAlias, String name, int decimals) {
+		super(select, tableAlias, name);
 		this.decimals = decimals;
 	}
 

@@ -64,6 +64,24 @@ public class Update implements SQLString {
 		}
 	}
 
+	public Update join(Join join) {
+		initJoins();
+		joins.add(join);
+		return this;
+	}
+
+	public Update innerJoin(String src, Column pattern) {
+		initJoins();
+		joins.add(new InnerJoin(new Column(table, src), pattern));
+		return this;
+	}
+
+	public Update innerJoin(Column src, Column pattern) {
+		initJoins();
+		joins.add(new InnerJoin(src, pattern));
+		return this;
+	}
+
 	public Update leftJoin(String src, Column pattern) {
 		return leftJoin(new Column(table, src), pattern);
 	}

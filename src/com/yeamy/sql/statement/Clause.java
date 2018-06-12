@@ -364,6 +364,9 @@ public abstract class Clause implements SQLString {
 	}
 
 	public Clause and(Clause clause) {
+		if (clause == null) {
+			return this;
+		}
 		if (clauses == null) {
 			clauses = new ArrayList<>();
 		}
@@ -372,6 +375,9 @@ public abstract class Clause implements SQLString {
 	}
 
 	public Clause or(Clause clause) {
+		if (clause == null) {
+			return this;
+		}
 		if (clauses == null) {
 			clauses = new ArrayList<>();
 		}

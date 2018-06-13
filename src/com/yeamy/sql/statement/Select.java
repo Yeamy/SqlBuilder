@@ -21,6 +21,11 @@ public class Select implements SQLString {
 	private Sort orderBy;
 	private int limitOffset = 0, limit = 0;
 
+	public Column[] getColumns() {
+		Column[] out = new Column[columns.size()];
+		return columns.toArray(out);
+	}
+
 	public Select() {
 	}
 

@@ -4,35 +4,26 @@ import java.util.Map;
 
 public class SQL {
 
-	public static String insert(String table, Select select, String... targetColumn) {
+	public static String insert(String table, Select select) {
 		StringBuilder sql = new StringBuilder("INSERT INTO `").append(table).append('`');
-		boolean f = true;
-		for (String column : targetColumn) {
-			if (f) {
-				f = false;
-			} else {
-				sql.append(", ");
+		Column[] columns = select.getColumns();
+		if (columns.length == 1 && "*".equals(columns[0].name)) {
+			sql.append(' ');
+		} else {
+			sql.append('(');
+			boolean f = true;
+			for (Column column : columns) {
+				if (f) {
+					f = false;
+				} else {
+					sql.append(", ");
+				}
+				String name = column.nameAlias != null ? column.nameAlias : column.name;
+				sql.append('`').append(name).append('`');
 			}
-			sql.append('`').append(column).append('`');
+			sql.append(") ");
 		}
-		sql.append(' ');
 		select.toSQL(sql);
-		return sql.toString();
-	}
-
-	public static String insert(String table, String select, String... targetColumn) {
-		StringBuilder sql = new StringBuilder("INSERT INTO `").append(table).append('`');
-		boolean f = true;
-		for (String column : targetColumn) {
-			if (f) {
-				f = false;
-			} else {
-				sql.append(", ");
-			}
-			sql.append('`').append(column).append('`');
-		}
-		sql.append(' ');
-		sql.append(select);
 		return sql.toString();
 	}
 

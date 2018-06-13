@@ -3,15 +3,14 @@ package com.yeamy.sql.statement;
 public class VirtualColumn extends Column {
 	private String value;
 
-	public VirtualColumn(String name, String value) {
+	public VirtualColumn(String name, Object value) {
 		super(name);
-		this.value = value;
+		this.value = String.valueOf(value);
 	}
 
 	@Override
-	public void toSQL(StringBuilder sb) {
+	public void nameInColumn(StringBuilder sb) {
 		sb.append('\'').append(value).append("' `")//
 				.append(name).append('`');
 	}
-
 }

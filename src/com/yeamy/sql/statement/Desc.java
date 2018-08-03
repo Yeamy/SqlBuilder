@@ -6,6 +6,6 @@ public class Desc extends Sort {
 	}
 
 	public Desc(String column) {
-		super(new Column(column), DESC);
+		super(column, DESC);
 	}
 }

@@ -14,6 +14,10 @@ public class Sort implements SQLString {
 		this.sort.put(column, sort);
 	}
 
+	Sort(String column, String sort) {
+		this.sort.put(new Column(column), sort);
+	}
+
 	public Sort asc(Column column) {
 		sort.put(column, ASC);
 		return this;
@@ -21,6 +25,16 @@ public class Sort implements SQLString {
 
 	public Sort desc(Column column) {
 		sort.put(column, DESC);
+		return this;
+	}
+
+	public Sort asc(String column) {
+		sort.put(new Column(column), ASC);
+		return this;
+	}
+
+	public Sort desc(String column) {
+		sort.put(new Column(column), DESC);
 		return this;
 	}
 

@@ -6,6 +6,6 @@ public class Asc extends Sort {
 	}
 
 	public Asc(String column) {
-		super(new Column(column), ASC);
+		super(column, ASC);
 	}
 }

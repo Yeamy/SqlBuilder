@@ -64,59 +64,58 @@ public abstract class Clause implements SQLString {
 
 	private static class ClauseIn extends BaseClause {
 		private Object[] array;
+		private int[] intArray;
+		private String cal;
+		static final String IN = " IN(";
+		static final String NOT_IN = " NOT IN(";
 
-		ClauseIn(Column column, Object[] array) {
+		ClauseIn(Column column, String cal, Object[] array) {
 			this.column = column;
 			this.array = array;
+			this.cal = cal;
 		}
 
-		ClauseIn(String column, Object[] array) {
+		ClauseIn(String column, String cal, Object[] array) {
 			this.column = column;
 			this.array = array;
+			this.cal = cal;
+		}
+
+		ClauseIn(Column column, String cal, int[] intArray) {
+			this.column = column;
+			this.intArray = intArray;
+			this.cal = cal;
+		}
+
+		ClauseIn(String column, String cal, int[] intArray) {
+			this.column = column;
+			this.intArray = intArray;
+			this.cal = cal;
 		}
 
 		@Override
 		public void subSQL(StringBuilder sb) {
 			addColumn(sb);
-			sb.append(" IN (");
+			sb.append(cal);
 			boolean f = true;
-			for (Object li : array) {
-				if (f) {
-					f = false;
-				} else {
-					sb.append(", ");
+			if (array != null) {
+				for (Object li : array) {
+					if (f) {
+						f = false;
+					} else {
+						sb.append(", ");
+					}
+					SQLString.appendValue(sb, li);
 				}
-				SQLString.appendValue(sb, li);
-			}
-			sb.append(')');
-		}
-	}
-
-	private static class ClauseInIntArray extends BaseClause {
-		private int[] array;
-
-		ClauseInIntArray(Column column, int[] array) {
-			this.column = column;
-			this.array = array;
-		}
-
-		ClauseInIntArray(String column, int[] array) {
-			this.column = column;
-			this.array = array;
-		}
-
-		@Override
-		public void subSQL(StringBuilder sb) {
-			addColumn(sb);
-			sb.append(" IN (");
-			boolean f = true;
-			for (int li : array) {
-				if (f) {
-					f = false;
-				} else {
-					sb.append(", ");
+			} else {
+				for (int li : intArray) {
+					if (f) {
+						f = false;
+					} else {
+						sb.append(", ");
+					}
+					SQLString.appendValue(sb, li);
 				}
-				sb.append(li);
 			}
 			sb.append(')');
 		}
@@ -244,20 +243,38 @@ public abstract class Clause implements SQLString {
 		return new NormalClause(column, " LIKE ", '%' + pattern);
 	}
 
+	// IN
 	public static Clause in(Column column, int... array) {
-		return new ClauseInIntArray(column, array);
+		return new ClauseIn(column, ClauseIn.IN, array);
 	}
 
 	public static Clause in(Column column, Object... pattern) {
-		return new ClauseIn(column, pattern);
+		return new ClauseIn(column, ClauseIn.IN, pattern);
 	}
 
 	public static Clause in(Column column, Collection<?> pattern) {
-		return new ClauseIn(column, pattern.toArray());
+		return new ClauseIn(column, ClauseIn.IN, pattern.toArray());
 	}
 
 	public static Clause in(Column column, Select pattern) {
 		return new NormalClause(column, " IN ", pattern);
+	}
+
+	// NOT IN
+	public static Clause notIn(Column column, int... array) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, array);
+	}
+
+	public static Clause notIn(Column column, Object... pattern) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, pattern);
+	}
+
+	public static Clause notIn(Column column, Collection<?> pattern) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, pattern.toArray());
+	}
+
+	public static Clause notIn(Column column, Select pattern) {
+		return new NormalClause(column, " NOT IN ", pattern);
 	}
 
 	// BETWEEN 在某个范围内
@@ -324,20 +341,38 @@ public abstract class Clause implements SQLString {
 		return new NormalClause(column, " LIKE ", '%' + pattern);
 	}
 
+	// IN
 	public static Clause in(String column, int... array) {
-		return new ClauseInIntArray(column, array);
+		return new ClauseIn(column, ClauseIn.IN, array);
 	}
 
 	public static Clause in(String column, Object... pattern) {
-		return new ClauseIn(column, pattern);
+		return new ClauseIn(column, ClauseIn.IN, pattern);
 	}
 
 	public static Clause in(String column, Collection<?> pattern) {
-		return new ClauseIn(column, pattern.toArray());
+		return new ClauseIn(column, ClauseIn.IN, pattern.toArray());
 	}
 
 	public static Clause in(String column, Select pattern) {
 		return new NormalClause(column, " IN ", pattern);
+	}
+
+	// NOT IN
+	public static Clause notIn(String column, int... array) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, array);
+	}
+
+	public static Clause notIn(String column, Object... pattern) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, pattern);
+	}
+
+	public static Clause notIn(String column, Collection<?> pattern) {
+		return new ClauseIn(column, ClauseIn.NOT_IN, pattern.toArray());
+	}
+
+	public static Clause notIn(String column, Select pattern) {
+		return new NormalClause(column, " NOT IN ", pattern);
 	}
 
 	// BETWEEN 在某个范围内

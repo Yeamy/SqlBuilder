@@ -21,6 +21,7 @@ public class Update implements SQLString {
 	}
 
 	public Update increase(String column, int number) {
+		number = number < 0 ? -number : number;
 		map.put(column, new Modify(column, '+', number));
 		return this;
 	}

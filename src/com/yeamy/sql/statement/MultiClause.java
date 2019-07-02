@@ -23,10 +23,10 @@ public class MultiClause extends Clause {
 	public void subSQL(StringBuilder sql) {
 		if (clause.isMulti()) {
 			sql.append('(');
-			clause.subSQL(sql);
+			clause.toSQL(sql);
 			sql.append(')');
 		} else {
-			clause.subSQL(sql);
+			clause.toSQL(sql);
 		}
 	}
 

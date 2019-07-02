@@ -32,7 +32,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void subSQL(StringBuilder sb) {
+		protected void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(pattern);
 		}
@@ -55,7 +55,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void subSQL(StringBuilder sb) {
+		protected void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(cal);
 			SQLString.appendValue(sb, pattern);
@@ -94,7 +94,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void subSQL(StringBuilder sb) {
+		protected void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(cal);
 			boolean f = true;
@@ -138,7 +138,7 @@ public abstract class Clause implements SQLString {
 		}
 
 		@Override
-		public void subSQL(StringBuilder sb) {
+		protected void subSQL(StringBuilder sb) {
 			addColumn(sb);
 			sb.append(" BETWEEN ");
 			SQLString.appendValue(sb, start);
@@ -438,6 +438,6 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
-	public abstract void subSQL(StringBuilder sql);
+	protected abstract void subSQL(StringBuilder sql);
 
 }

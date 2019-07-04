@@ -5,20 +5,17 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class Clause implements SQLString {
+	protected Object column;
 
-	private abstract static class BaseClause extends Clause {
-		protected Object column;
-
-		protected void addColumn(StringBuilder sb) {
-			if (column instanceof Column) {
-				((Column) column).nameInWhere(sb);
-			} else {
-				sb.append('`').append(column).append('`');
-			}
+	protected void addColumn(StringBuilder sb) {
+		if (column instanceof Column) {
+			((Column) column).nameInWhere(sb);
+		} else {
+			sb.append('`').append(column).append('`');
 		}
 	}
 
-	private static class SimpleClause extends BaseClause {
+	private static class SimpleClause extends Clause {
 		protected String pattern;
 
 		SimpleClause(Column column, String pattern) {
@@ -38,7 +35,7 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
-	private static class NormalClause extends BaseClause {
+	private static class NormalClause extends Clause {
 		protected String cal;
 		protected Object pattern;
 
@@ -62,7 +59,7 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
-	private static class ClauseIn extends BaseClause {
+	private static class ClauseIn extends Clause {
 		private Object[] array;
 		private int[] intArray;
 		private String cal;
@@ -121,7 +118,7 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
-	private static class ClauseBetween extends BaseClause {
+	private static class ClauseBetween extends Clause {
 		private Object start;
 		private Object end;
 

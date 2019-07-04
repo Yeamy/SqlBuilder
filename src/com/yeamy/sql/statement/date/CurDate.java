@@ -1,10 +1,13 @@
 package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.annotation.DataBase;
+import com.yeamy.sql.statement.annotation.Target;
 
 /**
  * 2008-12-29
  */
+@Target(DataBase.MySQL)
 public class CurDate extends Column {
 	public static final CurDate now = new CurDate(null);
 

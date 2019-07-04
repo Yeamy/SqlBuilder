@@ -1,7 +1,10 @@
 package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.annotation.DataBase;
+import com.yeamy.sql.statement.annotation.Target;
 
+@Target(DataBase.MySQL)
 public class DateFormat extends Column {
 	public String format;
 

@@ -206,9 +206,6 @@ public class Select implements SQLString {
 	private void columns(StringBuilder sql) {
 		boolean f = true;
 		for (Column column : columns) {
-			if (column.name == null) {
-				continue;
-			}
 			if (f) {
 				f = false;
 			} else {

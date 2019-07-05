@@ -63,7 +63,7 @@ public class IfColumn extends Column {
 			return tableAlias;
 		}
 		if (expr.column instanceof Column) {
-			return ((Column) expr.column).table;
+			return ((Column) expr.column).tableName();
 		}
 		return null;
 	}

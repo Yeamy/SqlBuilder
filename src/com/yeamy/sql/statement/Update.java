@@ -119,8 +119,10 @@ public class Update implements SQLString {
 				SQLString.appendValue(sql, value);
 			}
 		}
-		sql.append(" WHERE ");
-		where.toSQL(sql);
+		if (where != null) {
+			sql.append(" WHERE ");
+			where.toSQL(sql);
+		}
 		sql.append(';');
 	}
 

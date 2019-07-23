@@ -5,15 +5,24 @@ import com.yeamy.sql.statement.Select;
 public class Max extends AggregateColumn {
 
 	public Max(String name) {
-		super("MAX", name);
+		super(name);
 	}
 
 	public Max(String table, String name) {
-		super("MAX", table, name);
+		super(table, name);
 	}
 
 	public Max(Select select, String tableAlias, String name) {
-		super("MAX", select, tableAlias, name);
+		super(select, tableAlias, name);
+	}
+
+	public Max(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
+	@Override
+	public String fun() {
+		return "MAX";
 	}
 
 }

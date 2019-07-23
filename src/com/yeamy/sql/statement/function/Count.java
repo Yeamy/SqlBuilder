@@ -5,15 +5,24 @@ import com.yeamy.sql.statement.Select;
 public class Count extends AggregateColumn {
 
 	public Count(String name) {
-		super("COUNT", name);
+		super(name);
 	}
 
 	public Count(String table, String name) {
-		super("COUNT", table, name);
+		super(table, name);
 	}
 
 	public Count(Select select, String tableAlias, String name) {
-		super("COUNT", select, tableAlias, name);
+		super(select, tableAlias, name);
+	}
+
+	public Count(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
+	@Override
+	public String fun() {
+		return "COUNT";
 	}
 
 }

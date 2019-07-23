@@ -5,15 +5,24 @@ import com.yeamy.sql.statement.Select;
 public class Sum extends AggregateColumn {
 
 	public Sum(String name) {
-		super("SUM", name);
+		super(name);
 	}
 
 	public Sum(String table, String name) {
-		super("SUM", table, name);
+		super(table, name);
 	}
 
 	public Sum(Select select, String tableAlias, String name) {
-		super("SUM", select, tableAlias, name);
+		super(select, tableAlias, name);
+	}
+
+	public Sum(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
+	@Override
+	public String fun() {
+		return "SUM";
 	}
 
 }

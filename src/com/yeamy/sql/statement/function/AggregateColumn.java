@@ -3,23 +3,30 @@ package com.yeamy.sql.statement.function;
 import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class AggregateColumn extends Column {
+public abstract class AggregateColumn extends Column {
 	private final String fun;
 
-	public AggregateColumn(String fun, String name) {
+	public AggregateColumn(String name) {
 		super(name);
-		this.fun = fun;
+		this.fun = fun();
 	}
 
-	public AggregateColumn(String fun, String table, String name) {
+	public AggregateColumn(String table, String name) {
 		super(table, name);
-		this.fun = fun;
+		this.fun = fun();
 	}
 
-	public AggregateColumn(String fun, Select select, String tableAlias, String name) {
+	public AggregateColumn(Select select, String tableAlias, String name) {
 		super(select, tableAlias, name);
-		this.fun = fun;
+		this.fun = fun();
 	}
+
+	public AggregateColumn(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+		this.fun = fun();
+	}
+
+	public abstract String fun();
 
 	@Override
 	public void nameInColumn(StringBuilder sb) {

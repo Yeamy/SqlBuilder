@@ -2,10 +2,12 @@ package com.yeamy.sql.statement;
 
 import java.util.Collection;
 
+import com.yeamy.sql.statement.function.Union;
+
 public class Column implements SQLString {
 	public static final String ALL = "*";
 	public final String table;
-	public final Select select;
+	public final SQLString select;
 	public final String name;
 	public String tableAlias;
 	public String nameAlias;
@@ -22,15 +24,15 @@ public class Column implements SQLString {
 		this.name = name;
 	}
 
-	@Deprecated
-	public Column(Select select, String name) {
+	public Column(Select select, String tableAlias, String name) {
 		this.select = select;
 		this.table = null;
+		this.tableAlias = tableAlias;
 		this.name = name;
 	}
 
-	public Column(Select select, String tableAlias, String name) {
-		this.select = select;
+	public Column(Union union, String tableAlias, String name) {
+		this.select = union;
 		this.table = null;
 		this.tableAlias = tableAlias;
 		this.name = name;

@@ -5,15 +5,24 @@ import com.yeamy.sql.statement.Select;
 public class Avg extends AggregateColumn {
 
 	public Avg(String name) {
-		super("AVG", name);
+		super(name);
 	}
 
 	public Avg(String table, String name) {
-		super("AVG", table, name);
+		super(table, name);
 	}
 
 	public Avg(Select select, String tableAlias, String name) {
-		super("AVG", select, tableAlias, name);
+		super(select, tableAlias, name);
+	}
+
+	public Avg(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
+	@Override
+	public String fun() {
+		return "AVG";
 	}
 
 }

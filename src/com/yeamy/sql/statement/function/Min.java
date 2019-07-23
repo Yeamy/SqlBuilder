@@ -5,15 +5,23 @@ import com.yeamy.sql.statement.Select;
 public class Min extends AggregateColumn {
 
 	public Min(String name) {
-		super("MIN", name);
+		super(name);
 	}
 
 	public Min(String table, String name) {
-		super("MIN", table, name);
+		super(table, name);
 	}
 
 	public Min(Select select, String tableAlias, String name) {
-		super("MIN", select, tableAlias, name);
+		super(select, tableAlias, name);
 	}
 
+	public Min(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
+	@Override
+	public String fun() {
+		return "MIN";
+	}
 }

@@ -9,7 +9,7 @@ import com.yeamy.sql.statement.annotation.Target;
  */
 @Target(DataBase.MySQL)
 public class CurDate extends Column {
-	public static final CurDate now = new CurDate(null);
+	public static final CurDate curDate = new CurDate(null);
 
 	public CurDate(String alias) {
 		super(null);

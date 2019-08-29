@@ -9,8 +9,7 @@ public class DateFormat extends Column {
 	public String format;
 
 	/**
-	 * @param format
-	 *            <link>https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format</link>
+	 * @param format <link>https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format</link>
 	 */
 	public DateFormat(String name, String format) {
 		super(name);
@@ -23,13 +22,10 @@ public class DateFormat extends Column {
 	}
 
 	@Override
-	public void nameInColumn(StringBuilder sb) {
+	public void rawName(StringBuilder sb) {
 		sb.append("DATE_FORMAT(");
-		nameInFunction(sb);
+		super.rawName(sb);
 		sb.append(", ").append(format).append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
 	}
 
 	public static class FormatNow extends DateFormat {
@@ -38,8 +34,8 @@ public class DateFormat extends Column {
 		}
 
 		@Override
-		public void nameInFunction(StringBuilder sb) {
-			sb.append("NOW()");
+		public void rawName(StringBuilder sb) {
+			sb.append("DATE_FORMAT(NOW(), ").append(format).append(')');
 		}
 	}
 

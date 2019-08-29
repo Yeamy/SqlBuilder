@@ -1,9 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class Ucase extends Column {
+public class Ucase extends AggregateColumn {
 
 	public Ucase(String name) {
 		super(name);
@@ -17,14 +16,13 @@ public class Ucase extends Column {
 		super(select, tableAlias, name);
 	}
 
+	public Ucase(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
 	@Override
-	public void nameInColumn(StringBuilder sb) {
-		sb.append("UCASE(");
-		super.nameInFunction(sb);
-		sb.append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
+	public String fun() {
+		return "UCASE";
 	}
 
 }

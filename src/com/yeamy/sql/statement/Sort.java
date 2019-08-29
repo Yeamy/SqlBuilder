@@ -52,7 +52,7 @@ public class Sort implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			cell.getKey().nameInWhere(sql);
+			cell.getKey().toSQL(sql);
 			String sc = cell.getValue();
 			if (sc != null) {
 				sql.append(" ");

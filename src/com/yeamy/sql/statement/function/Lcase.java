@@ -1,9 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class Lcase extends Column {
+public class Lcase extends AggregateColumn {
 
 	public Lcase(String name) {
 		super(name);
@@ -17,14 +16,13 @@ public class Lcase extends Column {
 		super(select, tableAlias, name);
 	}
 
+	public Lcase(Union union, String tableAlias, String name) {
+		super(union, tableAlias, name);
+	}
+
 	@Override
-	public void nameInColumn(StringBuilder sb) {
-		sb.append("LCASE(");
-		nameInFunction(sb);
-		sb.append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
+	public String fun() {
+		return "LCASE";
 	}
 
 }

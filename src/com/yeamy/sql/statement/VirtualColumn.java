@@ -9,8 +9,13 @@ public class VirtualColumn extends Column {
 	}
 
 	@Override
-	public void nameInColumn(StringBuilder sb) {
+	public void rawName(StringBuilder sb) {
 		SQLString.appendValue(sb, value);
+	}
+
+	@Override
+	public void nameInColumn(StringBuilder sb) {
+		rawName(sb);
 		sb.append(" `").append(name).append('`');
 	}
 }

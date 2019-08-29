@@ -114,7 +114,7 @@ public class Update implements SQLString {
 			Object value = li.getValue();
 			if (value instanceof Column) {
 				Column col = (Column) value;
-				col.nameInColumn(sql);
+				col.toSQL(sql);
 			} else {
 				SQLString.appendValue(sql, value);
 			}

@@ -10,6 +10,12 @@ public interface SQLString {
 		};
 	}
 
+	public static String toString(Object value) {
+		StringBuilder sb = new StringBuilder();
+		appendValue(sb, value);
+		return sb.toString();
+	}
+
 	/**
 	 * 检查数据安全，添加转义符
 	 */

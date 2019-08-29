@@ -9,7 +9,7 @@ public abstract class Clause implements SQLString {
 
 	protected void addColumn(StringBuilder sb) {
 		if (column instanceof Column) {
-			((Column) column).nameInWhere(sb);
+			((Column) column).toSQL(sb);
 		} else {
 			sb.append('`').append(column).append('`');
 		}

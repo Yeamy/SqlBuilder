@@ -6,34 +6,29 @@ import com.yeamy.sql.statement.function.Union;
 
 public class Column implements SQLString {
 	public static final String ALL = "*";
-	public final String table;
-	public final SQLString select;
+	public final Object table;
 	public final String name;
 	public String tableAlias;
 	public String nameAlias;
 
 	public Column(String name) {
-		this.select = null;
 		this.table = null;
 		this.name = name;
 	}
 
 	public Column(String table, String name) {
-		this.select = null;
 		this.table = table;
 		this.name = name;
 	}
 
 	public Column(Select select, String tableAlias, String name) {
-		this.select = select;
-		this.table = null;
+		this.table = select;
 		this.tableAlias = tableAlias;
 		this.name = name;
 	}
 
 	public Column(Union union, String tableAlias, String name) {
-		this.select = union;
-		this.table = null;
+		this.table = union;
 		this.tableAlias = tableAlias;
 		this.name = name;
 	}
@@ -58,9 +53,11 @@ public class Column implements SQLString {
 	 * table as tableAlias
 	 */
 	public void tableInFrom(StringBuilder sb) {
-		if (select != null) {
+		if (table == null) {
+			return;
+		} else if (table instanceof Select) {
 			sb.append('(');
-			select.toSQL(sb);
+			((Select) table).toSQL(sb);
 			sb.append(')');
 		} else {
 			sb.append('`').append(table).append('`');
@@ -70,16 +67,22 @@ public class Column implements SQLString {
 		}
 	}
 
-	/**
-	 * table.name
-	 */
-	public void nameInFunction(StringBuilder sb) {
+	protected Object table() {
+		if (tableAlias != null) {
+			return tableAlias;
+		} else if (table != null) {
+			return table;
+		}
+		return null;
+	}
+
+	public void rawName(StringBuilder sb) {
 		if (name == null) {
-			return;
+			throw new NullPointerException("column name is null");
 		}
 		if (tableAlias != null) {
 			sb.append('`').append(tableAlias).append('`').append('.');
-		} else if (table != null) {
+		} else if (table != null && table instanceof String) {
 			sb.append('`').append(table).append('`').append('.');
 		}
 		if ("*".equals(name)) {
@@ -93,53 +96,19 @@ public class Column implements SQLString {
 	 * tableAlias.name AS alias -> table.name AS alias
 	 */
 	public void nameInColumn(StringBuilder sb) {
-		if (name == null) {
-			return;
-		}
-		if (tableAlias != null) {
-			sb.append('`').append(tableAlias).append('`').append('.');
-		} else if (table != null) {
-			sb.append('`').append(table).append('`').append('.');
-		}
-		if ("*".equals(name)) {
-			sb.append('*');
-		} else {
-			sb.append('`').append(name).append('`');
-			if (nameAlias != null) {
-				sb.append(" AS `").append(nameAlias).append('`');
-			}
-		}
-	}
-
-	public String tableName() {
-		if (tableAlias != null) {
-			return tableAlias;
-		}
-		return table;
-	}
-
-	/**
-	 * columnAlias -> tableAlias.name -> table.name
-	 */
-	public void nameInWhere(StringBuilder sb) {
-		if (name == null) {
-			return;
-		}
-		if (tableAlias != null) {
-			sb.append('`').append(tableAlias).append('`').append('.');
-		} else if (table != null) {
-			sb.append('`').append(table).append('`').append('.');
-		}
-		if ("*".equals(name)) {
-			sb.append('*');
-		} else {
-			sb.append('`').append(name).append('`');
+		rawName(sb);
+		if (nameAlias != null) {
+			sb.append(" AS `").append(nameAlias).append('`');
 		}
 	}
 
 	@Override
 	public void toSQL(StringBuilder sb) {
-		nameInWhere(sb);
+		if (nameAlias != null) {
+			sb.append('`').append(nameAlias).append('`');
+		} else {
+			rawName(sb);
+		}
 	}
 
 	@Override
@@ -154,7 +123,7 @@ public class Column implements SQLString {
 		return super.equals(obj);
 	}
 
-	private boolean compare(String a, String b) {
+	private boolean compare(Object a, Object b) {
 		if (a == null) {
 			if (b == null) {
 				return true;

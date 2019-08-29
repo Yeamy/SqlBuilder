@@ -20,6 +20,7 @@ public class Select implements SQLString {
 	private Having having;
 	private Sort orderBy;
 	private int limitOffset = 0, limit = 0;
+	private String[] from;
 
 	public Column[] getColumns() {
 		Column[] out = new Column[columns.size()];
@@ -47,6 +48,10 @@ public class Select implements SQLString {
 	public Select addColumn(Column... column) {
 		Collections.addAll(columns, column);
 		return this;
+	}
+
+	public void from(String... from) {
+		this.from = from;
 	}
 
 	private void initJoins() {
@@ -216,29 +221,41 @@ public class Select implements SQLString {
 	}
 
 	private void from(StringBuilder sql) {
-		// table
-		LinkedHashMap<String, Column> tables = new LinkedHashMap<>();
-		if (joins != null && joins.size() > 0) {
-			Column src = joins.get(0).column;
-			tables.put(src.tableName(), src);
+		if (from != null) {
+			boolean f = true;
+			for (String table : from) {
+				if (f) {
+					f = false;
+					sql.append(" FROM ");
+				} else {
+					sql.append(", `").append(table).append('`');
+				}
+			}
+			return;
 		}
+		// table
+		LinkedHashMap<Object, Column> tables = new LinkedHashMap<>();
 		for (Column column : columns) {// add all-table
-			String table = column.tableName();
+			Object table = column.table();
 			if (table != null) {
-				tables.put(column.tableName(), column);
+				tables.put(column.table(), column);
 			}
 		}
 		if (joins != null) {
+			for (Join join : joins) {// add join-table
+				Column src = join.column;
+				tables.put(src.table(), src);
+			}
 			for (Join join : joins) {// remove join-table
-				tables.remove(join.pattern.tableName());
+				tables.remove(join.pattern.table());
 			}
 		}
 		// from
-		sql.append(" FROM ");
 		boolean f = true;
 		for (Column table : tables.values()) {
 			if (f) {
 				f = false;
+				sql.append(" FROM ");
 			} else {
 				sql.append(", ");
 			}
@@ -258,7 +275,7 @@ public class Select implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			li.nameInWhere(sql);
+			li.toSQL(sql);
 		}
 	}
 

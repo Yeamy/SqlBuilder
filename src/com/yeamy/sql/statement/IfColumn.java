@@ -21,31 +21,14 @@ public class IfColumn extends Column {
 	}
 
 	@Override
-	public void nameInColumn(StringBuilder sb) {
+	public void rawName(StringBuilder sb) {
 		sb.append("IF(");
 		expr.toSQL(sb);
 		sb.append(',');
 		SQLString.appendValue(sb, t);
 		sb.append(',');
 		SQLString.appendValue(sb, f);
-		if (nameAlias != null) {
-			sb.append(") AS `").append(nameAlias).append('`');
-		} else {
-			sb.append(')');
-		}
-	}
-
-	@Override
-	public void toSQL(StringBuilder sb) {
-		nameInColumn(sb);
-	}
-
-	@Override
-	public void nameInFunction(StringBuilder sb) {
-	}
-
-	@Override
-	public void nameInWhere(StringBuilder sb) {
+		sb.append(')');
 	}
 
 	@Override
@@ -58,12 +41,12 @@ public class IfColumn extends Column {
 	}
 
 	@Override
-	public String tableName() {
+	public Object table() {
 		if (tableAlias != null) {
 			return tableAlias;
 		}
 		if (expr.column instanceof Column) {
-			return ((Column) expr.column).tableName();
+			return ((Column) expr.column).table();
 		}
 		return null;
 	}

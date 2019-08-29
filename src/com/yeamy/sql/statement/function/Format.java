@@ -1,9 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class Format extends Column {
+public class Format extends AggregateColumn {
 	public String format;
 
 	public Format(String name, String format) {
@@ -22,13 +21,14 @@ public class Format extends Column {
 	}
 
 	@Override
-	public void nameInColumn(StringBuilder sb) {
-		sb.append("FORMAT(");
-		nameInFunction(sb);
-		sb.append(", ").append(format).append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
+	public void nameInFunction(StringBuilder sb) {
+		super.rawName(sb);
+		sb.append(", ").append(format);
+	}
+
+	@Override
+	public String fun() {
+		return "FORMAT";
 	}
 
 }

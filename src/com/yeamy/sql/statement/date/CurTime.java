@@ -17,16 +17,7 @@ public class CurTime extends Column {
 	}
 
 	@Override
-	public void nameInColumn(StringBuilder sb) {
-		if (nameAlias == null) {
-			sb.append("CURTIME()");
-		} else {
-			sb.append("CURTIME() AS `").append(nameAlias).append('`');
-		}
-	}
-
-	@Override
-	public void nameInWhere(StringBuilder sb) {
+	public void rawName(StringBuilder sb) {
 		sb.append("CURTIME()");
 	}
 }

@@ -1,9 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class Mid extends Column {
+public class Mid extends AggregateColumn {
 	private int start, length;
 
 	public Mid(String name, int start, int length) {
@@ -24,19 +23,21 @@ public class Mid extends Column {
 		this.length = length;
 	}
 
-	@Override
-	public void nameInColumn(StringBuilder sb) {
-		sb.append("MID(");
-		nameInFunction(sb);
-		sb.append(',').append(start).append(',').append(length).append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
+	public Mid(Union union, String tableAlias, String name, int start, int length) {
+		super(union, tableAlias, name);
+		this.start = start;
+		this.length = length;
 	}
 
 	@Override
-	public void nameInWhere(StringBuilder sb) {
-		sb.append('`').append(nameAlias).append('`');
+	public void nameInFunction(StringBuilder sb) {
+		super.rawName(sb);
+		sb.append(',').append(start).append(',').append(length);
+	}
+
+	@Override
+	public String fun() {
+		return "MID";
 	}
 
 }

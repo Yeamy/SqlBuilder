@@ -14,27 +14,19 @@ public class ClauseColumn extends Column {
 	}
 
 	@Override
+	public void rawName(StringBuilder sb) {
+		expr.toSQL(sb);
+	}
+
+	@Override
 	public void nameInColumn(StringBuilder sb) {
 		if (nameAlias != null) {
 			sb.append('(');
-			expr.toSQL(sb);
+			rawName(sb);
 			sb.append(") AS `").append(nameAlias).append('`');
 		} else {
 			expr.toSQL(sb);
 		}
-	}
-
-	@Override
-	public void toSQL(StringBuilder sb) {
-		nameInColumn(sb);
-	}
-
-	@Override
-	public void nameInFunction(StringBuilder sb) {
-	}
-
-	@Override
-	public void nameInWhere(StringBuilder sb) {
 	}
 
 	@Override
@@ -47,12 +39,12 @@ public class ClauseColumn extends Column {
 	}
 
 	@Override
-	public String tableName() {
+	public Object table() {
 		if (tableAlias != null) {
 			return tableAlias;
 		}
 		if (expr.column instanceof Column) {
-			return ((Column) expr.column).tableName();
+			return ((Column) expr.column).table();
 		}
 		return null;
 	}

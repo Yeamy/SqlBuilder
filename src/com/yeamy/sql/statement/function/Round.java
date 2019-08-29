@@ -1,9 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 
-public class Round extends Column {
+public class Round extends AggregateColumn {
 	public int decimals;
 
 	public Round(String name, int decimals) {
@@ -21,14 +20,20 @@ public class Round extends Column {
 		this.decimals = decimals;
 	}
 
+	public Round(Union union, String tableAlias, String name, int decimals) {
+		super(union, tableAlias, name);
+		this.decimals = decimals;
+	}
+
 	@Override
-	public void nameInColumn(StringBuilder sb) {
-		sb.append("ROUND(");
-		nameInFunction(sb);
-		sb.append(", ").append(decimals).append(')');
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
+	public void nameInFunction(StringBuilder sb) {
+		super.rawName(sb);
+		sb.append(", ").append(decimals);
+	}
+
+	@Override
+	public String fun() {
+		return "ROUND";
 	}
 
 }

@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Format extends AggregateColumn {
+public class Format extends FunctionColumn {
 	public String format;
 
 	public Format(String name, String format) {

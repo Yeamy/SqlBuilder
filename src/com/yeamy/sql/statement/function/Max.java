@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Max extends AggregateColumn {
+public class Max extends FunctionColumn {
 
 	public Max(String name) {
 		super(name);

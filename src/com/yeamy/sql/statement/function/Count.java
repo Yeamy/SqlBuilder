@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Count extends AggregateColumn {
+public class Count extends FunctionColumn {
 
 	public Count(String name) {
 		super(name);

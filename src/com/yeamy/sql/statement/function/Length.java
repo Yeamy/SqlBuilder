@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Length extends AggregateColumn {
+public class Length extends FunctionColumn {
 
 	public Length(String name) {
 		super(name);

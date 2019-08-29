@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Min extends AggregateColumn {
+public class Min extends FunctionColumn {
 
 	public Min(String name) {
 		super(name);

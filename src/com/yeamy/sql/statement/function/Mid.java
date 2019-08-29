@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Mid extends AggregateColumn {
+public class Mid extends FunctionColumn {
 	private int start, length;
 
 	public Mid(String name, int start, int length) {

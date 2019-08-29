@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Round extends AggregateColumn {
+public class Round extends FunctionColumn {
 	public int decimals;
 
 	public Round(String name, int decimals) {

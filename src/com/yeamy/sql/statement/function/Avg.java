@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Avg extends AggregateColumn {
+public class Avg extends FunctionColumn {
 
 	public Avg(String name) {
 		super(name);

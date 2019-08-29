@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.Select;
 
-public class Lcase extends AggregateColumn {
+public class Lcase extends FunctionColumn {
 
 	public Lcase(String name) {
 		super(name);

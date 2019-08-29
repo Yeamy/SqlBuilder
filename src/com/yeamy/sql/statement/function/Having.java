@@ -8,7 +8,7 @@ public class Having implements SQLString {
 	private String operator;
 	private Number num;
 
-	public Having(AggregateColumn column, String operator, Number num) {
+	public Having(FunctionColumn column, String operator, Number num) {
 		this.column = column;
 		this.operator = operator;
 		this.num = num;
@@ -25,23 +25,23 @@ public class Having implements SQLString {
 		sb.append(operator).append(num);
 	}
 
-	public static Having equal(AggregateColumn column, Number num) {
+	public static Having equal(FunctionColumn column, Number num) {
 		return new Having(column, " = ", num);
 	}
 
-	public static Having greaterThan(AggregateColumn column, Number num) {
+	public static Having greaterThan(FunctionColumn column, Number num) {
 		return new Having(column, " > ", num);
 	}
 
-	public static Having greaterEqual(AggregateColumn column, Number num) {
+	public static Having greaterEqual(FunctionColumn column, Number num) {
 		return new Having(column, " >= ", num);
 	}
 
-	public static Having lessThan(AggregateColumn column, Number num) {
+	public static Having lessThan(FunctionColumn column, Number num) {
 		return new Having(column, " < ", num);
 	}
 
-	public static Having lessEqual(AggregateColumn column, Number num) {
+	public static Having lessEqual(FunctionColumn column, Number num) {
 		return new Having(column, " <= ", num);
 	}
 }

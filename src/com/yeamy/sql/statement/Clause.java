@@ -144,6 +144,19 @@ public abstract class Clause implements SQLString {
 		}
 	}
 
+	private static class ClauseRaw extends Clause {
+		private String raw;
+
+		ClauseRaw(String raw) {
+			this.raw = raw;
+		}
+
+		@Override
+		protected void subSQL(StringBuilder sb) {
+			sb.append(raw);
+		}
+	}
+
 	public static Clause andAll(List<Clause> list) {
 		switch (list.size()) {
 		case 0:
@@ -375,6 +388,10 @@ public abstract class Clause implements SQLString {
 	// BETWEEN 在某个范围内
 	public static Clause between(String column, Object start, Object end) {
 		return new ClauseBetween(column, start, end);
+	}
+
+	public static Clause parse(String sql) {
+		return new ClauseRaw(sql);
 	}
 
 	// Multi ----------------------------------------------------------------------

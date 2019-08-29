@@ -55,9 +55,9 @@ public class Column implements SQLString {
 	public void tableInFrom(StringBuilder sb) {
 		if (table == null) {
 			return;
-		} else if (table instanceof Select) {
+		} else if (table instanceof SQLString) {
 			sb.append('(');
-			((Select) table).toSQL(sb);
+			((SQLString) table).toSQL(sb);
 			sb.append(')');
 		} else {
 			sb.append('`').append(table).append('`');

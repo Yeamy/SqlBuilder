@@ -25,7 +25,7 @@ public class DateFormat extends Column {
 	public void rawName(StringBuilder sb) {
 		sb.append("DATE_FORMAT(");
 		super.rawName(sb);
-		sb.append(", ").append(format).append(')');
+		sb.append(", '").append(format).append("')");
 	}
 
 	public static class FormatNow extends DateFormat {
@@ -35,7 +35,7 @@ public class DateFormat extends Column {
 
 		@Override
 		public void rawName(StringBuilder sb) {
-			sb.append("DATE_FORMAT(NOW(), ").append(format).append(')');
+			sb.append("DATE_FORMAT(NOW(), '").append(format).append("')");
 		}
 	}
 

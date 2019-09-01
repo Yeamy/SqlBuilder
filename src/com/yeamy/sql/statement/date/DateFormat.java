@@ -22,9 +22,9 @@ public class DateFormat extends Column {
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
 		sb.append("DATE_FORMAT(");
-		super.rawName(sb);
+		super.toSQL(sb);
 		sb.append(", '").append(format).append("')");
 	}
 
@@ -34,7 +34,7 @@ public class DateFormat extends Column {
 		}
 
 		@Override
-		public void rawName(StringBuilder sb) {
+		public void toSQL(StringBuilder sb) {
 			sb.append("DATE_FORMAT(NOW(), '").append(format).append("')");
 		}
 	}

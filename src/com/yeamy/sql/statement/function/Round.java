@@ -27,7 +27,7 @@ public class Round extends FunctionColumn {
 
 	@Override
 	public void nameInFunction(StringBuilder sb) {
-		super.rawName(sb);
+		super.toSQL(sb);
 		sb.append(", ").append(decimals);
 	}
 

@@ -24,11 +24,11 @@ public abstract class FunctionColumn extends Column {
 	public abstract String fun();
 
 	public void nameInFunction(StringBuilder sb) {
-		super.rawName(sb);
+		super.toSQL(sb);
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
 		sb.append(fun()).append('(');
 		nameInFunction(sb);
 		sb.append(')');

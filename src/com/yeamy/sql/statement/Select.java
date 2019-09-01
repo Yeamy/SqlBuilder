@@ -13,9 +13,9 @@ import com.yeamy.sql.statement.function.Having;
  * <b>warning: </b> {@link Column#table} != null
  */
 public class Select implements SQLString {
-	private LinkedHashSet<Column> columns = new LinkedHashSet<>();
+	private LinkedHashSet<Object> columns = new LinkedHashSet<>();
 	private LinkedList<Join> joins;
-	private ArrayList<Column> groupBy;
+	private ArrayList<Object> groupBy;
 	private Clause where;
 	private Having having;
 	private Sort orderBy;
@@ -31,7 +31,7 @@ public class Select implements SQLString {
 	}
 
 	public Select addColumn(String column) {
-		columns.add(new Column(column));
+		columns.add(column);
 		return this;
 	}
 
@@ -103,7 +103,7 @@ public class Select implements SQLString {
 		if (groupBy == null) {
 			groupBy = new ArrayList<>();
 		}
-		groupBy.add(new Column(column));
+		groupBy.add(column);
 		return this;
 	}
 
@@ -112,7 +112,7 @@ public class Select implements SQLString {
 			groupBy = new ArrayList<>();
 		}
 		for (String column : columns) {
-			groupBy.add(new Column(column));
+			groupBy.add(column);
 		}
 		return this;
 	}
@@ -210,13 +210,17 @@ public class Select implements SQLString {
 
 	private void columns(StringBuilder sql) {
 		boolean f = true;
-		for (Column column : columns) {
+		for (Object column : columns) {
 			if (f) {
 				f = false;
 			} else {
 				sql.append(", ");
 			}
-			column.nameInColumn(sql);
+			if (column instanceof Column) {
+				((Column) column).nameInColumn(sql);
+			} else {
+				sql.append('`').append(column).append('`');
+			}
 		}
 	}
 
@@ -234,20 +238,23 @@ public class Select implements SQLString {
 			return;
 		}
 		// table
-		LinkedHashMap<Object, Column> tables = new LinkedHashMap<>();
-		for (Column column : columns) {// add all-table
-			Object table = column.table();
-			if (table != null) {
-				tables.put(column.table(), column);
+		LinkedHashMap<String, Column> tables = new LinkedHashMap<>();
+		for (Object li : columns) {// add all-table
+			if (li instanceof Column) {
+				Column column = (Column) li;
+				String table = column.tableSign();
+				if (table != null) {
+					tables.put(table, column);
+				}
 			}
 		}
 		if (joins != null) {
 			for (Join join : joins) {// add join-table
 				Column src = join.column;
-				tables.put(src.table(), src);
+				tables.put(src.tableSign(), src);
 			}
 			for (Join join : joins) {// remove join-table
-				tables.remove(join.pattern.table());
+				tables.remove(join.pattern.tableSign());
 			}
 		}
 		// from
@@ -269,13 +276,17 @@ public class Select implements SQLString {
 		}
 		sql.append(" GROUP BY ");
 		boolean f = true;
-		for (Column li : groupBy) {
+		for (Object li : groupBy) {
 			if (f) {
 				f = false;
 			} else {
 				sql.append(", ");
 			}
-			li.toSQL(sql);
+			if (li instanceof Column) {
+				((Column) li).toSQL(sql);
+			} else {
+				sql.append('`').append(li).append('`');
+			}
 		}
 	}
 

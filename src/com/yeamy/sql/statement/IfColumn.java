@@ -21,7 +21,7 @@ public class IfColumn extends Column {
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
 		sb.append("IF(");
 		expr.toSQL(sb);
 		sb.append(',');
@@ -41,12 +41,9 @@ public class IfColumn extends Column {
 	}
 
 	@Override
-	public Object table() {
-		if (tableAlias != null) {
-			return tableAlias;
-		}
+	public String tableSign() {
 		if (expr.column instanceof Column) {
-			return ((Column) expr.column).table();
+			return ((Column) expr.column).tableSign();
 		}
 		return null;
 	}

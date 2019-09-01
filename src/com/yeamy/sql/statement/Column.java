@@ -67,16 +67,28 @@ public class Column implements SQLString {
 		}
 	}
 
-	protected Object table() {
-		if (tableAlias != null) {
-			return tableAlias;
-		} else if (table != null) {
-			return table;
+	protected String tableSign() {
+		if (table != null && table instanceof String) {
+			if (tableAlias == null) {
+				return table.toString();
+			}
+			return table + " AS " + tableAlias;
 		}
 		return null;
 	}
 
-	public void rawName(StringBuilder sb) {
+	/**
+	 * tableAlias.name AS alias -> table.name AS alias
+	 */
+	public void nameInColumn(StringBuilder sb) {
+		toSQL(sb);
+		if (nameAlias != null) {
+			sb.append(" AS `").append(nameAlias).append('`');
+		}
+	}
+
+	@Override
+	public void toSQL(StringBuilder sb) {
 		if (name == null) {
 			throw new NullPointerException("column name is null");
 		}
@@ -89,25 +101,6 @@ public class Column implements SQLString {
 			sb.append('*');
 		} else {
 			sb.append('`').append(name).append('`');
-		}
-	}
-
-	/**
-	 * tableAlias.name AS alias -> table.name AS alias
-	 */
-	public void nameInColumn(StringBuilder sb) {
-		rawName(sb);
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
-		}
-	}
-
-	@Override
-	public void toSQL(StringBuilder sb) {
-		if (nameAlias != null) {
-			sb.append('`').append(nameAlias).append('`');
-		} else {
-			rawName(sb);
 		}
 	}
 

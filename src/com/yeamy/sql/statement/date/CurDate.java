@@ -17,7 +17,7 @@ public class CurDate extends Column {
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
 		sb.append("CURDATE()");
 	}
 

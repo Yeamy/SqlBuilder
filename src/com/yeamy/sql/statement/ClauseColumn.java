@@ -14,15 +14,10 @@ public class ClauseColumn extends Column {
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
-		expr.toSQL(sb);
-	}
-
-	@Override
 	public void nameInColumn(StringBuilder sb) {
 		if (nameAlias != null) {
 			sb.append('(');
-			rawName(sb);
+			expr.toSQL(sb);
 			sb.append(") AS `").append(nameAlias).append('`');
 		} else {
 			expr.toSQL(sb);
@@ -39,12 +34,9 @@ public class ClauseColumn extends Column {
 	}
 
 	@Override
-	public Object table() {
-		if (tableAlias != null) {
-			return tableAlias;
-		}
+	public String tableSign() {
 		if (expr.column instanceof Column) {
-			return ((Column) expr.column).table();
+			return ((Column) expr.column).tableSign();
 		}
 		return null;
 	}

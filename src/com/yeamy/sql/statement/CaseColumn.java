@@ -28,7 +28,7 @@ public class CaseColumn extends Column {
 	}
 
 	@Override
-	public void rawName(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
 		sb.append("CASE ");
 		super.toSQL(sb);
 		int l = kv.length / 2;

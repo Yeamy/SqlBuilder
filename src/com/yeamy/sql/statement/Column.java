@@ -68,11 +68,10 @@ public class Column implements SQLString {
 	}
 
 	protected String tableSign() {
-		if (table != null && table instanceof String) {
-			if (tableAlias == null) {
-				return table.toString();
-			}
-			return table + " AS " + tableAlias;
+		if (tableAlias != null) {
+			return tableAlias;
+		} else if (table != null && table instanceof String) {
+			return table.toString();
 		}
 		return null;
 	}

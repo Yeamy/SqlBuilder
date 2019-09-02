@@ -23,15 +23,31 @@ public abstract class FunctionColumn extends Column {
 
 	public abstract String fun();
 
-	public void nameInFunction(StringBuilder sb) {
+	private void functionWithParams(StringBuilder sb) {
+		sb.append(fun()).append('(');
+		params(sb);
+		sb.append(')');
+	}
+
+	protected void params(StringBuilder sb) {
 		super.toSQL(sb);
 	}
 
 	@Override
+	public void nameInColumn(StringBuilder sb) {
+		functionWithParams(sb);
+		if (nameAlias != null) {
+			sb.append(" AS `").append(nameAlias).append('`');
+		}
+	}
+
+	@Override
 	public void toSQL(StringBuilder sb) {
-		sb.append(fun()).append('(');
-		nameInFunction(sb);
-		sb.append(')');
+		if (nameAlias != null) {
+			sb.append('`').append(nameAlias).append('`');
+		} else {
+			functionWithParams(sb);
+		}
 	}
 
 }

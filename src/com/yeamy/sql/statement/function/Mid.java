@@ -30,7 +30,7 @@ public class Mid extends FunctionColumn {
 	}
 
 	@Override
-	public void nameInFunction(StringBuilder sb) {
+	protected void params(StringBuilder sb) {
 		super.toSQL(sb);
 		sb.append(',').append(start).append(',').append(length);
 	}

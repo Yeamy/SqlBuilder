@@ -22,8 +22,8 @@ public class Select implements SQLString {
 	private int limitOffset = 0, limit = 0;
 	private String[] from;
 
-	public Column[] getColumns() {
-		Column[] out = new Column[columns.size()];
+	public Object[] getColumns() {
+		Object[] out = new Object[columns.size()];
 		return columns.toArray(out);
 	}
 

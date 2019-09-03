@@ -6,25 +6,42 @@ public class SQL {
 
 	public static String insert(String table, Select select) {
 		StringBuilder sql = new StringBuilder("INSERT INTO `").append(table).append('`');
-		Column[] columns = select.getColumns();
-		if (columns.length == 1 && "*".equals(columns[0].name)) {
+		Object[] columns = select.getColumns();
+		Object c1 = columns[0];
+		if (columns.length == 0) {
+			throw new NullPointerException("no column in select");
+		} else if (columns.length > 1) {
+			appendInsert(sql, columns);
+		} else if (c1 instanceof String && "*".equals(c1)) {
+			sql.append(' ');
+		} else if ("*".equals(((Column) c1).name)) {
 			sql.append(' ');
 		} else {
-			sql.append('(');
-			boolean f = true;
-			for (Column column : columns) {
-				if (f) {
-					f = false;
-				} else {
-					sql.append(", ");
-				}
-				String name = column.nameAlias != null ? column.nameAlias : column.name;
-				sql.append('`').append(name).append('`');
-			}
-			sql.append(") ");
+			appendInsert(sql, columns);
 		}
 		select.toSQL(sql);
 		return sql.toString();
+	}
+
+	private static void appendInsert(StringBuilder sql, Object[] columns) {
+		sql.append('(');
+		boolean f = true;
+		for (Object column : columns) {
+			if (f) {
+				f = false;
+			} else {
+				sql.append(", ");
+			}
+			String name;
+			if (column instanceof String) {
+				name = column.toString();
+			} else {
+				Column c = (Column) column;
+				name = c.nameAlias != null ? c.nameAlias : c.name;
+			}
+			sql.append('`').append(name).append('`');
+		}
+		sql.append(") ");
 	}
 
 	/**

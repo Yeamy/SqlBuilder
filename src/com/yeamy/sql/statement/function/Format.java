@@ -1,5 +1,6 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.Select;
 
 public class Format extends FunctionColumn {
@@ -22,8 +23,9 @@ public class Format extends FunctionColumn {
 
 	@Override
 	protected void params(StringBuilder sb) {
-		super.toSQL(sb);
-		sb.append(", ").append(format);
+		super.params(sb);
+		sb.append(", ");
+		SQLString.appendValue(sb, format);
 	}
 
 	@Override

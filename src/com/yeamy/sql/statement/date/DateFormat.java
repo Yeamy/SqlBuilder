@@ -1,5 +1,6 @@
 package com.yeamy.sql.statement.date;
 
+import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.annotation.DataBase;
 import com.yeamy.sql.statement.annotation.Target;
 import com.yeamy.sql.statement.function.FunctionColumn;
@@ -29,7 +30,8 @@ public class DateFormat extends FunctionColumn {
 	@Override
 	protected void params(StringBuilder sb) {
 		super.params(sb);
-		sb.append(", '").append(format).append('\'');
+		sb.append(", ");
+		SQLString.appendValue(sb, format);
 	}
 
 	public static class FormatNow extends DateFormat {

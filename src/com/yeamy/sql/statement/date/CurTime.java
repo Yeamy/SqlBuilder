@@ -1,14 +1,14 @@
 package com.yeamy.sql.statement.date;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.annotation.DataBase;
 import com.yeamy.sql.statement.annotation.Target;
+import com.yeamy.sql.statement.function.FunctionColumn;
 
 /**
  * 16:25:46
  */
 @Target(DataBase.MySQL)
-public class CurTime extends Column {
+public class CurTime extends FunctionColumn {
 	public static final CurTime curTime = new CurTime(null);
 
 	public CurTime(String alias) {
@@ -17,7 +17,11 @@ public class CurTime extends Column {
 	}
 
 	@Override
-	public void toSQL(StringBuilder sb) {
-		sb.append("CURTIME()");
+	public String fun() {
+		return "CURTIME";
+	}
+
+	@Override
+	protected void params(StringBuilder sb) {
 	}
 }

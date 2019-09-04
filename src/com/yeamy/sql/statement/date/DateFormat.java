@@ -1,11 +1,11 @@
 package com.yeamy.sql.statement.date;
 
-import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.annotation.DataBase;
 import com.yeamy.sql.statement.annotation.Target;
+import com.yeamy.sql.statement.function.FunctionColumn;
 
 @Target(DataBase.MySQL)
-public class DateFormat extends Column {
+public class DateFormat extends FunctionColumn {
 	public String format;
 
 	/**
@@ -22,10 +22,14 @@ public class DateFormat extends Column {
 	}
 
 	@Override
-	public void toSQL(StringBuilder sb) {
-		sb.append("DATE_FORMAT(");
-		super.toSQL(sb);
-		sb.append(", '").append(format).append("')");
+	public String fun() {
+		return "DATE_FORMAT";
+	}
+
+	@Override
+	protected void params(StringBuilder sb) {
+		super.params(sb);
+		sb.append(", '").append(format).append('\'');
 	}
 
 	public static class FormatNow extends DateFormat {
@@ -34,9 +38,10 @@ public class DateFormat extends Column {
 		}
 
 		@Override
-		public void toSQL(StringBuilder sb) {
-			sb.append("DATE_FORMAT(NOW(), '").append(format).append("')");
+		protected void params(StringBuilder sb) {
+			sb.append("NOW(), ").append(format);
 		}
+
 	}
 
 }

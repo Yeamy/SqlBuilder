@@ -50,8 +50,14 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public void from(String... from) {
+	public Select addColumn(String... column) {
+		Collections.addAll(columns, column);
+		return this;
+	}
+
+	public Select from(String... from) {
 		this.from = from;
+		return this;
 	}
 
 	private void initJoins() {
@@ -99,46 +105,64 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public Select groupBy(String column) {
-		if (groupBy == null) {
-			groupBy = new ArrayList<>();
-		}
-		groupBy.add(column);
-		return this;
+	public Clause getWhere() {
+		return where;
 	}
 
-	public Select groupBy(String... columns) {
-		if (groupBy == null) {
-			groupBy = new ArrayList<>();
-		}
-		for (String column : columns) {
+	public Select groupBy(String column) {
+		if (column != null) {
+			if (groupBy == null) {
+				groupBy = new ArrayList<>();
+			}
 			groupBy.add(column);
 		}
 		return this;
 	}
 
-	public Select groupBy(Column column) {
-		if (groupBy == null) {
-			groupBy = new ArrayList<>();
+	public Select groupBy(String... columns) {
+		if (columns != null) {
+			if (groupBy == null) {
+				groupBy = new ArrayList<>();
+			}
+			for (String column : columns) {
+				groupBy.add(column);
+			}
 		}
-		groupBy.add(column);
+		return this;
+	}
+
+	public Select groupBy(Column column) {
+		if (column != null) {
+			if (groupBy == null) {
+				groupBy = new ArrayList<>();
+			}
+			groupBy.add(column);
+		}
 		return this;
 	}
 
 	public Select groupBy(Column... columns) {
-		if (groupBy == null) {
-			groupBy = new ArrayList<>();
+		if (columns != null) {
+			if (groupBy == null) {
+				groupBy = new ArrayList<>();
+			}
+			Collections.addAll(groupBy, columns);
 		}
-		Collections.addAll(groupBy, columns);
 		return this;
 	}
 
 	public Select groupBy(Collection<Column> columns) {
-		if (groupBy == null) {
-			groupBy = new ArrayList<>();
+		if (columns != null) {
+			if (groupBy == null) {
+				groupBy = new ArrayList<>();
+			}
+			groupBy.addAll(columns);
 		}
-		groupBy.addAll(columns);
 		return this;
+	}
+
+	public boolean removeGroupBy(String column) {
+		return groupBy != null && groupBy.remove(column);
 	}
 
 	public boolean removeGroupBy(Column column) {

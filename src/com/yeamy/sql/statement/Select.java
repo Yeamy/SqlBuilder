@@ -230,7 +230,7 @@ public class Select implements SQLString {
 			for (String table : from) {
 				if (f) {
 					f = false;
-					sql.append(" FROM ");
+					sql.append(" FROM `").append(table).append('`');
 				} else {
 					sql.append(", `").append(table).append('`');
 				}

@@ -86,6 +86,14 @@ public class Column implements SQLString {
 		}
 	}
 
+	public void shortName(StringBuilder sb) {
+		if (nameAlias != null) {
+			sb.append('`').append(nameAlias).append('`');
+		} else {
+			toSQL(sb);
+		}
+	}
+
 	@Override
 	public void toSQL(StringBuilder sb) {
 		if (name == null) {

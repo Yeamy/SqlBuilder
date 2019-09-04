@@ -283,7 +283,7 @@ public class Select implements SQLString {
 				sql.append(", ");
 			}
 			if (li instanceof Column) {
-				((Column) li).toSQL(sql);
+				((Column) li).shortName(sql);
 			} else {
 				sql.append('`').append(li).append('`');
 			}

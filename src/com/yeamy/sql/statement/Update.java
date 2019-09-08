@@ -21,23 +21,47 @@ public class Update implements SQLString {
 	}
 
 	public Update increase(String column, int number) {
-		number = number < 0 ? -number : number;
-		map.put(column, new Modify(column, '+', number));
-		return this;
+		return increase(column, (long) number);
 	}
 
 	public Update reduce(String column, int number) {
-		number = number < 0 ? -number : number;
-		map.put(column, new Modify(column, '-', number));
+		map.put(column, new Expression(column, '-', number));
 		return this;
 	}
 
-	private class Modify implements SQLString {
+	public Update increase(String column, long number) {
+		map.put(column, new Expression(column, '+', number));
+		return this;
+	}
+
+	public Update reduce(String column, long number) {
+		map.put(column, new Expression(column, '-', number));
+		return this;
+	}
+
+	public Update increase(String column, Number number) {
+		map.put(column, new Expression(column, '+', number));
+		return this;
+	}
+
+	public Update reduce(String column, Number number) {
+		map.put(column, new Expression(column, '-', number));
+		return this;
+	}
+
+	private class Expression implements SQLString {
 		private String column;
-		private int number;
+		private long longNum;
+		private Number number;
 		private char sign;
 
-		public Modify(String column, char sign, int number) {
+		public Expression(String column, char sign, long longNum) {
+			this.column = column;
+			this.sign = sign;
+			this.longNum = longNum;
+		}
+
+		public Expression(String column, char sign, Number number) {
 			this.column = column;
 			this.sign = sign;
 			this.number = number;
@@ -45,7 +69,12 @@ public class Update implements SQLString {
 
 		@Override
 		public void toSQL(StringBuilder sql) {
-			sql.append('`').append(column).append('`').append(' ').append(sign).append(' ').append(number);
+			sql.append('`').append(column).append('`').append(' ').append(sign).append(' ');
+			if (number != null) {
+				sql.append(number);
+			} else {
+				sql.append(longNum);
+			}
 		}
 	}
 

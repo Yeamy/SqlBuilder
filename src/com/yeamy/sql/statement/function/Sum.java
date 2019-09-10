@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Sum extends FunctionColumn {
+public class Sum extends Function {
 
 	public Sum(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Sum extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Sum(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Sum(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Sum(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

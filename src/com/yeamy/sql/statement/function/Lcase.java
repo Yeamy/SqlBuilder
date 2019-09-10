@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Lcase extends FunctionColumn {
+public class Lcase extends Function {
 
 	public Lcase(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Lcase extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Lcase(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Lcase(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Lcase(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

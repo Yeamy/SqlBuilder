@@ -1,15 +1,13 @@
 package com.yeamy.sql.statement;
 
 import java.util.Collection;
+import java.util.Map;
 
-import com.yeamy.sql.statement.function.Union;
-
-public class Column implements SQLString {
+public class Column extends TableColumn {
 	public static final String ALL = "*";
 	public final Object table;
 	public final String name;
 	public String tableAlias;
-	public String nameAlias;
 
 	public Column(String name) {
 		this.table = null;
@@ -21,43 +19,22 @@ public class Column implements SQLString {
 		this.name = name;
 	}
 
-	public Column(Select select, String tableAlias, String name) {
-		this.table = select;
+	public Column(Searchable table, String tableAlias, String name) {
+		this.table = table;
 		this.tableAlias = tableAlias;
 		this.name = name;
-	}
-
-	public Column(Union union, String tableAlias, String name) {
-		this.table = union;
-		this.tableAlias = tableAlias;
-		this.name = name;
-	}
-
-	public Column as(String tableAlias, String nameAlias) {
-		this.tableAlias = tableAlias;
-		this.nameAlias = nameAlias;
-		return this;
-	}
-
-	public Column tableAs(String tableAlias) {
-		this.tableAlias = tableAlias;
-		return this;
-	}
-
-	public Column as(String nameAlias) {
-		this.nameAlias = nameAlias;
-		return this;
 	}
 
 	/**
 	 * table as tableAlias
 	 */
+	@Override
 	public void tableInFrom(StringBuilder sb) {
 		if (table == null) {
 			return;
-		} else if (table instanceof SQLString) {
+		} else if (table instanceof Searchable) {
 			sb.append('(');
-			((SQLString) table).toSQL(sb);
+			((Searchable) table).toSQL(sb);
 			sb.append(')');
 		} else {
 			sb.append('`').append(table).append('`');
@@ -67,30 +44,21 @@ public class Column implements SQLString {
 		}
 	}
 
-	protected String tableSign() {
+	@Override
+	public void signTable(Map<Object, TableColumn> tables) {
 		if (tableAlias != null) {
-			return tableAlias;
-		} else if (table != null && table instanceof String) {
-			return table.toString();
-		}
-		return null;
-	}
-
-	/**
-	 * tableAlias.name AS alias -> table.name AS alias
-	 */
-	public void nameInColumn(StringBuilder sb) {
-		toSQL(sb);
-		if (nameAlias != null) {
-			sb.append(" AS `").append(nameAlias).append('`');
+			tables.put(tableAlias, this);
+		} else if (table != null) {
+			tables.put(table, this);
 		}
 	}
 
-	public void shortName(StringBuilder sb) {
-		if (nameAlias != null) {
-			sb.append('`').append(nameAlias).append('`');
-		} else {
-			toSQL(sb);
+	@Override
+	public void unSignTable(Map<Object, TableColumn> tables) {
+		if (tableAlias != null) {
+			tables.remove(tableAlias);
+		} else if (table != null) {
+			tables.remove(table);
 		}
 	}
 
@@ -125,13 +93,9 @@ public class Column implements SQLString {
 
 	private boolean compare(Object a, Object b) {
 		if (a == null) {
-			if (b == null) {
-				return true;
-			}
-		} else if (a.equals(b)) {
-			return true;
+			return b == null;
 		}
-		return false;
+		return a.equals(b);
 	}
 
 	public Clause isNotNull() {

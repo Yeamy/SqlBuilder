@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Max extends FunctionColumn {
+public class Max extends Function {
 
 	public Max(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Max extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Max(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Max(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Max(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

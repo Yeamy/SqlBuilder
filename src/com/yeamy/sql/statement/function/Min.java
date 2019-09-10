@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Min extends FunctionColumn {
+public class Min extends Function {
 
 	public Min(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Min extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Min(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Min(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Min(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

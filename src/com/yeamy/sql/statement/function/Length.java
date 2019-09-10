@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Length extends FunctionColumn {
+public class Length extends Function {
 
 	public Length(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Length extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Length(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Length(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Length(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

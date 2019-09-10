@@ -69,7 +69,8 @@ public class Update implements SQLString {
 
 		@Override
 		public void toSQL(StringBuilder sql) {
-			sql.append('`').append(column).append('`').append(' ').append(sign).append(' ');
+			SQLString.appendColumn(sql, column);
+			sql.append(' ').append(sign).append(' ');
 			if (number != null) {
 				sql.append(number);
 			} else {
@@ -124,7 +125,8 @@ public class Update implements SQLString {
 
 	@Override
 	public void toSQL(StringBuilder sql) {
-		sql.append("UPDATE `").append(table).append('`');
+		sql.append("UPDATE ");
+		SQLString.appendTable(sql, table);
 		// join on
 		if (joins != null) {
 			for (Join join : joins) {
@@ -139,10 +141,11 @@ public class Update implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			sql.append('`').append(li.getKey()).append("` = ");
+			SQLString.appendColumn(sql, li.getKey());
+			sql.append(" = ");
 			Object value = li.getValue();
-			if (value instanceof Column) {
-				Column col = (Column) value;
+			if (value instanceof AbsColumn) {
+				AbsColumn col = (AbsColumn) value;
 				col.toSQL(sql);
 			} else {
 				SQLString.appendValue(sql, value);

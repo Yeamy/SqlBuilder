@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Mid extends FunctionColumn {
+public class Mid extends Function {
 	private int start, length;
 
 	public Mid(String name, int start, int length) {
@@ -17,14 +17,8 @@ public class Mid extends FunctionColumn {
 		this.length = length;
 	}
 
-	public Mid(Select select, String tableAlias, String name, int start, int length) {
-		super(select, tableAlias, name);
-		this.start = start;
-		this.length = length;
-	}
-
-	public Mid(Union union, String tableAlias, String name, int start, int length) {
-		super(union, tableAlias, name);
+	public Mid(Searchable table, String tableAlias, String name, int start, int length) {
+		super(table, tableAlias, name);
 		this.start = start;
 		this.length = length;
 	}

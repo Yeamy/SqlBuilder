@@ -16,6 +16,14 @@ public interface SQLString {
 		return sb.toString();
 	}
 
+	public static void appendTable(StringBuilder sb, String table) {
+		sb.append('`').append(table).append('`');
+	}
+
+	public static void appendColumn(StringBuilder sb, String column) {
+		sb.append('`').append(column).append('`');
+	}
+
 	/**
 	 * 检查数据安全，添加转义符
 	 */
@@ -24,8 +32,8 @@ public interface SQLString {
 			sb.append("NULL");
 		} else if (value instanceof Number) {
 			sb.append(value);
-		} else if (value instanceof Select) {
-			Select select = (Select) value;
+		} else if (value instanceof Searchable) {
+			Searchable select = (Searchable) value;
 			sb.append('(');
 			select.toSQL(sb);
 			sb.append(')');

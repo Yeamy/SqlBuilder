@@ -3,22 +3,44 @@ package com.yeamy.sql.statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public abstract class Clause implements SQLString {
+public abstract class Clause extends TableColumn {
 	protected Object column;
 
-	protected void addColumn(StringBuilder sb) {
-		if (column instanceof Column) {
-			((Column) column).toSQL(sb);
+	protected void appendColumn(StringBuilder sb) {
+		if (column instanceof AbsColumn) {
+			((AbsColumn) column).toSQL(sb);
 		} else {
-			sb.append('`').append(column).append('`');
+			SQLString.appendColumn(sb, column.toString());
+		}
+	}
+
+	@Override
+	public void signTable(Map<Object, TableColumn> tables) {
+		if (column != null && column instanceof TableColumn) {
+			((TableColumn) column).signTable(tables);
+		}
+	}
+
+	@Override
+	public void unSignTable(Map<Object, TableColumn> tables) {
+		if (column != null && column instanceof TableColumn) {
+			((TableColumn) column).unSignTable(tables);
+		}
+	}
+
+	@Override
+	public void tableInFrom(StringBuilder sb) {
+		if (column != null && column instanceof TableColumn) {
+			((TableColumn) column).tableInFrom(sb);
 		}
 	}
 
 	private static class SimpleClause extends Clause {
 		protected String pattern;
 
-		SimpleClause(Column column, String pattern) {
+		SimpleClause(AbsColumn column, String pattern) {
 			this.column = column;
 			this.pattern = pattern;
 		}
@@ -30,7 +52,7 @@ public abstract class Clause implements SQLString {
 
 		@Override
 		protected void subSQL(StringBuilder sb) {
-			addColumn(sb);
+			appendColumn(sb);
 			sb.append(pattern);
 		}
 	}
@@ -39,7 +61,7 @@ public abstract class Clause implements SQLString {
 		protected String cal;
 		protected Object pattern;
 
-		NormalClause(Column column, String cal, Object pattern) {
+		NormalClause(AbsColumn column, String cal, Object pattern) {
 			this.column = column;
 			this.cal = cal;
 			this.pattern = pattern;
@@ -53,9 +75,25 @@ public abstract class Clause implements SQLString {
 
 		@Override
 		protected void subSQL(StringBuilder sb) {
-			addColumn(sb);
+			appendColumn(sb);
 			sb.append(cal);
 			SQLString.appendValue(sb, pattern);
+		}
+
+		@Override
+		public void signTable(Map<Object, TableColumn> tables) {
+			super.signTable(tables);
+			if (pattern != null && pattern instanceof TableColumn) {
+				((TableColumn) pattern).signTable(tables);
+			}
+		}
+
+		@Override
+		public void unSignTable(Map<Object, TableColumn> tables) {
+			super.unSignTable(tables);
+			if (pattern != null && pattern instanceof TableColumn) {
+				((TableColumn) pattern).unSignTable(tables);
+			}
 		}
 	}
 
@@ -66,7 +104,7 @@ public abstract class Clause implements SQLString {
 		static final String IN = " IN(";
 		static final String NOT_IN = " NOT IN(";
 
-		ClauseIn(Column column, String cal, Object[] array) {
+		ClauseIn(AbsColumn column, String cal, Object[] array) {
 			this.column = column;
 			this.array = array;
 			this.cal = cal;
@@ -78,7 +116,7 @@ public abstract class Clause implements SQLString {
 			this.cal = cal;
 		}
 
-		ClauseIn(Column column, String cal, int[] intArray) {
+		ClauseIn(AbsColumn column, String cal, int[] intArray) {
 			this.column = column;
 			this.intArray = intArray;
 			this.cal = cal;
@@ -92,7 +130,7 @@ public abstract class Clause implements SQLString {
 
 		@Override
 		protected void subSQL(StringBuilder sb) {
-			addColumn(sb);
+			appendColumn(sb);
 			sb.append(cal);
 			boolean f = true;
 			if (array != null) {
@@ -122,7 +160,7 @@ public abstract class Clause implements SQLString {
 		private Object start;
 		private Object end;
 
-		ClauseBetween(Column column, Object start, Object end) {
+		ClauseBetween(AbsColumn column, Object start, Object end) {
 			this.column = column;
 			this.start = start;
 			this.end = end;
@@ -136,11 +174,33 @@ public abstract class Clause implements SQLString {
 
 		@Override
 		protected void subSQL(StringBuilder sb) {
-			addColumn(sb);
+			appendColumn(sb);
 			sb.append(" BETWEEN ");
 			SQLString.appendValue(sb, start);
 			sb.append(" AND ");
 			SQLString.appendValue(sb, end);
+		}
+
+		@Override
+		public void signTable(Map<Object, TableColumn> tables) {
+			super.signTable(tables);
+			if (start != null && start instanceof TableColumn) {
+				((TableColumn) start).signTable(tables);
+			}
+			if (end != null && end instanceof TableColumn) {
+				((TableColumn) end).signTable(tables);
+			}
+		}
+
+		@Override
+		public void unSignTable(Map<Object, TableColumn> tables) {
+			super.unSignTable(tables);
+			if (start != null && start instanceof TableColumn) {
+				((TableColumn) start).unSignTable(tables);
+			}
+			if (end != null && end instanceof TableColumn) {
+				((TableColumn) end).unSignTable(tables);
+			}
 		}
 	}
 
@@ -197,98 +257,98 @@ public abstract class Clause implements SQLString {
 	// ---------------------------------------------------------------------------
 
 	// IS NULL
-	public static Clause isNull(Column column) {
+	public static Clause isNull(AbsColumn column) {
 		return new SimpleClause(column, " IS NULL");
 	}
 
 	// IS NOT NULL
-	public static Clause isNotNull(Column column) {
+	public static Clause isNotNull(AbsColumn column) {
 		return new SimpleClause(column, " IS NOT NULL");
 	}
 
 	// = 等于
-	public static Clause equal(Column column, Object pattern) {
+	public static Clause equal(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " = ", pattern);
 	}
 
 	// <> 不等于
-	public static Clause notEqual(Column column, Object pattern) {
+	public static Clause notEqual(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " <> ", pattern);
 	}
 
 	// > 大于
-	public static Clause greaterThan(Column column, Object pattern) {
+	public static Clause greaterThan(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " > ", pattern);
 	}
 
 	// < 小于
-	public static Clause lessThan(Column column, Object pattern) {
+	public static Clause lessThan(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " < ", pattern);
 	}
 
 	// >= 大于等于
-	public static Clause greaterEqual(Column column, Object pattern) {
+	public static Clause greaterEqual(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " >= ", pattern);
 	}
 
 	// <= 小于等于
-	public static Clause lessEqual(Column column, Object pattern) {
+	public static Clause lessEqual(AbsColumn column, Object pattern) {
 		return new NormalClause(column, " <= ", pattern);
 	}
 
 	// LIKE 搜索某种模式
-	public static Clause like(Column column, String pattern) {
+	public static Clause like(AbsColumn column, String pattern) {
 		return new NormalClause(column, " LIKE ", pattern);
 	}
 
-	public static Clause contains(Column column, String pattern) {
-		return new NormalClause(column, " LIKE ", '%' + pattern + '%');
+	public static Clause contains(AbsColumn column, String pattern) {
+		return like(column, '%' + pattern + '%');
 	}
 
-	public static Clause startWith(Column column, String pattern) {
-		return new NormalClause(column, " LIKE ", pattern + '%');
+	public static Clause startWith(AbsColumn column, String pattern) {
+		return like(column, pattern + '%');
 	}
 
-	public static Clause endWith(Column column, String pattern) {
-		return new NormalClause(column, " LIKE ", '%' + pattern);
+	public static Clause endWith(AbsColumn column, String pattern) {
+		return like(column, '%' + pattern);
 	}
 
 	// IN
-	public static Clause in(Column column, int... array) {
+	public static Clause in(AbsColumn column, int... array) {
 		return new ClauseIn(column, ClauseIn.IN, array);
 	}
 
-	public static Clause in(Column column, Object... pattern) {
+	public static Clause in(AbsColumn column, Object... pattern) {
 		return new ClauseIn(column, ClauseIn.IN, pattern);
 	}
 
-	public static Clause in(Column column, Collection<?> pattern) {
+	public static Clause in(AbsColumn column, Collection<?> pattern) {
 		return new ClauseIn(column, ClauseIn.IN, pattern.toArray());
 	}
 
-	public static Clause in(Column column, Select pattern) {
+	public static Clause in(AbsColumn column, Select pattern) {
 		return new NormalClause(column, " IN ", pattern);
 	}
 
 	// NOT IN
-	public static Clause notIn(Column column, int... array) {
+	public static Clause notIn(AbsColumn column, int... array) {
 		return new ClauseIn(column, ClauseIn.NOT_IN, array);
 	}
 
-	public static Clause notIn(Column column, Object... pattern) {
+	public static Clause notIn(AbsColumn column, Object... pattern) {
 		return new ClauseIn(column, ClauseIn.NOT_IN, pattern);
 	}
 
-	public static Clause notIn(Column column, Collection<?> pattern) {
+	public static Clause notIn(AbsColumn column, Collection<?> pattern) {
 		return new ClauseIn(column, ClauseIn.NOT_IN, pattern.toArray());
 	}
 
-	public static Clause notIn(Column column, Select pattern) {
+	public static Clause notIn(AbsColumn column, Select pattern) {
 		return new NormalClause(column, " NOT IN ", pattern);
 	}
 
 	// BETWEEN 在某个范围内
-	public static Clause between(Column column, Object start, Object end) {
+	public static Clause between(AbsColumn column, Object start, Object end) {
 		return new ClauseBetween(column, start, end);
 	}
 

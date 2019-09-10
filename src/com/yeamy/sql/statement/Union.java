@@ -1,14 +1,8 @@
-package com.yeamy.sql.statement.function;
+package com.yeamy.sql.statement;
 
 import java.util.ArrayList;
 
-import com.yeamy.sql.statement.SQLString;
-import com.yeamy.sql.statement.Select;
-import com.yeamy.sql.statement.Sort;
-
-public class Union implements SQLString {
-	private Sort orderBy;
-	private int limitOffset = 0, limit = 0;
+public class Union extends Searchable {
 
 	private class UnionLi {
 		Object select;
@@ -30,44 +24,27 @@ public class Union implements SQLString {
 		list.add(new UnionLi(select, null));
 	}
 
+	@Override
 	public Union union(String select) {
 		list.add(new UnionLi(select, " UNION "));
 		return this;
 	}
 
+	@Override
 	public Union union(Select select) {
 		list.add(new UnionLi(select, " UNION "));
 		return this;
 	}
 
+	@Override
 	public Union unionAll(Select select) {
 		list.add(new UnionLi(select, " UNION ALL "));
 		return this;
 	}
 
+	@Override
 	public Union unionAll(String select) {
 		list.add(new UnionLi(select, " UNION ALL "));
-		return this;
-	}
-
-	/**
-	 * @see {@link #Sort}
-	 * @see {@link #Asc}
-	 * @see {@link #Desc}
-	 */
-	public Union orderBy(Sort orderBy) {
-		this.orderBy = orderBy;
-		return this;
-	}
-
-	public Union limit(int limit) {
-		this.limit = limit;
-		return this;
-	}
-
-	public Union limit(int offset, int limit) {
-		this.limitOffset = offset;
-		this.limit = limit;
 		return this;
 	}
 
@@ -86,17 +63,9 @@ public class Union implements SQLString {
 			}
 		}
 		// order by
-		if (orderBy != null) {
-			orderBy.toSQL(sql);
-		}
+		sort(sql);
 		// limit
-		if (limit > 0) {
-			sql.append(" LIMIT ");
-			if (limitOffset > 0) {
-				sql.append(limitOffset).append(',');
-			}
-			sql.append(limit);
-		}
+		limit(sql);
 	}
 
 	@Override

@@ -8,33 +8,33 @@ public class Sort implements SQLString {
 	static final String ASC = "ASC";
 	static final String DESC = "DESC";
 
-	private LinkedHashMap<Column, String> sort = new LinkedHashMap<>();
+	private LinkedHashMap<Object, String> sort = new LinkedHashMap<>();
 
-	Sort(Column column, String sort) {
+	Sort(AbsColumn column, String sort) {
 		this.sort.put(column, sort);
 	}
 
 	Sort(String column, String sort) {
-		this.sort.put(new Column(column), sort);
+		this.sort.put(column, sort);
 	}
 
-	public Sort asc(Column column) {
+	public Sort asc(AbsColumn column) {
 		sort.put(column, ASC);
 		return this;
 	}
 
-	public Sort desc(Column column) {
+	public Sort desc(AbsColumn column) {
 		sort.put(column, DESC);
 		return this;
 	}
 
 	public Sort asc(String column) {
-		sort.put(new Column(column), ASC);
+		sort.put(column, ASC);
 		return this;
 	}
 
 	public Sort desc(String column) {
-		sort.put(new Column(column), DESC);
+		sort.put(column, DESC);
 		return this;
 	}
 
@@ -45,14 +45,20 @@ public class Sort implements SQLString {
 		}
 		sql.append(" ORDER BY ");
 		boolean f = true;
-		Set<Entry<Column, String>> set = sort.entrySet();
-		for (Entry<Column, String> cell : set) {
+		Set<Entry<Object, String>> set = sort.entrySet();
+		for (Entry<Object, String> cell : set) {
 			if (f) {
 				f = false;
 			} else {
 				sql.append(", ");
 			}
-			cell.getKey().shortName(sql);
+			Object column = cell.getKey();
+			if (column instanceof AbsColumn) {
+				AbsColumn c = (AbsColumn) column;
+				c.shortName(sql);
+			} else {
+				SQLString.appendColumn(sql, column.toString());
+			}
 			String sc = cell.getValue();
 			if (sc != null) {
 				sql.append(" ");

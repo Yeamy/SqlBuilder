@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Avg extends FunctionColumn {
+public class Avg extends Function {
 
 	public Avg(String name) {
 		super(name);
@@ -12,12 +12,8 @@ public class Avg extends FunctionColumn {
 		super(table, name);
 	}
 
-	public Avg(Select select, String tableAlias, String name) {
-		super(select, tableAlias, name);
-	}
-
-	public Avg(Union union, String tableAlias, String name) {
-		super(union, tableAlias, name);
+	public Avg(Searchable table, String tableAlias, String name) {
+		super(table, tableAlias, name);
 	}
 
 	@Override

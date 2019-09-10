@@ -1,9 +1,9 @@
 package com.yeamy.sql.statement.function;
 
 import com.yeamy.sql.statement.SQLString;
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Format extends FunctionColumn {
+public class Format extends Function {
 	public String format;
 
 	public Format(String name, String format) {
@@ -16,8 +16,8 @@ public class Format extends FunctionColumn {
 		this.format = format;
 	}
 
-	public Format(Select select, String tableAlias, String name, String format) {
-		super(select, tableAlias, name);
+	public Format(Searchable table, String tableAlias, String name, String format) {
+		super(table, tableAlias, name);
 		this.format = format;
 	}
 

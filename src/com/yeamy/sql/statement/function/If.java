@@ -1,19 +1,23 @@
-package com.yeamy.sql.statement;
+package com.yeamy.sql.statement.function;
 
+import java.util.Map;
+
+import com.yeamy.sql.statement.Clause;
+import com.yeamy.sql.statement.SQLString;
+import com.yeamy.sql.statement.TableColumn;
 import com.yeamy.sql.statement.annotation.DataBase;
 import com.yeamy.sql.statement.annotation.Target;
 
 @Target(DataBase.MySQL)
-public class IfColumn extends Column {
+public class If extends TableColumn {
 	private Clause expr;
 	private Object t, f;
 
-	public IfColumn(Clause expr, Object t, Object f) {
+	public If(Clause expr, Object t, Object f) {
 		this(expr, t, f, null);
 	}
 
-	public IfColumn(Clause expr, Object t, Object f, String nameAlias) {
-		super(null);
+	public If(Clause expr, Object t, Object f, String nameAlias) {
 		this.expr = expr;
 		this.t = t;
 		this.f = f;
@@ -33,19 +37,17 @@ public class IfColumn extends Column {
 
 	@Override
 	public void tableInFrom(StringBuilder sb) {
-		if (expr.column instanceof Column) {
-			((Column) expr.column).tableInFrom(sb);
-		} else {
-			throw new NullPointerException("table is null");
-		}
+		expr.tableInFrom(sb);
 	}
 
 	@Override
-	public String tableSign() {
-		if (expr.column instanceof Column) {
-			return ((Column) expr.column).tableSign();
-		}
-		return null;
+	public void signTable(Map<Object, TableColumn> tables) {
+		expr.signTable(tables);
+	}
+
+	@Override
+	public void unSignTable(Map<Object, TableColumn> tables) {
+		expr.unSignTable(tables);
 	}
 
 }

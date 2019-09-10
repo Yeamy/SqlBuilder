@@ -33,8 +33,9 @@ public class Insert implements SQLString {
 			values[l] = li.getValue();
 			l++;
 		}
-		sql.append("INSERT INTO `");
-		sql.append(table).append("` (");
+		sql.append("INSERT INTO ");
+		SQLString.appendTable(sql, table);
+		sql.append(" (");
 		boolean f = true;
 		for (String column : columns) {
 			if (f) {
@@ -42,7 +43,7 @@ public class Insert implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			sql.append('`').append(column).append('`');
+			SQLString.appendColumn(sql, column);
 		}
 		sql.append(") VALUES (");
 		f = true;

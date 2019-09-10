@@ -6,23 +6,17 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Map;
 
-import com.yeamy.sql.statement.function.Having;
-
-/**
- * <b>warning: </b> {@link Column#table} != null
- */
-public class Select implements SQLString {
+public class Select extends Searchable {
 	private LinkedHashSet<Object> columns = new LinkedHashSet<>();
 	private LinkedList<Join> joins;
 	private ArrayList<Object> groupBy;
 	private Clause where;
 	private Having having;
-	private Sort orderBy;
-	private int limitOffset = 0, limit = 0;
 	private String[] from;
 
-	public Object[] getColumns() {
+	Object[] getColumns() {
 		Object[] out = new Object[columns.size()];
 		return columns.toArray(out);
 	}
@@ -30,27 +24,32 @@ public class Select implements SQLString {
 	public Select() {
 	}
 
-	public Select addColumn(String column) {
+	public Select add(String column) {
 		columns.add(column);
 		return this;
 	}
 
-	public Select addColumn(Column column) {
+	public Select add(String table, String name) {
+		columns.add(new Column(table, name));
+		return this;
+	}
+
+	public Select add(AbsColumn column) {
 		columns.add(column);
 		return this;
 	}
 
-	public Select addColumn(Collection<Column> columns) {
+	public Select addAll(Collection<AbsColumn> columns) {
 		this.columns.addAll(columns);
 		return this;
 	}
 
-	public Select addColumn(Column... column) {
+	public Select addAll(AbsColumn... column) {
 		Collections.addAll(columns, column);
 		return this;
 	}
 
-	public Select addColumn(String... column) {
+	public Select addAll(String... column) {
 		Collections.addAll(columns, column);
 		return this;
 	}
@@ -131,7 +130,7 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public Select groupBy(Column column) {
+	public Select groupBy(AbsColumn column) {
 		if (column != null) {
 			if (groupBy == null) {
 				groupBy = new ArrayList<>();
@@ -141,7 +140,7 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public Select groupBy(Column... columns) {
+	public Select groupBy(AbsColumn... columns) {
 		if (columns != null) {
 			if (groupBy == null) {
 				groupBy = new ArrayList<>();
@@ -151,7 +150,7 @@ public class Select implements SQLString {
 		return this;
 	}
 
-	public Select groupBy(Collection<Column> columns) {
+	public Select groupBy(Collection<AbsColumn> columns) {
 		if (columns != null) {
 			if (groupBy == null) {
 				groupBy = new ArrayList<>();
@@ -165,34 +164,13 @@ public class Select implements SQLString {
 		return groupBy != null && groupBy.remove(column);
 	}
 
-	public boolean removeGroupBy(Column column) {
+	public boolean removeGroupBy(AbsColumn column) {
 		return groupBy != null && groupBy.remove(column);
 	}
 
 	public void having(Having having) {
 		this.having = having;
-		addColumn(having.getColumn());
-	}
-
-	/**
-	 * @see {@link #Sort}
-	 * @see {@link #Asc}
-	 * @see {@link #Desc}
-	 */
-	public Select orderBy(Sort orderBy) {
-		this.orderBy = orderBy;
-		return this;
-	}
-
-	public Select limit(int limit) {
-		this.limit = limit;
-		return this;
-	}
-
-	public Select limit(int offset, int limit) {
-		this.limitOffset = offset;
-		this.limit = limit;
-		return this;
+		addAll(having.getColumn());
 	}
 
 	@Override
@@ -219,17 +197,9 @@ public class Select implements SQLString {
 			having.toSQL(sql);
 		}
 		// order by
-		if (orderBy != null) {
-			orderBy.toSQL(sql);
-		}
+		sort(sql);
 		// limit
-		if (limit > 0) {
-			sql.append(" LIMIT ");
-			if (limitOffset > 0) {
-				sql.append(limitOffset).append(',');
-			}
-			sql.append(limit);
-		}
+		limit(sql);
 	}
 
 	private void columns(StringBuilder sql) {
@@ -240,10 +210,10 @@ public class Select implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			if (column instanceof Column) {
-				((Column) column).nameInColumn(sql);
+			if (column instanceof AbsColumn) {
+				((AbsColumn) column).nameInColumn(sql);
 			} else {
-				sql.append('`').append(column).append('`');
+				SQLString.appendColumn(sql, column.toString());
 			}
 		}
 	}
@@ -254,36 +224,33 @@ public class Select implements SQLString {
 			for (String table : from) {
 				if (f) {
 					f = false;
-					sql.append(" FROM `").append(table).append('`');
+					sql.append(" FROM ");
 				} else {
-					sql.append(", `").append(table).append('`');
+					sql.append(", ");
 				}
+				SQLString.appendTable(sql, table);
 			}
 			return;
 		}
 		// table
-		LinkedHashMap<String, Column> tables = new LinkedHashMap<>();
+		Map<Object, TableColumn> tables = new LinkedHashMap<>();
 		for (Object li : columns) {// add all-table
-			if (li instanceof Column) {
-				Column column = (Column) li;
-				String table = column.tableSign();
-				if (table != null) {
-					tables.put(table, column);
-				}
+			if (li instanceof TableColumn) {
+				TableColumn column = (TableColumn) li;
+				column.signTable(tables);
 			}
 		}
 		if (joins != null) {
 			for (Join join : joins) {// add join-table
-				Column src = join.column;
-				tables.put(src.tableSign(), src);
+				join.column.signTable(tables);
 			}
 			for (Join join : joins) {// remove join-table
-				tables.remove(join.pattern.tableSign());
+				join.pattern.unSignTable(tables);
 			}
 		}
 		// from
 		boolean f = true;
-		for (Column table : tables.values()) {
+		for (TableColumn table : tables.values()) {
 			if (f) {
 				f = false;
 				sql.append(" FROM ");
@@ -306,10 +273,10 @@ public class Select implements SQLString {
 			} else {
 				sql.append(", ");
 			}
-			if (li instanceof Column) {
-				((Column) li).shortName(sql);
+			if (li instanceof AbsColumn) {
+				((AbsColumn) li).shortName(sql);
 			} else {
-				sql.append('`').append(li).append('`');
+				SQLString.appendColumn(sql, li.toString());
 			}
 		}
 	}
@@ -322,4 +289,23 @@ public class Select implements SQLString {
 		return sql.toString();
 	}
 
+	@Override
+	public Union union(Select select) {
+		return new Union(this).union(select);
+	}
+
+	@Override
+	public Union union(String select) {
+		return new Union(this).union(select);
+	}
+
+	@Override
+	public Union unionAll(Select select) {
+		return new Union(this).unionAll(select);
+	}
+
+	@Override
+	public Union unionAll(String select) {
+		return new Union(this).unionAll(select);
+	}
 }

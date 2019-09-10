@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.function;
 
-import com.yeamy.sql.statement.Select;
+import com.yeamy.sql.statement.Searchable;
 
-public class Round extends FunctionColumn {
+public class Round extends Function {
 	public int decimals;
 
 	public Round(String name, int decimals) {
@@ -15,13 +15,8 @@ public class Round extends FunctionColumn {
 		this.decimals = decimals;
 	}
 
-	public Round(Select select, String tableAlias, String name, int decimals) {
-		super(select, tableAlias, name);
-		this.decimals = decimals;
-	}
-
-	public Round(Union union, String tableAlias, String name, int decimals) {
-		super(union, tableAlias, name);
+	public Round(Searchable table, String tableAlias, String name, int decimals) {
+		super(table, tableAlias, name);
 		this.decimals = decimals;
 	}
 

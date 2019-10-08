@@ -25,6 +25,17 @@ public class Column extends TableColumn {
 		this.name = name;
 	}
 
+	public Column as(String tableAlias, String nameAlias) {
+		this.tableAlias = tableAlias;
+		this.nameAlias = nameAlias;
+		return this;
+	}
+
+	public Column tableAs(String tableAlias) {
+		this.tableAlias = tableAlias;
+		return this;
+	}
+
 	/**
 	 * table as tableAlias
 	 */

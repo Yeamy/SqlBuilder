@@ -15,7 +15,7 @@ public class Update implements SQLString {
 		this.table = table;
 	}
 
-	public Update add(String column, Object value) {
+	public Update set(String column, Object value) {
 		map.put(column, value);
 		return this;
 	}

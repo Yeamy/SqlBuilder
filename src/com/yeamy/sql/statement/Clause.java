@@ -252,6 +252,22 @@ public abstract class Clause implements SQLString {
 	public static Clause endWith(Column column, String pattern) {
 		return new NormalClause(column, " LIKE ", '%' + pattern);
 	}
+	// NOT LIKE
+	public static Clause notLike(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern);
+	}
+
+	public static Clause notContains(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause notStartWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern + '%');
+	}
+
+	public static Clause notEndWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern);
+	}
 
 	// IN
 	public static Clause in(Column column, int... array) {

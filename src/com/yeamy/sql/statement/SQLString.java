@@ -1,5 +1,8 @@
 package com.yeamy.sql.statement;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public interface SQLString {
 
 	void toSQL(StringBuilder sb);
@@ -39,6 +42,10 @@ public interface SQLString {
 			sb.append(')');
 		} else if (value instanceof SQLString) {
 			((SQLString) value).toSQL(sb);
+		} else if (value instanceof Date) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			value = sdf.format((Date) value);
+			appendValue(sb, value);
 		} else {
 			// as String
 			String out = value.toString();

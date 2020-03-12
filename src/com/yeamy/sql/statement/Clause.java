@@ -312,6 +312,22 @@ public abstract class Clause extends TableColumn {
 	public static Clause endWith(AbsColumn column, String pattern) {
 		return like(column, '%' + pattern);
 	}
+	// NOT LIKE
+	public static Clause notLike(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern);
+	}
+
+	public static Clause notContains(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause notStartWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern + '%');
+	}
+
+	public static Clause notEndWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern);
+	}
 
 	// IN
 	public static Clause in(AbsColumn column, int... array) {

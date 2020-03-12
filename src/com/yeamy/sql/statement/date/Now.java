@@ -7,7 +7,7 @@ import com.yeamy.sql.statement.annotation.Target;
 /**
  * 2008-12-29 16:25:46
  */
-@Target(DataBase.MySQL)
+@Target(DataBase.ALL)
 public class Now extends AbsColumn {
 	public static final Now now = new Now(null);
 

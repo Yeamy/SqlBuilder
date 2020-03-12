@@ -2,8 +2,12 @@ package com.yeamy.sql.statement;
 
 import java.util.Map;
 
+import com.yeamy.sql.statement.annotation.DataBase;
+import com.yeamy.sql.statement.annotation.Target;
+
 public class SQL {
 
+	@Target(DataBase.MySQL)
 	public static String insert(String table, Select select) {
 		StringBuilder sql = new StringBuilder("INSERT INTO ");
 		SQLString.appendTable(sql, table);

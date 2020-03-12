@@ -3,10 +3,7 @@ package com.yeamy.sql.statement.function;
 import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Select;
 import com.yeamy.sql.statement.Union;
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 
-@Target(DataBase.MySQL)
 public class Distinct extends Column {
 
 	public Distinct(String name) {

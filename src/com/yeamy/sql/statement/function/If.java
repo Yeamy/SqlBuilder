@@ -5,10 +5,7 @@ import java.util.Map;
 import com.yeamy.sql.statement.Clause;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.TableColumn;
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 
-@Target(DataBase.MySQL)
 public class If extends TableColumn {
 	private Clause expr;
 	private Object t, f;

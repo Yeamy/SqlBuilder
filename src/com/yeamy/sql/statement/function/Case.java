@@ -5,10 +5,7 @@ import java.util.LinkedList;
 import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.Searchable;
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 
-@Target(DataBase.MySQL)
 public class Case extends Column {
 	private Object _else;
 	private LinkedList<Object> kv = new LinkedList<>();

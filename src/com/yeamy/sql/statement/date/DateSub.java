@@ -1,10 +1,7 @@
 package com.yeamy.sql.statement.date;
 
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 import com.yeamy.sql.statement.function.Function;
 
-@Target(DataBase.MySQL)
 public class DateSub extends Function {
 	private String expr;
 	public DateType type;

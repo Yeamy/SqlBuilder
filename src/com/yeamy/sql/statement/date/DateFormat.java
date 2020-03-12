@@ -1,11 +1,8 @@
 package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.SQLString;
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 import com.yeamy.sql.statement.function.Function;
 
-@Target(DataBase.MySQL)
 public class DateFormat extends Function {
 	public String format;
 

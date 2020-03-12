@@ -5,10 +5,7 @@ import java.util.LinkedList;
 import com.yeamy.sql.statement.AbsColumn;
 import com.yeamy.sql.statement.Clause;
 import com.yeamy.sql.statement.SQLString;
-import com.yeamy.sql.statement.annotation.DataBase;
-import com.yeamy.sql.statement.annotation.Target;
 
-@Target(DataBase.MySQL)
 public class ExprCase extends AbsColumn {
 	private Object _else;
 	private LinkedList<Object> kv = new LinkedList<>();

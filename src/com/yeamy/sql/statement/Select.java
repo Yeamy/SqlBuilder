@@ -14,6 +14,7 @@ public class Select extends Searchable {
 	private ArrayList<Object> groupBy;
 	private Clause where;
 	private Having having;
+	private String into;
 	private String[] from;
 
 	Object[] getColumns() {
@@ -52,6 +53,10 @@ public class Select extends Searchable {
 	public Select addAll(String... column) {
 		Collections.addAll(columns, column);
 		return this;
+	}
+
+	public void into(String into) {
+		this.into = into;
 	}
 
 	public Select from(String... from) {
@@ -178,6 +183,7 @@ public class Select extends Searchable {
 		sql.append("SELECT ");
 		// columns
 		columns(sql);
+		into(sql);
 		from(sql);
 		// join on
 		if (joins != null) {
@@ -215,6 +221,12 @@ public class Select extends Searchable {
 			} else {
 				SQLString.appendColumn(sql, column.toString());
 			}
+		}
+	}
+
+	private void into(StringBuilder sql) {
+		if (into != null) {
+			SQLString.appendTable(sql, into);
 		}
 	}
 

@@ -93,4 +93,18 @@ public class SQL {
 		return sql.toString();
 	}
 
+	public static String dropTable(String table) {
+		StringBuilder sql = new StringBuilder("DROP TABLE ");
+		SQLString.appendTable(sql, table);
+		sql.append(';');
+		return sql.toString();
+	}
+
+	public static String truncateTable(String table) {
+		StringBuilder sql = new StringBuilder("TRUNCATE TABLE ");
+		SQLString.appendTable(sql, table);
+		sql.append(';');
+		return sql.toString();
+	}
+
 }

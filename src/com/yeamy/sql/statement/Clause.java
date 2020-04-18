@@ -224,10 +224,10 @@ public abstract class Clause extends TableColumn {
 		case 1:
 			return list.get(0);
 		default:
-			Clause clause = null;
+			MultiClause clause = null;
 			for (Clause li : list) {
 				if (clause == null) {
-					clause = li;
+					clause = new MultiClause(li);
 				} else {
 					clause.and(li);
 				}
@@ -243,10 +243,10 @@ public abstract class Clause extends TableColumn {
 		case 1:
 			return list.get(0);
 		default:
-			Clause clause = null;
+			MultiClause clause = null;
 			for (Clause li : list) {
 				if (clause == null) {
-					clause = li;
+					clause = new MultiClause(li);
 				} else {
 					clause.or(li);
 				}

@@ -2,7 +2,7 @@ package com.yeamy.sql.statement;
 
 import java.util.ArrayList;
 
-import com.yeamy.sql.statement.datatype.DataType;
+import com.yeamy.sql.statement.columninfo.ColumnInfo;
 
 public class AlterTable implements SQLString {
 	private String table;
@@ -14,7 +14,7 @@ public class AlterTable implements SQLString {
 
 	// column
 
-	public AlterTable add(String column, DataType dataType) {
+	public AlterTable add(String column, ColumnInfo dataType) {
 		this.columns.add(new SQLString() {
 
 			@Override
@@ -40,7 +40,7 @@ public class AlterTable implements SQLString {
 		return this;
 	}
 
-	public AlterTable modify(String column, DataType dataType) {
+	public AlterTable modify(String column, ColumnInfo dataType) {
 		this.columns.add(new SQLString() {
 
 			@Override

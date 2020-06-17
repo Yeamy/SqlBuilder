@@ -80,6 +80,10 @@ public class Update implements SQLString {
 	}
 
 	public Update addAll(Map<String, Object> cv) {
+		return setAll(cv);
+	}
+
+	public Update setAll(Map<String, Object> cv) {
 		map.putAll(cv);
 		return this;
 	}

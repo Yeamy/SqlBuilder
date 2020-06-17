@@ -5,20 +5,26 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import com.yeamy.sql.statement.datatype.DataType;
+import com.yeamy.sql.statement.columninfo.ColumnInfo;
 
 public class CreateTable implements SQLString {
+	private String database;
 	private String table;
-	private LinkedHashMap<String, DataType> columns = new LinkedHashMap<>();
+	private LinkedHashMap<String, ColumnInfo> columns = new LinkedHashMap<>();
 	private ArrayList<Unique> uniques;
 	private boolean ifNotExists;
+
+	public CreateTable(String database, String table) {
+		this.database = database;
+		this.table = table;
+	}
 
 	public CreateTable(String table) {
 		this.table = table;
 	}
 
-	public CreateTable add(String column, DataType type) {
-		columns.put(column, type);
+	public CreateTable add(String column, ColumnInfo info) {
+		columns.put(column, info);
 		return this;
 	}
 
@@ -45,18 +51,35 @@ public class CreateTable implements SQLString {
 		if (ifNotExists) {
 			sql.append("IF NOT EXISTS ");
 		}
+		if (database != null) {
+			SQLString.appendDatabase(sql, database);
+			sql.append('.');
+		}
 		SQLString.appendTable(sql, table);
 		sql.append('(');
-		// columns
+		// columnse
+		ArrayList<String> primary = new ArrayList<>();
 		boolean first = true;
-		for (Entry<String, DataType> entry : columns.entrySet()) {
+		for (Entry<String, ColumnInfo> entry : columns.entrySet()) {
 			if (first) {
 				first = false;
 			} else {
 				sql.append(',');
 			}
-			sql.append(entry.getKey()).append(' ');
-			entry.getValue().toSQL(sql);
+			String column = entry.getKey();
+			ColumnInfo info = entry.getValue();
+			sql.append(column).append(' ');
+			info.toSQL(sql);
+			if (info.isPrimary()) {
+				primary.add(column);
+			}
+		}
+		if (primary.size() > 0) {
+			sql.append(", PRIMARY KEY (");
+			for (String column : primary) {
+				SQLString.appendColumn(sql, column);
+			}
+			sql.append(')');
 		}
 		// uniques
 		if (uniques != null) {

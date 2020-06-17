@@ -19,6 +19,10 @@ public interface SQLString {
 		return sb.toString();
 	}
 
+	public static void appendDatabase(StringBuilder sb, String database) {
+		sb.append('`').append(database).append('`');
+	}
+
 	public static void appendTable(StringBuilder sb, String table) {
 		sb.append('`').append(table).append('`');
 	}

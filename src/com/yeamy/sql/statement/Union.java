@@ -2,7 +2,7 @@ package com.yeamy.sql.statement;
 
 import java.util.ArrayList;
 
-public class Union extends Searchable {
+public class Union extends Searchable<Union> {
 
 	private class UnionLi {
 		Object select;

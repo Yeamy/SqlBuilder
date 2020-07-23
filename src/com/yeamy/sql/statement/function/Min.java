@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Min extends Function {
+public class Min extends Column {
 
 	public Min(String name) {
 		super(name);
@@ -17,7 +18,9 @@ public class Min extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "MIN";
+	public void toSQL(StringBuilder sb) {
+		sb.append("MIN(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 }

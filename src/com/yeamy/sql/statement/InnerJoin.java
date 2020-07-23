@@ -1,13 +1,9 @@
 package com.yeamy.sql.statement;
 
-public class InnerJoin extends Join {
+public class InnerJoin extends Join<InnerJoin> {
 
 	public InnerJoin(Column column, Column pattern) {
 		super(" INNER JOIN ", column, pattern);
-	}
-
-	public InnerJoin and(Clause clause) {
-		return (InnerJoin) super.and(clause);
 	}
 
 }

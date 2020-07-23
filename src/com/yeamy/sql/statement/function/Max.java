@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Max extends Function {
+public class Max extends Column {
 
 	public Max(String name) {
 		super(name);
@@ -17,8 +18,10 @@ public class Max extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "MAX";
+	public void toSQL(StringBuilder sb) {
+		sb.append("MAX(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

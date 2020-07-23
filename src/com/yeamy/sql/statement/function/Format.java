@@ -1,9 +1,10 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.Searchable;
 
-public class Format extends Function {
+public class Format extends Column {
 	public String format;
 
 	public Format(String name, String format) {
@@ -21,16 +22,14 @@ public class Format extends Function {
 		this.format = format;
 	}
 
+
 	@Override
-	protected void params(StringBuilder sb) {
-		super.params(sb);
+	public void toSQL(StringBuilder sb) {
+		sb.append("FORMAT(");
+		super.toSQL(sb);
 		sb.append(", ");
 		SQLString.appendValue(sb, format);
+		sb.append(')');
 	}
-
-	@Override
-	public String fun() {
-		return "FORMAT";
-	}
-
+	
 }

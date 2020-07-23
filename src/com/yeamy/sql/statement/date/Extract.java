@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.date;
 
-import com.yeamy.sql.statement.function.Function;
+import com.yeamy.sql.statement.Column;
 
-public class Extract extends Function {
+public class Extract extends Column {
 	public DateType type;
 
 	public Extract(String name, DateType type) {
@@ -16,14 +16,10 @@ public class Extract extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "EXTRACT";
-	}
-
-	@Override
-	protected void params(StringBuilder sb) {
-		sb.append(type).append(" FROM ");
-		super.params(sb);
+	public void toSQL(StringBuilder sb) {
+		sb.append("EXTRACT(").append(type).append(" FROM ");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

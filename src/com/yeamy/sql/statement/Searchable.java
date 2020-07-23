@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement;
 
-public abstract class Searchable implements SQLString {
+public abstract class Searchable<T extends Searchable<T>> implements SQLString {
 	private Sort orderBy;
 	private int limitOffset = -1, limit = 0;
 
@@ -9,20 +9,23 @@ public abstract class Searchable implements SQLString {
 	 * @see {@link #Asc}
 	 * @see {@link #Desc}
 	 */
-	public Searchable orderBy(Sort orderBy) {
+	@SuppressWarnings("unchecked")
+	public T orderBy(Sort orderBy) {
 		this.orderBy = orderBy;
-		return this;
+		return (T) this;
 	}
 
-	public Searchable limit(int limit) {
+	@SuppressWarnings("unchecked")
+	public T limit(int limit) {
 		this.limit = limit;
-		return this;
+		return (T) this;
 	}
 
-	public Searchable limit(int offset, int limit) {
+	@SuppressWarnings("unchecked")
+	public T limit(int offset, int limit) {
 		this.limitOffset = offset;
 		this.limit = limit;
-		return this;
+		return (T) this;
 	}
 
 	// order by

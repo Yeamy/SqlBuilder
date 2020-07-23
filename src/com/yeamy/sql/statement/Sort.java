@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Sort implements SQLString {
+public abstract class Sort implements SQLString {
 	static final String ASC = "ASC";
 	static final String DESC = "DESC";
 

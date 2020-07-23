@@ -5,7 +5,7 @@ import com.yeamy.sql.statement.AbsColumn;
 /**
  * 2008-12-29
  */
-public class CurDate extends AbsColumn {
+public class CurDate extends AbsColumn<CurDate> {
 
 	public static final CurDate curDate = new CurDate(null);
 

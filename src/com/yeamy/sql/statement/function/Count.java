@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Count extends Function {
+public class Count extends Column {
 
 	public Count(String name) {
 		super(name);
@@ -17,8 +18,10 @@ public class Count extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "COUNT";
+	public void toSQL(StringBuilder sb) {
+		sb.append("COUNT(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

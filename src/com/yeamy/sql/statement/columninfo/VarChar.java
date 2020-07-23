@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement.columninfo;
 
-public class VarChar extends ColumnInfo {
+public class VarChar extends ColumnInfo<VarChar> {
 	private int size;
 
 	public VarChar(int size) {

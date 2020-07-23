@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Sum extends Function {
+public class Sum extends Column {
 
 	public Sum(String name) {
 		super(name);
@@ -16,9 +17,13 @@ public class Sum extends Function {
 		super(table, tableAlias, name);
 	}
 
+
 	@Override
-	public String fun() {
-		return "SUM";
+	public void toSQL(StringBuilder sb) {
+		sb.append("SUM(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
+
 
 }

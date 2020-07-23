@@ -8,18 +8,6 @@ public class MultiClause extends Clause {
 	}
 
 	@Override
-	public MultiClause and(Clause clause) {
-		super.and(clause);
-		return this;
-	}
-
-	@Override
-	public MultiClause or(Clause clause) {
-		super.or(clause);
-		return this;
-	}
-
-	@Override
 	public void subSQL(StringBuilder sql) {
 		if (clause.isMulti()) {
 			sql.append('(');

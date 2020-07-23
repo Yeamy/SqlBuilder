@@ -6,7 +6,7 @@ import com.yeamy.sql.statement.Clause;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.TableColumn;
 
-public class If extends TableColumn {
+public class If extends TableColumn<If> {
 	private Clause expr;
 	private Object t, f;
 

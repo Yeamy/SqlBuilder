@@ -4,7 +4,7 @@ package com.yeamy.sql.statement.function;
 import com.yeamy.sql.statement.AbsColumn;
 import com.yeamy.sql.statement.SQLString;
 
-public class Expression extends AbsColumn {
+public class Expression extends AbsColumn<Expression> {
 	private static final char[] symbol = { '+', '-', '*', '/', '%', '(', ')', '|' };
 	private Object[] objs;
 

@@ -3,7 +3,7 @@ package com.yeamy.sql.statement;
 import java.util.Collection;
 import java.util.Map;
 
-public class Column extends TableColumn {
+public class Column extends TableColumn<Column> {
 	public static final String ALL = "*";
 	public final Object table;
 	public final String name;

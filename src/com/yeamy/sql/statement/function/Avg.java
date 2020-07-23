@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Avg extends Function {
+public class Avg extends Column {
 
 	public Avg(String name) {
 		super(name);
@@ -17,8 +18,10 @@ public class Avg extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "AVG";
+	public void toSQL(StringBuilder sb) {
+		sb.append("AVG(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Lcase extends Function {
+public class Lcase extends Column {
 
 	public Lcase(String name) {
 		super(name);
@@ -17,8 +18,10 @@ public class Lcase extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "LCASE";
+	public void toSQL(StringBuilder sb) {
+		sb.append("LCASE(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

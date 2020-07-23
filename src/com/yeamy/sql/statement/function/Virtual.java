@@ -3,7 +3,7 @@ package com.yeamy.sql.statement.function;
 import com.yeamy.sql.statement.AbsColumn;
 import com.yeamy.sql.statement.SQLString;
 
-public class Virtual extends AbsColumn {
+public class Virtual extends AbsColumn<Virtual> {
 	private Object value;
 
 	public Virtual(Object value, String nameAlias) {

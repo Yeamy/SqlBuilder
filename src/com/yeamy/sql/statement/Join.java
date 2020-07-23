@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement;
 
-public abstract class Join implements SQLString {
+public abstract class Join<T extends Join<T>> implements SQLString {
 	private Clause clause;
 
 	final String type;
@@ -22,8 +22,9 @@ public abstract class Join implements SQLString {
 		clause.toSQL(sb);
 	}
 
-	public Join and(Clause clause) {
+	@SuppressWarnings("unchecked")
+	public T and(Clause clause) {
 		this.clause.and(clause);
-		return this;
+		return (T) this;
 	}
 }

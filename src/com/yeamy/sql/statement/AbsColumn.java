@@ -1,11 +1,12 @@
 package com.yeamy.sql.statement;
 
-public abstract class AbsColumn implements SQLString {
+public abstract class AbsColumn<T extends AbsColumn<T>> implements SQLString {
 	protected String nameAlias;
 
-	public AbsColumn as(String nameAlias) {
+	@SuppressWarnings("unchecked")
+	public T as(String nameAlias) {
 		this.nameAlias = nameAlias;
-		return this;
+		return (T) this;
 	}
 
 	/**

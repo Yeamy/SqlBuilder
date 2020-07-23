@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Mid extends Function {
+public class Mid extends Column {
 	private int start, length;
 
 	public Mid(String name, int start, int length) {
@@ -24,14 +25,9 @@ public class Mid extends Function {
 	}
 
 	@Override
-	protected void params(StringBuilder sb) {
+	public void toSQL(StringBuilder sb) {
+		sb.append("MID(");
 		super.toSQL(sb);
-		sb.append(',').append(start).append(',').append(length);
+		sb.append(',').append(start).append(',').append(length).append(')');
 	}
-
-	@Override
-	public String fun() {
-		return "MID";
-	}
-
 }

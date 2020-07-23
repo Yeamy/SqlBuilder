@@ -1,9 +1,9 @@
 package com.yeamy.sql.statement.date;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
-import com.yeamy.sql.statement.function.Function;
 
-public class DateFormat extends Function {
+public class DateFormat extends Column {
 	public String format;
 
 	/**
@@ -20,15 +20,12 @@ public class DateFormat extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "DATE_FORMAT";
-	}
-
-	@Override
-	protected void params(StringBuilder sb) {
-		super.params(sb);
+	public void toSQL(StringBuilder sb) {
+		sb.append("DATE_FORMAT(");
+		super.toSQL(sb);
 		sb.append(", ");
 		SQLString.appendValue(sb, format);
+		sb.append(')');
 	}
 
 	public static class FormatNow extends DateFormat {
@@ -37,8 +34,10 @@ public class DateFormat extends Function {
 		}
 
 		@Override
-		protected void params(StringBuilder sb) {
-			sb.append("NOW(), ").append(format);
+		public void toSQL(StringBuilder sb) {
+			sb.append("DATE_FORMAT(NOW(), ");
+			SQLString.appendValue(sb, format);
+			sb.append(')');
 		}
 
 	}

@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Length extends Function {
+public class Length extends Column {
 
 	public Length(String name) {
 		super(name);
@@ -17,8 +18,10 @@ public class Length extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "LENGTH";
+	public void toSQL(StringBuilder sb) {
+		sb.append("LENGTH(");
+		super.toSQL(sb);
+		sb.append(')');
 	}
 
 }

@@ -1,13 +1,11 @@
 package com.yeamy.sql.statement;
 
-import com.yeamy.sql.statement.function.Function;
-
 public class Having implements SQLString {
 	private AbsColumn column;
 	private String operator;
 	private Number num;
 
-	public Having(Function column, String operator, Number num) {
+	public Having(AbsColumn column, String operator, Number num) {
 		this.column = column;
 		this.operator = operator;
 		this.num = num;
@@ -24,23 +22,23 @@ public class Having implements SQLString {
 		sb.append(operator).append(num);
 	}
 
-	public static Having equal(Function column, Number num) {
+	public static Having equal(AbsColumn column, Number num) {
 		return new Having(column, " = ", num);
 	}
 
-	public static Having greaterThan(Function column, Number num) {
+	public static Having greaterThan(AbsColumn column, Number num) {
 		return new Having(column, " > ", num);
 	}
 
-	public static Having greaterEqual(Function column, Number num) {
+	public static Having greaterEqual(AbsColumn column, Number num) {
 		return new Having(column, " >= ", num);
 	}
 
-	public static Having lessThan(Function column, Number num) {
+	public static Having lessThan(AbsColumn column, Number num) {
 		return new Having(column, " < ", num);
 	}
 
-	public static Having lessEqual(Function column, Number num) {
+	public static Having lessEqual(AbsColumn column, Number num) {
 		return new Having(column, " <= ", num);
 	}
 }

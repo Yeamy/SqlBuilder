@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.columninfo;
 
 import com.yeamy.sql.statement.SQLString;
 
-public abstract class ColumnInfo implements SQLString {
+public abstract class ColumnInfo<T extends ColumnInfo<T>> implements SQLString {
 	public static final Object NO_DEFAULT = "NO_DEFAULT";
 
 	private boolean primary;
@@ -15,19 +15,21 @@ public abstract class ColumnInfo implements SQLString {
 		return primary;
 	}
 
-	public ColumnInfo primaryKey() {
+	public T primaryKey() {
 		primary = true;
 		return notNull();
 	}
 
-	public ColumnInfo notNull() {
+	@SuppressWarnings("unchecked")
+	public T notNull() {
 		notNull = true;
-		return this;
+		return (T) this;
 	}
 
-	public ColumnInfo defaultValue(Object _default) {
+	@SuppressWarnings("unchecked")
+	public T defaultValue(Object _default) {
 		this._default = _default;
-		return this;
+		return (T) this;
 	}
 
 	protected abstract void dataType(StringBuilder sql);

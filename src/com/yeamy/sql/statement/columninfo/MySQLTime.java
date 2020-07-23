@@ -2,7 +2,7 @@ package com.yeamy.sql.statement.columninfo;
 
 import com.yeamy.sql.statement.SQLString;
 
-public abstract class MySQLTime extends ColumnInfo {
+public abstract class MySQLTime extends ColumnInfo<MySQLTime> {
 	public static final SQLString CURRENT_TIMESTAMP = new SQLString() {
 
 		@Override
@@ -16,11 +16,11 @@ public abstract class MySQLTime extends ColumnInfo {
 		}
 	};
 
-	public ColumnInfo defaultCurrentTimestamp() {
+	public MySQLTime defaultCurrentTimestamp() {
 		return defaultValue(CURRENT_TIMESTAMP);
 	}
 
-	public ColumnInfo keepUpdate() {
+	public MySQLTime keepUpdate() {
 		onUpdate = CURRENT_TIMESTAMP;
 		return this;
 	}

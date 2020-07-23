@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement.columninfo;
 
-public class Char extends ColumnInfo {
+public class Char extends ColumnInfo<Char> {
 	private int size;
 
 	public Char(int size) {

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Clause extends TableColumn {
+public abstract class Clause extends TableColumn<Clause> {
 	protected Object column;
 
 	protected void appendColumn(StringBuilder sb) {

@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Select extends Searchable {
+public class Select extends Searchable<Select> {
 	private LinkedHashSet<Object> columns = new LinkedHashSet<>();
 	private LinkedList<Join> joins;
 	private ArrayList<Object> groupBy;

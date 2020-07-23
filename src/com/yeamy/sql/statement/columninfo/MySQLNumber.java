@@ -1,6 +1,6 @@
 package com.yeamy.sql.statement.columninfo;
 
-public abstract class MySQLNumber extends ColumnInfo {
+public abstract class MySQLNumber extends ColumnInfo<MySQLNumber> {
 
 	public MySQLNumber autoIncrement() {
 		return autoIncrement(1);

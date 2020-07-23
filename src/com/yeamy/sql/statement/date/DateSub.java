@@ -1,8 +1,8 @@
 package com.yeamy.sql.statement.date;
 
-import com.yeamy.sql.statement.function.Function;
+import com.yeamy.sql.statement.Column;
 
-public class DateSub extends Function {
+public class DateSub extends Column {
 	private String expr;
 	public DateType type;
 
@@ -19,14 +19,10 @@ public class DateSub extends Function {
 	}
 
 	@Override
-	public String fun() {
-		return "DATE_SUB";
-	}
-
-	@Override
-	protected void params(StringBuilder sb) {
-		super.params(sb);
-		sb.append(", INTERVAL ").append(expr).append(' ').append(type);
+	public void toSQL(StringBuilder sb) {
+		sb.append("DATE_SUB(");
+		super.toSQL(sb);
+		sb.append(", INTERVAL ").append(expr).append(' ').append(type).append(')');
 	}
 
 }

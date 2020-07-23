@@ -1,8 +1,9 @@
 package com.yeamy.sql.statement.function;
 
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
-public class Round extends Function {
+public class Round extends Column {
 	public int decimals;
 
 	public Round(String name, int decimals) {
@@ -20,15 +21,13 @@ public class Round extends Function {
 		this.decimals = decimals;
 	}
 
-	@Override
-	protected void params(StringBuilder sb) {
-		super.params(sb);
-		sb.append(", ").append(decimals);
-	}
 
 	@Override
-	public String fun() {
-		return "ROUND";
+	public void toSQL(StringBuilder sb) {
+		sb.append("ROUND(");
+		super.toSQL(sb);
+		sb.append(", ").append(decimals);
+		sb.append(')');
 	}
 
 }

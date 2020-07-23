@@ -6,7 +6,7 @@ import com.yeamy.sql.statement.AbsColumn;
 import com.yeamy.sql.statement.Clause;
 import com.yeamy.sql.statement.SQLString;
 
-public class ExprCase extends AbsColumn {
+public class ExprCase extends AbsColumn<ExprCase> {
 	private Object _else;
 	private LinkedList<Object> kv = new LinkedList<>();
 

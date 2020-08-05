@@ -471,11 +471,11 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new ClauseRaw(sql);
 	}
 
-	protected Clause exists(Select select) {
+	public static Clause exists(Select select) {
 		return new Exists(select);
 	}
 
-	private class Exists extends Clause {
+	private static class Exists extends Clause {
 		private Select select;
 
 		private Exists(Select select) {

@@ -173,9 +173,10 @@ public class Select extends Searchable<Select> {
 		return groupBy != null && groupBy.remove(column);
 	}
 
-	public void having(Having having) {
+	public Select having(Having having) {
 		this.having = having;
 		addAll(having.getColumn());
+		return this;
 	}
 
 	@Override

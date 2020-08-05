@@ -312,6 +312,7 @@ public abstract class Clause extends TableColumn<Clause> {
 	public static Clause endWith(AbsColumn column, String pattern) {
 		return like(column, '%' + pattern);
 	}
+
 	// NOT LIKE
 	public static Clause notLike(Column column, String pattern) {
 		return new NormalClause(column, " NOT LIKE ", pattern);
@@ -468,6 +469,26 @@ public abstract class Clause extends TableColumn<Clause> {
 
 	public static Clause parse(String sql) {
 		return new ClauseRaw(sql);
+	}
+
+	protected Clause exists(Select select) {
+		return new Exists(select);
+	}
+
+	private class Exists extends Clause {
+		private Select select;
+
+		private Exists(Select select) {
+			this.select = select;
+		}
+
+		@Override
+		protected void subSQL(StringBuilder sql) {
+			sql.append("EXISTS");
+			SQLString.appendValue(sql, select);
+			select.toSQL(sql);
+		}
+
 	}
 
 	// Multi ----------------------------------------------------------------------

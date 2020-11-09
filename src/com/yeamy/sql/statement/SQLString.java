@@ -28,7 +28,11 @@ public interface SQLString {
 	}
 
 	public static void appendColumn(StringBuilder sb, String column) {
-		sb.append('`').append(column).append('`');
+		if (Column.ALL.equals(column)) {
+			sb.append("*");
+		} else {
+			sb.append('`').append(column).append('`');
+		}
 	}
 
 	/**
@@ -47,31 +51,14 @@ public interface SQLString {
 		} else if (value instanceof SQLString) {
 			((SQLString) value).toSQL(sb);
 		} else if (value instanceof Date) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			value = sdf.format((Date) value);
 			appendValue(sb, value);
 		} else {
 			// as String
-			String out = value.toString();
 			sb.append('\'');
-			// replace all '
-			int l = out.length();
-			int start = 0;
-			int end;
-			while (true) {
-				end = out.indexOf('\'', start);
-				if (end == -1) {
-					sb.append(out, start, l);
-					break;
-				}
-				end += 1;
-				sb.append(out, start, end);
-				sb.append('\'');
-				start = end;
-				if (start >= l) {
-					break;
-				}
-			}
+			String out = value.toString().replace("\'", "\\\'");
+			sb.append(out);
 			sb.append('\'');
 		}
 	}

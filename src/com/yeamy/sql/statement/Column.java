@@ -83,8 +83,8 @@ public class Column extends TableColumn<Column> {
 		} else if (table != null && table instanceof String) {
 			sb.append('`').append(table).append('`').append('.');
 		}
-		if ("*".equals(name)) {
-			sb.append('*');
+		if (ALL.equals(name)) {
+			sb.append(ALL);
 		} else {
 			sb.append('`').append(name).append('`');
 		}

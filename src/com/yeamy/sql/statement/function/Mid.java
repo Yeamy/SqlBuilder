@@ -18,6 +18,12 @@ public class Mid extends Column {
 		this.length = length;
 	}
 
+	public Mid(Searchable column, int start, int length) {
+		super(column);
+		this.start = start;
+		this.length = length;
+	}
+
 	public Mid(Searchable table, String tableAlias, String name, int start, int length) {
 		super(table, tableAlias, name);
 		this.start = start;

@@ -16,11 +16,15 @@ public class Round extends Column {
 		this.decimals = decimals;
 	}
 
+	public Round(Searchable column, int decimals) {
+		super(column);
+		this.decimals = decimals;
+	}
+
 	public Round(Searchable table, String tableAlias, String name, int decimals) {
 		super(table, tableAlias, name);
 		this.decimals = decimals;
 	}
-
 
 	@Override
 	public void toSQL(StringBuilder sb) {

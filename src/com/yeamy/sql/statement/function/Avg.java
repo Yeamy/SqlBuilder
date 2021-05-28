@@ -16,6 +16,10 @@ public class Avg extends Column {
 	public Avg(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}
+	
+	public Avg(Searchable column) {
+		super(column);
+	}
 
 	@Override
 	public void toSQL(StringBuilder sb) {

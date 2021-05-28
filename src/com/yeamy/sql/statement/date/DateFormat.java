@@ -2,6 +2,7 @@ package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
+import com.yeamy.sql.statement.Searchable;
 
 public class DateFormat extends Column {
 	public String format;
@@ -19,6 +20,11 @@ public class DateFormat extends Column {
 		this.format = format;
 	}
 
+	public DateFormat(Searchable column, String format) {
+		super(column);
+		this.format = format;
+	}
+
 	@Override
 	public void toSQL(StringBuilder sb) {
 		sb.append("DATE_FORMAT(");
@@ -30,7 +36,7 @@ public class DateFormat extends Column {
 
 	public static class FormatNow extends DateFormat {
 		public FormatNow(String format) {
-			super(null, format);
+			super((String) null, format);
 		}
 
 		@Override

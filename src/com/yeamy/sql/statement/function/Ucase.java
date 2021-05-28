@@ -13,6 +13,10 @@ public class Ucase extends Column {
 		super(table, name);
 	}
 
+	public Ucase(Searchable column) {
+		super(column);
+	}
+
 	public Ucase(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}

@@ -13,10 +13,13 @@ public class Sum extends Column {
 		super(table, name);
 	}
 
+	public Sum(Searchable column) {
+		super(column);
+	}
+
 	public Sum(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}
-
 
 	@Override
 	public void toSQL(StringBuilder sb) {
@@ -24,6 +27,5 @@ public class Sum extends Column {
 		super.toSQL(sb);
 		sb.append(')');
 	}
-
 
 }

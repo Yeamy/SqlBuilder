@@ -13,6 +13,10 @@ public class Min extends Column {
 		super(table, name);
 	}
 
+	public Min(Searchable column) {
+		super(column);
+	}
+
 	public Min(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}

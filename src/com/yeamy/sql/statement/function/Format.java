@@ -17,11 +17,15 @@ public class Format extends Column {
 		this.format = format;
 	}
 
+	public Format(Searchable column, String format) {
+		super(column);
+		this.format = format;
+	}
+
 	public Format(Searchable table, String tableAlias, String name, String format) {
 		super(table, tableAlias, name);
 		this.format = format;
 	}
-
 
 	@Override
 	public void toSQL(StringBuilder sb) {
@@ -31,5 +35,5 @@ public class Format extends Column {
 		SQLString.appendValue(sb, format);
 		sb.append(')');
 	}
-	
+
 }

@@ -13,6 +13,10 @@ public class Length extends Column {
 		super(table, name);
 	}
 
+	public Length(Searchable column) {
+		super(column);
+	}
+
 	public Length(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}

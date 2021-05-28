@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class Column extends TableColumn<Column> {
 	public static final String ALL = "*";
-	public final Object table;
-	public final String name;
-	public String tableAlias;
+	private final Object table;
+	final Object name;
+	private String tableAlias;
 
 	public Column(String name) {
 		this.table = null;
@@ -23,6 +23,11 @@ public class Column extends TableColumn<Column> {
 		this.table = table;
 		this.tableAlias = tableAlias;
 		this.name = name;
+	}
+
+	public Column(Searchable column) {
+		this.table = null;
+		this.name = column;
 	}
 
 	public Column as(String tableAlias, String nameAlias) {
@@ -77,6 +82,12 @@ public class Column extends TableColumn<Column> {
 	public void toSQL(StringBuilder sb) {
 		if (name == null) {
 			throw new NullPointerException("column name is null");
+		}
+		if (name instanceof Searchable) {
+			sb.append('(');
+			((Searchable) name).toSQL(sb);
+			sb.append(')');
+			return;
 		}
 		if (tableAlias != null) {
 			sb.append('`').append(tableAlias).append('`').append('.');

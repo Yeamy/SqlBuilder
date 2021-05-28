@@ -13,6 +13,10 @@ public class Lcase extends Column {
 		super(table, name);
 	}
 
+	public Lcase(Searchable column, String format) {
+		super(column);
+	}
+
 	public Lcase(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}

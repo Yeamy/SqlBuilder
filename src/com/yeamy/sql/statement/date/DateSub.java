@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.Searchable;
 
 public class DateSub extends Column {
 	private String expr;
@@ -14,6 +15,12 @@ public class DateSub extends Column {
 
 	public DateSub(String table, String name, String expr, DateType type) {
 		super(table, name);
+		this.expr = expr;
+		this.type = type;
+	}
+
+	public DateSub(Searchable column, String expr, DateType type) {
+		super(column);
 		this.expr = expr;
 		this.type = type;
 	}

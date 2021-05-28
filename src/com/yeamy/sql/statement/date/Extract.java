@@ -1,6 +1,7 @@
 package com.yeamy.sql.statement.date;
 
 import com.yeamy.sql.statement.Column;
+import com.yeamy.sql.statement.Searchable;
 
 public class Extract extends Column {
 	public DateType type;
@@ -12,6 +13,11 @@ public class Extract extends Column {
 
 	public Extract(String table, String name, DateType type) {
 		super(table, name);
+		this.type = type;
+	}
+
+	public Extract(Searchable column, DateType type) {
+		super(column);
 		this.type = type;
 	}
 

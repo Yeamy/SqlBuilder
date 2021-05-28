@@ -17,6 +17,10 @@ public class Count extends Column {
 		super(table, tableAlias, name);
 	}
 
+	public Count(Searchable column) {
+		super(column);
+	}
+
 	@Override
 	public void toSQL(StringBuilder sb) {
 		sb.append("COUNT(");

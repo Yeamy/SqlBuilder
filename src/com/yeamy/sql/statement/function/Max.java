@@ -13,6 +13,10 @@ public class Max extends Column {
 		super(table, name);
 	}
 
+	public Max(Searchable column) {
+		super(column);
+	}
+
 	public Max(Searchable table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}

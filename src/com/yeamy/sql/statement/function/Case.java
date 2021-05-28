@@ -21,6 +21,10 @@ public class Case extends Column {
 	public Case(Searchable table, String name) {
 		super(table, null, name);
 	}
+	
+	public Case(Searchable column) {
+		super(column);
+	}
 
 	public Case when(Object when, Object then) {
 		kv.addLast(when);

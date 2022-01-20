@@ -1,5 +1,7 @@
 package com.yeamy.sql.statement.date;
 
+import java.util.Date;
+
 import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.Searchable;
@@ -34,8 +36,32 @@ public class DateFormat extends Column {
 		sb.append(')');
 	}
 
-	public static class FormatNow extends DateFormat {
-		public FormatNow(String format) {
+	public static class DateFormatDate extends DateFormat {
+		private Object time;
+
+		public DateFormatDate(String time, String format) {
+			super((String) null, format);
+			this.time = time;
+		}
+
+		public DateFormatDate(Date time, String format) {
+			super((String) null, format);
+			this.time = time;
+		}
+
+		@Override
+		public void toSQL(StringBuilder sb) {
+			sb.append("DATE_FORMAT(");
+			SQLString.appendValue(sb, time);
+			sb.append(", ");
+			SQLString.appendValue(sb, format);
+			sb.append(')');
+		}
+
+	}
+
+	public static class DateFormatNow extends DateFormat {
+		public DateFormatNow(String format) {
 			super((String) null, format);
 		}
 

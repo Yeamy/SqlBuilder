@@ -20,7 +20,7 @@ public class IfNull extends AbsColumn<IfNull> {
 	public void toSQL(StringBuilder sb) {
 		sb.append("IFNULL(");
 		SQLString.appendValue(sb, col);
-		sb.append(',');
+		sb.append(", ");
 		SQLString.appendValue(sb, whenNull);
 		sb.append(')');
 	}

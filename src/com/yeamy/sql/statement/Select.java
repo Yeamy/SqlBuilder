@@ -303,7 +303,7 @@ public class Select extends Searchable<Select> {
 	}
 
 	@Override
-	public Union union(Select select) {
+	public Union union(Searchable<?> select) {
 		return new Union(this).union(select);
 	}
 
@@ -313,7 +313,7 @@ public class Select extends Searchable<Select> {
 	}
 
 	@Override
-	public Union unionAll(Select select) {
+	public Union unionAll(Searchable<?> select) {
 		return new Union(this).unionAll(select);
 	}
 

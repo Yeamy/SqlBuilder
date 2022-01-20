@@ -20,8 +20,13 @@ public class Union extends Searchable<Union> {
 		list.add(new UnionLi(select, null));
 	}
 
-	public Union(Select select) {
-		list.add(new UnionLi(select, null));
+	public Union(Searchable<?> select) {
+		if (select instanceof Union) {
+			Union src = (Union) select;
+			list.addAll(src.list);
+		} else {
+			list.add(new UnionLi(select, null));
+		}
 	}
 
 	@Override
@@ -31,20 +36,30 @@ public class Union extends Searchable<Union> {
 	}
 
 	@Override
-	public Union union(Select select) {
-		list.add(new UnionLi(select, " UNION "));
-		return this;
-	}
-
-	@Override
-	public Union unionAll(Select select) {
-		list.add(new UnionLi(select, " UNION ALL "));
+	public Union union(Searchable<?> select) {
+		if (select instanceof Union) {
+			Union src = (Union) select;
+			list.addAll(src.list);
+		} else {
+			list.add(new UnionLi(select, " UNION "));
+		}
 		return this;
 	}
 
 	@Override
 	public Union unionAll(String select) {
 		list.add(new UnionLi(select, " UNION ALL "));
+		return this;
+	}
+
+	@Override
+	public Union unionAll(Searchable<?> select) {
+		if (select instanceof Union) {
+			Union src = (Union) select;
+			list.addAll(src.list);
+		} else {
+			list.add(new UnionLi(select, " UNION ALL "));
+		}
 		return this;
 	}
 

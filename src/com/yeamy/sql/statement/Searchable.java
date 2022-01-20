@@ -48,9 +48,9 @@ public abstract class Searchable<T extends Searchable<T>> implements SQLString {
 
 	public abstract Union union(String select);
 
-	public abstract Union union(Select select);
-
-	public abstract Union unionAll(Select select);
+	public abstract Union union(Searchable<?> select);
 
 	public abstract Union unionAll(String select);
+
+	public abstract Union unionAll(Searchable<?> select);
 }

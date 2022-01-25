@@ -37,6 +37,13 @@ public class Expression extends AbsColumn<Expression> {
 				} else {
 					SQLString.appendValue(sb, str);
 				}
+			} else if (obj instanceof Character) {
+				char c = (char) obj;
+				if (isSymbol(c)) {
+					sb.append(c);
+				} else {
+					SQLString.appendValue(sb, c);
+				}
 			} else {
 				SQLString.appendValue(sb, obj);
 			}

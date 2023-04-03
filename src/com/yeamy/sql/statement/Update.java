@@ -49,6 +49,10 @@ public class Update implements SQLString {
 		return this;
 	}
 
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
 	private class Expression implements SQLString {
 		private String column;
 		private long longNum;

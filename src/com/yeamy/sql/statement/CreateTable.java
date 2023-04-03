@@ -10,7 +10,7 @@ import com.yeamy.sql.statement.columninfo.ColumnInfo;
 public class CreateTable implements SQLString {
 	private String database;
 	private String table;
-	private LinkedHashMap<String, ColumnInfo> columns = new LinkedHashMap<>();
+	private LinkedHashMap<String, ColumnInfo<?>> columns = new LinkedHashMap<>();
 	private ArrayList<Unique> uniques;
 	private boolean ifNotExists;
 
@@ -23,7 +23,7 @@ public class CreateTable implements SQLString {
 		this.table = table;
 	}
 
-	public CreateTable add(String column, ColumnInfo info) {
+	public CreateTable add(String column, ColumnInfo<?> info) {
 		columns.put(column, info);
 		return this;
 	}
@@ -60,14 +60,14 @@ public class CreateTable implements SQLString {
 		// columnse
 		ArrayList<String> primary = new ArrayList<>();
 		boolean first = true;
-		for (Entry<String, ColumnInfo> entry : columns.entrySet()) {
+		for (Entry<String, ColumnInfo<?>> entry : columns.entrySet()) {
 			if (first) {
 				first = false;
 			} else {
 				sql.append(',');
 			}
 			String column = entry.getKey();
-			ColumnInfo info = entry.getValue();
+			ColumnInfo<?> info = entry.getValue();
 			sql.append(column).append(' ');
 			info.toSQL(sql);
 			if (info.isPrimary()) {

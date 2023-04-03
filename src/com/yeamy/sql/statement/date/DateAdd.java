@@ -5,7 +5,7 @@ import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.Searchable;
 
 public class DateAdd extends Column {
-	private AbsColumn column;
+	private AbsColumn<?> column;
 	private String expr;
 	public DateType type;
 
@@ -17,11 +17,11 @@ public class DateAdd extends Column {
 		this(table, name, String.valueOf(num), type);
 	}
 
-	public DateAdd(Searchable column, int num, DateType type) {
+	public DateAdd(Searchable<?> column, int num, DateType type) {
 		this(column, String.valueOf(num), type);
 	}
 
-	public DateAdd(AbsColumn column, int num, DateType type) {
+	public DateAdd(AbsColumn<?> column, int num, DateType type) {
 		this(column, String.valueOf(num), type);
 	}
 
@@ -37,13 +37,13 @@ public class DateAdd extends Column {
 		this.type = type;
 	}
 
-	public DateAdd(Searchable column, String expr, DateType type) {
+	public DateAdd(Searchable<?> column, String expr, DateType type) {
 		super(column);
 		this.expr = expr;
 		this.type = type;
 	}
 
-	public DateAdd(AbsColumn column, String expr, DateType type) {
+	public DateAdd(AbsColumn<?> column, String expr, DateType type) {
 		super((String) null);
 		this.column = column;
 		this.expr = expr;

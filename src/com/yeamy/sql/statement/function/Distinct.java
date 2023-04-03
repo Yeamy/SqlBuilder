@@ -15,7 +15,7 @@ public class Distinct extends Column {
 		super(table, name);
 	}
 
-	public Distinct(Searchable column) {
+	public Distinct(Searchable<?> column) {
 		super(column);
 	}
 

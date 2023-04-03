@@ -9,7 +9,7 @@ import com.yeamy.sql.statement.Searchable;
 
 public class DateFormat extends Column {
 	public String format;
-	public AbsColumn column;
+	public AbsColumn<?> column;
 
 	/**
 	 * @param format <link>https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format</link>
@@ -24,12 +24,12 @@ public class DateFormat extends Column {
 		this.format = format;
 	}
 
-	public DateFormat(Searchable column, String format) {
+	public DateFormat(Searchable<?> column, String format) {
 		super(column);
 		this.format = format;
 	}
 
-	public DateFormat(AbsColumn column, String format) {
+	public DateFormat(AbsColumn<?> column, String format) {
 		super((String) null);
 		this.column = column;
 		this.format = format;

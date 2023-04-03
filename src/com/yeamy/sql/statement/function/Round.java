@@ -16,12 +16,12 @@ public class Round extends Column {
 		this.decimals = decimals;
 	}
 
-	public Round(Searchable column, int decimals) {
+	public Round(Searchable<?> column, int decimals) {
 		super(column);
 		this.decimals = decimals;
 	}
 
-	public Round(Searchable table, String tableAlias, String name, int decimals) {
+	public Round(Searchable<?> table, String tableAlias, String name, int decimals) {
 		super(table, tableAlias, name);
 		this.decimals = decimals;
 	}

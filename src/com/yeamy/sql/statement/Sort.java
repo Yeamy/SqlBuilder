@@ -10,7 +10,7 @@ public abstract class Sort implements SQLString {
 
 	private LinkedHashMap<Object, String> sort = new LinkedHashMap<>();
 
-	Sort(AbsColumn column, String sort) {
+	Sort(AbsColumn<?> column, String sort) {
 		this.sort.put(column, sort);
 	}
 
@@ -18,12 +18,12 @@ public abstract class Sort implements SQLString {
 		this.sort.put(column, sort);
 	}
 
-	public Sort asc(AbsColumn column) {
+	public Sort asc(AbsColumn<?> column) {
 		sort.put(column, ASC);
 		return this;
 	}
 
-	public Sort desc(AbsColumn column) {
+	public Sort desc(AbsColumn<?> column) {
 		sort.put(column, DESC);
 		return this;
 	}
@@ -54,7 +54,7 @@ public abstract class Sort implements SQLString {
 			}
 			Object column = cell.getKey();
 			if (column instanceof AbsColumn) {
-				AbsColumn c = (AbsColumn) column;
+				AbsColumn<?> c = (AbsColumn<?>) column;
 				c.shortName(sql);
 			} else {
 				SQLString.appendColumn(sql, column.toString());

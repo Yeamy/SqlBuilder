@@ -44,7 +44,7 @@ public interface SQLString {
 		} else if (value instanceof Number) {
 			sb.append(value);
 		} else if (value instanceof Searchable) {
-			Searchable select = (Searchable) value;
+			Searchable<?> select = (Searchable<?>) value;
 			sb.append('(');
 			select.toSQL(sb);
 			sb.append(')');

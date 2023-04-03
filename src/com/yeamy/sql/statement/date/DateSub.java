@@ -19,7 +19,7 @@ public class DateSub extends Column {
 		this.type = type;
 	}
 
-	public DateSub(Searchable column, String expr, DateType type) {
+	public DateSub(Searchable<?> column, String expr, DateType type) {
 		super(column);
 		this.expr = expr;
 		this.type = type;

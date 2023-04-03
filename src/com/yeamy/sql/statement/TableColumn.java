@@ -2,6 +2,7 @@ package com.yeamy.sql.statement;
 
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public abstract class TableColumn<T extends AbsColumn<T>> extends AbsColumn<T> {
 
 	/**

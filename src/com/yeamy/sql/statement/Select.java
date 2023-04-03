@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class Select extends Searchable<Select> {
 	private LinkedHashSet<Object> columns = new LinkedHashSet<>();
 	private LinkedList<Join> joins;
@@ -40,7 +41,7 @@ public class Select extends Searchable<Select> {
 		return this;
 	}
 
-	public Select addAll(Collection<AbsColumn> columns) {
+	public Select addAll(Collection<? extends AbsColumn> columns) {
 		this.columns.addAll(columns);
 		return this;
 	}
@@ -231,6 +232,7 @@ public class Select extends Searchable<Select> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void from(StringBuilder sql) {
 		if (from != null) {
 			boolean f = true;

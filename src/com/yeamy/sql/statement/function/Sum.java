@@ -13,11 +13,11 @@ public class Sum extends Column {
 		super(table, name);
 	}
 
-	public Sum(Searchable column) {
+	public Sum(Searchable<?> column) {
 		super(column);
 	}
 
-	public Sum(Searchable table, String tableAlias, String name) {
+	public Sum(Searchable<?> table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}
 

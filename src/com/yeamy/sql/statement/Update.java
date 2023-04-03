@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 public class Update implements SQLString {
 	private final String table;
 	private final LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-	private LinkedList<Join> joins;
+	private LinkedList<Join<?>> joins;
 	private Clause where;
 
 	public Update(String table) {
@@ -99,7 +99,7 @@ public class Update implements SQLString {
 		}
 	}
 
-	public Update join(Join join) {
+	public Update join(Join<?> join) {
 		initJoins();
 		joins.add(join);
 		return this;
@@ -133,7 +133,7 @@ public class Update implements SQLString {
 		SQLString.appendTable(sql, table);
 		// join on
 		if (joins != null) {
-			for (Join join : joins) {
+			for (Join<?> join : joins) {
 				join.toSQL(sql);
 			}
 		}
@@ -149,7 +149,7 @@ public class Update implements SQLString {
 			sql.append(" = ");
 			Object value = li.getValue();
 			if (value instanceof AbsColumn) {
-				AbsColumn col = (AbsColumn) value;
+				AbsColumn<?> col = (AbsColumn<?>) value;
 				col.toSQL(sql);
 			} else {
 				SQLString.appendValue(sql, value);

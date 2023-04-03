@@ -14,7 +14,7 @@ public class AlterTable implements SQLString {
 
 	// column
 
-	public AlterTable add(String column, ColumnInfo dataType) {
+	public AlterTable add(String column, ColumnInfo<?> dataType) {
 		this.columns.add(new SQLString() {
 
 			@Override
@@ -40,7 +40,7 @@ public class AlterTable implements SQLString {
 		return this;
 	}
 
-	public AlterTable modify(String column, ColumnInfo dataType) {
+	public AlterTable modify(String column, ColumnInfo<?> dataType) {
 		this.columns.add(new SQLString() {
 
 			@Override

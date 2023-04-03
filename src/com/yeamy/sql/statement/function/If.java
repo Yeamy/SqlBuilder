@@ -6,15 +6,16 @@ import com.yeamy.sql.statement.AbsColumn;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.TableColumn;
 
+@SuppressWarnings("rawtypes")
 public class If extends TableColumn<If> {
-	private AbsColumn column;
+	private AbsColumn<?> column;
 	private Object t, f;
 
-	public If(AbsColumn column, Object t, Object f) {
+	public If(AbsColumn<?> column, Object t, Object f) {
 		this(column, t, f, null);
 	}
 
-	public If(AbsColumn column, Object t, Object f, String nameAlias) {
+	public If(AbsColumn<?> column, Object t, Object f, String nameAlias) {
 		this.column = column;
 		this.t = t;
 		this.f = f;
@@ -35,21 +36,21 @@ public class If extends TableColumn<If> {
 	@Override
 	public void tableInFrom(StringBuilder sb) {
 		if (column instanceof TableColumn) {
-			((TableColumn) column).tableInFrom(sb);
+			((TableColumn<?>) column).tableInFrom(sb);
 		}
 	}
 
 	@Override
 	public void signTable(Map<Object, TableColumn> tables) {
 		if (column instanceof TableColumn) {
-			((TableColumn) column).signTable(tables);
+			((TableColumn<?>) column).signTable(tables);
 		}
 	}
 
 	@Override
 	public void unSignTable(Map<Object, TableColumn> tables) {
 		if (column instanceof TableColumn) {
-			((TableColumn) column).unSignTable(tables);
+			((TableColumn<?>) column).unSignTable(tables);
 		}
 	}
 

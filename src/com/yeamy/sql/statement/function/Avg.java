@@ -13,11 +13,11 @@ public class Avg extends Column {
 		super(table, name);
 	}
 
-	public Avg(Searchable table, String tableAlias, String name) {
+	public Avg(Searchable<?> table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}
 	
-	public Avg(Searchable column) {
+	public Avg(Searchable<?> column) {
 		super(column);
 	}
 

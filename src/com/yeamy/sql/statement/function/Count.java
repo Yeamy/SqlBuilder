@@ -13,11 +13,11 @@ public class Count extends Column {
 		super(table, name);
 	}
 
-	public Count(Searchable table, String tableAlias, String name) {
+	public Count(Searchable<?> table, String tableAlias, String name) {
 		super(table, tableAlias, name);
 	}
 
-	public Count(Searchable column) {
+	public Count(Searchable<?> column) {
 		super(column);
 	}
 

@@ -29,7 +29,7 @@ public class Expression extends AbsColumn<Expression> {
 				sb.append(' ');
 			}
 			if (obj instanceof AbsColumn) {
-				((AbsColumn) obj).toSQL(sb);
+				((AbsColumn<?>) obj).toSQL(sb);
 			} else if (obj instanceof String) {
 				String str = (String) obj;
 				if (allSymbol(str)) {

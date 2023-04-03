@@ -3,6 +3,7 @@ package com.yeamy.sql.statement;
 import java.util.Collection;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class Column extends TableColumn<Column> {
 	public static final String ALL = "*";
 	private final Object table;
@@ -19,13 +20,13 @@ public class Column extends TableColumn<Column> {
 		this.name = name;
 	}
 
-	public Column(Searchable table, String tableAlias, String name) {
+	public Column(Searchable<?> table, String tableAlias, String name) {
 		this.table = table;
 		this.tableAlias = tableAlias;
 		this.name = name;
 	}
 
-	public Column(Searchable column) {
+	public Column(Searchable<?> column) {
 		this.table = null;
 		this.name = column;
 	}
@@ -50,7 +51,7 @@ public class Column extends TableColumn<Column> {
 			return;
 		} else if (table instanceof Searchable) {
 			sb.append('(');
-			((Searchable) table).toSQL(sb);
+			((Searchable<?>) table).toSQL(sb);
 			sb.append(')');
 		} else {
 			sb.append('`').append(table).append('`');
@@ -85,7 +86,7 @@ public class Column extends TableColumn<Column> {
 		}
 		if (name instanceof Searchable) {
 			sb.append('(');
-			((Searchable) name).toSQL(sb);
+			((Searchable<?>) name).toSQL(sb);
 			sb.append(')');
 			return;
 		}

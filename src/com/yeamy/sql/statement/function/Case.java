@@ -18,11 +18,11 @@ public class Case extends Column {
 		super(table, name);
 	}
 
-	public Case(Searchable table, String name) {
+	public Case(Searchable<?> table, String name) {
 		super(table, null, name);
 	}
 	
-	public Case(Searchable column) {
+	public Case(Searchable<?> column) {
 		super(column);
 	}
 

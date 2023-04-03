@@ -36,7 +36,7 @@ public class SQL {
 			if (column instanceof String) {
 				SQLString.appendColumn(sql, column.toString());
 			} else {
-				AbsColumn c = (AbsColumn) column;
+				AbsColumn<?> c = (AbsColumn<?>) column;
 				c.shortName(sql);
 			}
 		}

@@ -16,7 +16,7 @@ public class Extract extends Column {
 		this.type = type;
 	}
 
-	public Extract(Searchable column, DateType type) {
+	public Extract(Searchable<?> column, DateType type) {
 		super(column);
 		this.type = type;
 	}

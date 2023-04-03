@@ -166,6 +166,7 @@ public class Update implements SQLString {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		toSQL(sb);
+		sb.append(';');
 		return sb.toString();
 	}
 }

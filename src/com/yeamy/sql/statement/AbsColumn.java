@@ -30,5 +30,12 @@ public abstract class AbsColumn<T extends AbsColumn<T>> implements SQLString {
 			toSQL(sql);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		toSQL(sb);
+		return sb.toString();
+	}
 
 }

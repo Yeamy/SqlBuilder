@@ -13,7 +13,7 @@ public interface SQLString {
 		};
 	}
 
-	public static String toString(Object value) {
+	public static String toValue(Object value) {
 		StringBuilder sb = new StringBuilder();
 		appendValue(sb, value);
 		return sb.toString();
@@ -54,6 +54,52 @@ public interface SQLString {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			value = sdf.format((Date) value);
 			appendValue(sb, value);
+		} else if (value instanceof Iterable) {
+			sb.append('(');
+			for (Object i : (Iterable<?>) value) {
+				sb.append(i).append(',');
+			}
+			sb.append(')');
+		} else if (value.getClass().isArray()) {
+			sb.append('(');
+			if (value instanceof int[]) {
+				for (int i : (int[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof Object[]) {
+				for (Object i : (Object[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof long[]) {
+				for (long i : (long[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof float[]) {
+				for (float i : (float[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof double[]) {
+				for (double i : (double[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof boolean[]) {
+				for (boolean i : (boolean[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof short[]) {
+				for (short i : (short[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof char[]) {
+				for (char i : (char[]) value) {
+					sb.append(i).append(',');
+				}
+			} else if (value instanceof byte[]) {
+				for (byte i : (byte[]) value) {
+					sb.append(i).append(',');
+				}
+			}
+			sb.append(')');
 		} else {
 			// as String
 			sb.append('\'');

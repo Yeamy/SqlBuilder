@@ -20,6 +20,11 @@ public class Update implements SQLString {
 		return this;
 	}
 
+	public Update ifNotNullSet(String column, Object value) {
+		if (value != null) map.put(column, value);
+		return this;
+	}
+
 	public Update increase(String column, int number) {
 		return increase(column, (long) number);
 	}

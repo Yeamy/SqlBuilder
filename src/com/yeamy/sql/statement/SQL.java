@@ -8,14 +8,13 @@ public class SQL {
 		StringBuilder sql = new StringBuilder("INSERT INTO ");
 		SQLString.appendTable(sql, table);
 		Object[] columns = select.getColumns();
-		Object c1 = columns[0];
 		if (columns.length == 0) {
 			throw new NullPointerException("no column in select");
 		} else if (columns.length > 1) {
 			appendColumns(sql, columns);
-		} else if (c1 instanceof String && "*".equals(c1)) {
+		} else if ("*".equals(columns[0])) {
 			sql.append(' ');
-		} else if (c1 instanceof Column && "*".equals(((Column) c1).name)) {
+		} else if (columns[0] instanceof Column && "*".equals(((Column) columns[0]).name)) {
 			sql.append(' ');
 		} else {
 			appendColumns(sql, columns);
@@ -62,7 +61,7 @@ public class SQL {
 	/**
 	 * select all from table limt x
 	 *
-	 * @see {@link Select}
+	 * @see Select
 	 */
 	public static String select(String table, Clause where, int limit) {
 		StringBuilder sql = new StringBuilder("SELECT * FROM ");

@@ -8,7 +8,7 @@ public abstract class Sort implements SQLString {
 	static final String ASC = "ASC";
 	static final String DESC = "DESC";
 
-	private LinkedHashMap<Object, String> sort = new LinkedHashMap<>();
+	private final LinkedHashMap<Object, String> sort = new LinkedHashMap<>();
 
 	Sort(AbsColumn<?> column, String sort) {
 		this.sort.put(column, sort);
@@ -16,6 +16,10 @@ public abstract class Sort implements SQLString {
 
 	Sort(String column, String sort) {
 		this.sort.put(column, sort);
+	}
+
+	Sort(String table, String column, String sort) {
+		this.sort.put(new Column(table, column), sort);
 	}
 
 	public Sort asc(AbsColumn<?> column) {
@@ -33,14 +37,24 @@ public abstract class Sort implements SQLString {
 		return this;
 	}
 
+	public Sort asc(String table, String column) {
+		sort.put(new Column(table, column), ASC);
+		return this;
+	}
+
 	public Sort desc(String column) {
 		sort.put(column, DESC);
 		return this;
 	}
 
+	public Sort desc(String table, String column) {
+		sort.put(new Column(table, column), DESC);
+		return this;
+	}
+
 	@Override
 	public void toSQL(StringBuilder sql) {
-		if (sort.size() == 0) {
+		if (sort.isEmpty()) {
 			return;
 		}
 		sql.append(" ORDER BY ");

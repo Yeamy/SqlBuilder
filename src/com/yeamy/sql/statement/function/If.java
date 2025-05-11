@@ -3,6 +3,7 @@ package com.yeamy.sql.statement.function;
 import java.util.Map;
 
 import com.yeamy.sql.statement.AbsColumn;
+import com.yeamy.sql.statement.Column;
 import com.yeamy.sql.statement.SQLString;
 import com.yeamy.sql.statement.TableColumn;
 
@@ -15,8 +16,19 @@ public class If extends TableColumn<If> {
 		this(column, t, f, null);
 	}
 
+	public If(String table, String column, Object t, Object f) {
+		this(table, column, t, f, null);
+	}
+
 	public If(AbsColumn<?> column, Object t, Object f, String nameAlias) {
 		this.column = column;
+		this.t = t;
+		this.f = f;
+		this.nameAlias = nameAlias;
+	}
+
+	public If(String table, String column, Object t, Object f, String nameAlias) {
+		this.column = new Column(table, column);
 		this.t = t;
 		this.f = f;
 		this.nameAlias = nameAlias;

@@ -1,14 +1,14 @@
 package com.yeamy.sql.statement;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class Clause extends TableColumn<Clause> {
 	protected Object column;
+
+	public Object getColumn() {
+		return column;
+	}
 
 	protected void appendColumn(StringBuilder sb) {
 		if (column instanceof AbsColumn) {
@@ -220,39 +220,39 @@ public abstract class Clause extends TableColumn<Clause> {
 
 	public static Clause andAll(List<Clause> list) {
 		switch (list.size()) {
-		case 0:
-			return null;
-		case 1:
-			return list.get(0);
-		default:
-			MultiClause clause = null;
-			for (Clause li : list) {
-				if (clause == null) {
-					clause = new MultiClause(li);
-				} else {
-					clause.and(li);
+			case 0:
+				return null;
+			case 1:
+				return list.get(0);
+			default:
+				MultiClause clause = null;
+				for (Clause li : list) {
+					if (clause == null) {
+						clause = new MultiClause(li);
+					} else {
+						clause.and(li);
+					}
 				}
-			}
-			return clause;
+				return clause;
 		}
 	}
 
 	public static Clause orAll(List<Clause> list) {
 		switch (list.size()) {
-		case 0:
-			return null;
-		case 1:
-			return list.get(0);
-		default:
-			MultiClause clause = null;
-			for (Clause li : list) {
-				if (clause == null) {
-					clause = new MultiClause(li);
-				} else {
-					clause.or(li);
+			case 0:
+				return null;
+			case 1:
+				return list.get(0);
+			default:
+				MultiClause clause = null;
+				for (Clause li : list) {
+					if (clause == null) {
+						clause = new MultiClause(li);
+					} else {
+						clause.or(li);
+					}
 				}
-			}
-			return clause;
+				return clause;
 		}
 	}
 	// ---------------------------------------------------------------------------
@@ -262,121 +262,19 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new SimpleClause(column, " IS NULL");
 	}
 
-	// IS NOT NULL
-	public static Clause isNotNull(AbsColumn<?> column) {
-		return new SimpleClause(column, " IS NOT NULL");
-	}
-
-	// = 等于
-	public static Clause equal(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " = ", pattern);
-	}
-
-	// <> 不等于
-	public static Clause notEqual(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " <> ", pattern);
-	}
-
-	// > 大于
-	public static Clause greaterThan(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " > ", pattern);
-	}
-
-	// < 小于
-	public static Clause lessThan(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " < ", pattern);
-	}
-
-	// >= 大于等于
-	public static Clause greaterEqual(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " >= ", pattern);
-	}
-
-	// <= 小于等于
-	public static Clause lessEqual(AbsColumn<?> column, Object pattern) {
-		return new NormalClause(column, " <= ", pattern);
-	}
-
-	// LIKE 搜索某种模式
-	public static Clause like(AbsColumn<?> column, String pattern) {
-		return new NormalClause(column, " LIKE ", pattern);
-	}
-
-	public static Clause contains(AbsColumn<?> column, String pattern) {
-		return like(column, '%' + pattern + '%');
-	}
-
-	public static Clause startWith(AbsColumn<?> column, String pattern) {
-		return like(column, pattern + '%');
-	}
-
-	public static Clause endWith(AbsColumn<?> column, String pattern) {
-		return like(column, '%' + pattern);
-	}
-
-	// NOT LIKE
-	public static Clause notLike(Column column, String pattern) {
-		return new NormalClause(column, " NOT LIKE ", pattern);
-	}
-
-	public static Clause notContains(Column column, String pattern) {
-		return new NormalClause(column, " NOT LIKE ", '%' + pattern + '%');
-	}
-
-	public static Clause notStartWith(Column column, String pattern) {
-		return new NormalClause(column, " NOT LIKE ", pattern + '%');
-	}
-
-	public static Clause notEndWith(Column column, String pattern) {
-		return new NormalClause(column, " NOT LIKE ", '%' + pattern);
-	}
-
-	// IN
-	public static Clause in(AbsColumn<?> column, int... array) {
-		return new ClauseIn<>(column, " IN ", array);
-	}
-
-	@SafeVarargs
-	public static <T> Clause in(AbsColumn<?> column, T... pattern) {
-		return new ClauseIn<>(column, " IN ", Arrays.asList(pattern));
-	}
-
-	public static <T> Clause in(AbsColumn<?> column, Collection<T> pattern) {
-		return new ClauseIn<>(column, " IN ", pattern);
-	}
-
-	public static Clause in(AbsColumn<?> column, Select pattern) {
-		return new NormalClause(column, " IN ", pattern);
-	}
-
-	// NOT IN
-	public static <T> Clause notIn(AbsColumn<?> column, int... array) {
-		return new ClauseIn<T>(column, " NOT IN ", array);
-	}
-
-	@SafeVarargs
-	public static <T> Clause notIn(AbsColumn<?> column, T... pattern) {
-		return new ClauseIn<T>(column, " NOT IN ", Arrays.asList(pattern));
-	}
-
-	public static <T> Clause notIn(AbsColumn<?> column, Collection<T> pattern) {
-		return new ClauseIn<T>(column, " NOT IN ", pattern);
-	}
-
-	public static Clause notIn(AbsColumn<?> column, Select pattern) {
-		return new NormalClause(column, " NOT IN ", pattern);
-	}
-
-	// BETWEEN 在某个范围内
-	public static Clause between(AbsColumn<?> column, Object start, Object end) {
-		return new ClauseBetween(column, start, end);
-	}
-
-	// ---------------------------------------------------------------------------
-
 	// IS NULL
 	public static Clause isNull(String column) {
 		return new SimpleClause(column, " IS NULL");
+	}
+
+	// IS NULL
+	public static Clause isNull(String table, String column) {
+		return new SimpleClause(new Column(table, column), " IS NULL");
+	}
+
+	// IS NOT NULL
+	public static Clause isNotNull(AbsColumn<?> column) {
+		return new SimpleClause(column, " IS NOT NULL");
 	}
 
 	// IS NOT NULL
@@ -384,9 +282,32 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new SimpleClause(column, " IS NOT NULL");
 	}
 
+	public static Clause isNotNull(String table, String column) {
+		return new SimpleClause(new Column(table, column), " IS NOT NULL");
+	}
+
+	// = 等于
+	public static Clause equal(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " = ", pattern);
+	}
+
 	// = 等于
 	public static Clause equal(String column, Object pattern) {
 		return new NormalClause(column, " = ", pattern);
+	}
+
+	// = 等于
+	public static Clause equal(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " = ", pattern);
+	}
+
+	public static Clause equal(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " = ", new Column(pTable, pColumn));
+	}
+
+	// <> 不等于
+	public static Clause notEqual(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " <> ", pattern);
 	}
 
 	// <> 不等于
@@ -395,8 +316,37 @@ public abstract class Clause extends TableColumn<Clause> {
 	}
 
 	// > 大于
+	public static Clause notEqual(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " <> ", pattern);
+	}
+
+	public static Clause notEqual(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " <> ", new Column(pTable, pColumn));
+	}
+
+	// > 大于
+	public static Clause greaterThan(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " > ", pattern);
+	}
+
+	// > 大于
 	public static Clause greaterThan(String column, Object pattern) {
 		return new NormalClause(column, " > ", pattern);
+	}
+
+	// > 大于
+	public static Clause greaterThan(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " > ", pattern);
+	}
+
+	// > 大于
+	public static Clause greaterThan(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " > ", new Column(pTable, pColumn));
+	}
+
+	// < 小于
+	public static Clause lessThan(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " < ", pattern);
 	}
 
 	// < 小于
@@ -404,9 +354,39 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new NormalClause(column, " < ", pattern);
 	}
 
+	// < 小于
+	public static Clause lessThan(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " < ", pattern);
+	}
+
+	// < 小于
+	public static Clause lessThan(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " < ", new Column(pTable, pColumn));
+	}
+
+	// >= 大于等于
+	public static Clause greaterEqual(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " >= ", pattern);
+	}
+
 	// >= 大于等于
 	public static Clause greaterEqual(String column, Object pattern) {
 		return new NormalClause(column, " >= ", pattern);
+	}
+
+	// >= 大于等于
+	public static Clause greaterEqual(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " >= ", pattern);
+	}
+
+	// >= 大于等于
+	public static Clause greaterEqual(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " >= ", new Column(pTable, pColumn));
+	}
+
+	// <= 小于等于
+	public static Clause lessEqual(AbsColumn<?> column, Object pattern) {
+		return new NormalClause(column, " <= ", pattern);
 	}
 
 	// <= 小于等于
@@ -414,21 +394,108 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new NormalClause(column, " <= ", pattern);
 	}
 
+	// <= 小于等于
+	public static Clause lessEqual(String table, String column, Object pattern) {
+		return new NormalClause(new Column(table, column), " <= ", pattern);
+	}
+
+	// <= 小于等于
+	public static Clause lessEqual(String table, String column, String pTable, String pColumn) {
+		return new NormalClause(new Column(table, column), " <= ", new Column(pTable, pColumn));
+	}
+
+	// LIKE 搜索某种模式
+	public static Clause like(AbsColumn<?> column, String pattern) {
+		return new NormalClause(column, " LIKE ", pattern);
+	}
+
 	// LIKE 搜索某种模式
 	public static Clause like(String column, String pattern) {
 		return new NormalClause(column, " LIKE ", pattern);
+	}
+
+	// <= 小于等于
+	public static Clause like(String table, String column, String pattern) {
+		return new NormalClause(new Column(table, column), " LIKE ", pattern);
+	}
+
+	public static Clause contains(AbsColumn<?> column, String pattern) {
+		return like(column, '%' + pattern + '%');
 	}
 
 	public static Clause contains(String column, String pattern) {
 		return new NormalClause(column, " LIKE ", '%' + pattern + '%');
 	}
 
+	public static Clause contains(String table, String column, String pattern) {
+		return like(new Column(table, column), '%' + pattern + '%');
+	}
+
+	public static Clause startWith(AbsColumn<?> column, String pattern) {
+		return like(column, pattern + '%');
+	}
+
 	public static Clause startWith(String column, String pattern) {
 		return new NormalClause(column, " LIKE ", pattern + '%');
 	}
 
+	public static Clause startWith(String table, String column, String pattern) {
+		return like(new Column(table, column), pattern + '%');
+	}
+
+	public static Clause endWith(AbsColumn<?> column, String pattern) {
+		return like(column, '%' + pattern);
+	}
+
 	public static Clause endWith(String column, String pattern) {
 		return new NormalClause(column, " LIKE ", '%' + pattern);
+	}
+
+	public static Clause endWith(String table, String column, String pattern) {
+		return like(new Column(table, column), '%' + pattern);
+	}
+
+	// NOT LIKE
+	public static Clause notLike(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern);
+	}
+
+	// NOT LIKE
+	public static Clause notLike(String column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern);
+	}
+
+	public static Clause notLike(String table, String column, String pattern) {
+		return new NormalClause(new Column(table, column), " NOT LIKE ", pattern);
+	}
+
+	public static Clause notContains(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause notContains(String table, String column, String pattern) {
+		return new NormalClause(new Column(table, column), " NOT LIKE ", '%' + pattern + '%');
+	}
+
+	public static Clause notStartWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", pattern + '%');
+	}
+
+	public static Clause notStartWith(String table, String column, String pattern) {
+		return new NormalClause(new Column(table, column), " NOT LIKE ", pattern + '%');
+	}
+
+	public static Clause notEndWith(Column column, String pattern) {
+		return new NormalClause(column, " NOT LIKE ", '%' + pattern);
+	}
+
+	public static Clause notEndWith(String table, String column, String pattern) {
+		return new NormalClause(new Column(table, column), " NOT LIKE ", '%' + pattern);
+	}
+
+	// IN
+	public static Clause in(AbsColumn<?> column, int... array) {
+		return new ClauseIn<>(column, " IN ", array);
 	}
 
 	// IN
@@ -436,41 +503,113 @@ public abstract class Clause extends TableColumn<Clause> {
 		return new ClauseIn(column, " IN ", array);
 	}
 
+	public static Clause in(String table, String column, int... array) {
+		return new NormalClause(new Column(table, column), " IN ", array);
+	}
+
+	@SafeVarargs
+	public static <T> Clause in(AbsColumn<?> column, T... pattern) {
+		return new ClauseIn<>(column, " IN ", Arrays.asList(pattern));
+	}
+
 	@SafeVarargs
 	public static <T> Clause in(String column, T... pattern) {
 		return new ClauseIn<>(column, " IN ", Arrays.asList(pattern));
+	}
+
+	public static <T> Clause in(String table, String column, T[] pattern) {
+		return new NormalClause(new Column(table, column), " IN ", Arrays.asList(pattern));
+	}
+
+	public static <T> Clause in(AbsColumn<?> column, Collection<T> pattern) {
+		return new ClauseIn<>(column, " IN ", pattern);
 	}
 
 	public static <T> Clause in(String column, Collection<T> pattern) {
 		return new ClauseIn<>(column, " IN ", pattern);
 	}
 
+	public static <T> Clause in(String table, String column, Collection<T> pattern) {
+		return new NormalClause(new Column(table, column), " IN ", pattern);
+	}
+
+	public static Clause in(AbsColumn<?> column, Select pattern) {
+		return new NormalClause(column, " IN ", pattern);
+	}
+
 	public static Clause in(String column, Select pattern) {
 		return new NormalClause(column, " IN ", pattern);
 	}
 
+	public static Clause in(String table, String column, Select pattern) {
+		return new NormalClause(new Column(table, column), " IN ", pattern);
+	}
+
+	// NOT IN
+	public static <T> Clause notIn(AbsColumn<?> column, int... array) {
+		return new ClauseIn<T>(column, " NOT IN ", array);
+	}
 	// NOT IN
 	public static Clause notIn(String column, int... array) {
 		return new ClauseIn(column, " NOT IN ", array);
 	}
 
+	public static <T> Clause notIn(String table, String column, int... array) {
+		return new NormalClause(new Column(table, column), " NOT IN ", array);
+	}
+
+	@SafeVarargs
+	public static <T> Clause notIn(AbsColumn<?> column, T... pattern) {
+		return new ClauseIn<T>(column, " NOT IN ", Arrays.asList(pattern));
+	}
 	@SafeVarargs
 	public static <T> Clause notIn(String column, T... pattern) {
 		return new ClauseIn<>(column, " NOT IN ", Arrays.asList(pattern));
+	}
+
+	public static <T> Clause notIn(String table, String column, T[] pattern) {
+		return new NormalClause(new Column(table, column), " NOT IN ", Arrays.asList(pattern));
+	}
+
+	public static <T> Clause notIn(AbsColumn<?> column, Collection<T> pattern) {
+		return new ClauseIn<T>(column, " NOT IN ", pattern);
 	}
 
 	public static <T> Clause notIn(String column, Collection<T> pattern) {
 		return new ClauseIn<>(column, " NOT IN ", pattern);
 	}
 
+	public static <T> Clause notIn(String table, String column, Collection<T> pattern) {
+		return new NormalClause(new Column(table, column), " NOT IN ", pattern);
+	}
+
+	public static Clause notIn(AbsColumn<?> column, Select pattern) {
+		return new NormalClause(column, " NOT IN ", pattern);
+	}
+
 	public static Clause notIn(String column, Select pattern) {
 		return new NormalClause(column, " NOT IN ", pattern);
+	}
+
+	public static Clause notIn(String table, String column, Select pattern) {
+		return new NormalClause(new Column(table, column), " NOT IN ", pattern);
+	}
+
+	// BETWEEN 在某个范围内
+	public static Clause between(AbsColumn<?> column, Object start, Object end) {
+		return new ClauseBetween(column, start, end);
 	}
 
 	// BETWEEN 在某个范围内
 	public static Clause between(String column, Object start, Object end) {
 		return new ClauseBetween(column, start, end);
 	}
+
+	public static Clause between(String table, String column, Object start, Object end) {
+		return new ClauseBetween(new Column(table, column), start, end);
+	}
+
+	// ---------------------------------------------------------------------------
 
 	public static Clause parse(String sql) {
 		return new ClauseRaw(sql);

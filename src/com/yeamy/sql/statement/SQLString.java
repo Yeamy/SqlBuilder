@@ -1,33 +1,35 @@
 package com.yeamy.sql.statement;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 public interface SQLString {
 
 	void toSQL(StringBuilder sb);
 
-	public static SQLString asValue(Object v) {
+	static SQLString asValue(Object v) {
 		return (sb) -> {
 			sb.append(v);
 		};
 	}
 
-	public static String toValue(Object value) {
+	static String toValue(Object value) {
 		StringBuilder sb = new StringBuilder();
 		appendValue(sb, value);
 		return sb.toString();
 	}
 
-	public static void appendDatabase(StringBuilder sb, String database) {
+	static void appendDatabase(StringBuilder sb, String database) {
 		sb.append('`').append(database).append('`');
 	}
 
-	public static void appendTable(StringBuilder sb, String table) {
+	static void appendTable(StringBuilder sb, String table) {
 		sb.append('`').append(table).append('`');
 	}
 
-	public static void appendColumn(StringBuilder sb, String column) {
+	static void appendColumn(StringBuilder sb, String column) {
 		if (Column.ALL.equals(column)) {
 			sb.append("*");
 		} else {
@@ -38,7 +40,7 @@ public interface SQLString {
 	/**
 	 * 检查数据安全，添加转义符
 	 */
-	public static void appendValue(StringBuilder sb, Object value) {
+	static void appendValue(StringBuilder sb, Object value) {
 		if (value == null) {
 			sb.append("NULL");
 		} else if (value instanceof Number) {
@@ -50,6 +52,11 @@ public interface SQLString {
 			sb.append(')');
 		} else if (value instanceof SQLString) {
 			((SQLString) value).toSQL(sb);
+		} else if (value instanceof java.sql.Date || value instanceof Time) {
+			sb.append('\'');
+			String out = value.toString();
+			sb.append(out);
+			sb.append('\'');
 		} else if (value instanceof Date) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			value = sdf.format((Date) value);
@@ -103,7 +110,7 @@ public interface SQLString {
 		} else {
 			// as String
 			sb.append('\'');
-			String out = value.toString().replace("\'", "\\\'");
+			String out = value.toString().replace("'", "\\'");
 			sb.append(out);
 			sb.append('\'');
 		}

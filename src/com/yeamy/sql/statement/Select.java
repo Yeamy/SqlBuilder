@@ -1,20 +1,14 @@
 package com.yeamy.sql.statement;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public class Select extends Searchable<Select> {
-	private LinkedHashSet<Object> columns = new LinkedHashSet<>();
+	private final LinkedHashSet<Object> columns = new LinkedHashSet<>();
 	private LinkedList<Join> joins;
 	private ArrayList<Object> groupBy;
 	private Clause where;
-	private Having having;
+	private Clause having;
 	private String into;
 	private String[] from;
 
@@ -83,9 +77,21 @@ public class Select extends Searchable<Select> {
 		return this;
 	}
 
+	public Select innerJoin(String sTable, String sColumn, String pTable, String pColumn) {
+		initJoins();
+		joins.add(new InnerJoin(new Column(sTable, sColumn), new Column(pTable, pColumn)));
+		return this;
+	}
+
 	public Select leftJoin(Column src, Column pattern) {
 		initJoins();
 		joins.add(new LeftJoin(src, pattern));
+		return this;
+	}
+
+	public Select leftJoin(String sTable, String sColumn, String pTable, String pColumn) {
+		initJoins();
+		joins.add(new LeftJoin(new Column(sTable, sColumn), new Column(pTable, pColumn)));
 		return this;
 	}
 
@@ -95,15 +101,27 @@ public class Select extends Searchable<Select> {
 		return this;
 	}
 
+	public Select rightJoin(String sTable, String sColumn, String pTable, String pColumn) {
+		initJoins();
+		joins.add(new RightJoin(new Column(sTable, sColumn), new Column(pTable, pColumn)));
+		return this;
+	}
+
 	public Select fullJoin(Column src, Column pattern) {
 		initJoins();
 		joins.add(new FullJoin(src, pattern));
 		return this;
 	}
 
+	public Select fullJoin(String sTable, String sColumn, String pTable, String pColumn) {
+		initJoins();
+		joins.add(new FullJoin(new Column(sTable, sColumn), new Column(pTable, pColumn)));
+		return this;
+	}
+
 	/**
-	 * @see {@link #Clause}
-	 * @see {@link #MultiClause}
+	 * @see Clause
+	 * @see MultiClause
 	 */
 	public Select where(Clause clause) {
 		this.where = clause;
@@ -174,9 +192,14 @@ public class Select extends Searchable<Select> {
 		return groupBy != null && groupBy.remove(column);
 	}
 
-	public Select having(Having having) {
+	public Select having(Clause having) {
 		this.having = having;
-		addAll(having.getColumn());
+		Object col = having.getColumn();
+		if (col instanceof AbsColumn<?>) {
+			add((AbsColumn<?>) col);
+		} else if (col instanceof String) {
+			add((String) col);
+		}
 		return this;
 	}
 

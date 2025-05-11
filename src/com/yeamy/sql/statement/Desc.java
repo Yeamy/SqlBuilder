@@ -8,4 +8,8 @@ public class Desc extends Sort {
 	public Desc(String column) {
 		super(column, DESC);
 	}
+
+	public Desc(String table, String column, String sort) {
+		super(table, column, sort);
+	}
 }

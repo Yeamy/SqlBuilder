@@ -48,15 +48,24 @@ public class DateFormat extends Column {
 		sb.append(')');
 	}
 
-	public static class DateFormatDate extends DateFormat {
+	public static DateFormat formatNow(String format) {
+		return new DateFormat(Now.now, format);
+	}
+
+	public static DateFormat formatDate(String time, String format) {
+		DateFormatDate d = new DateFormatDate(time, format);
+		d.time = time;
+		return d;
+	}
+
+	public static DateFormat formatDate(Date time, String format) {
+		return new DateFormatDate(time, format);
+	}
+
+	private static class DateFormatDate extends DateFormat {
 		private Object time;
 
-		public DateFormatDate(String time, String format) {
-			super((String) null, format);
-			this.time = time;
-		}
-
-		public DateFormatDate(Date time, String format) {
+		public DateFormatDate(Object time, String format) {
 			super((String) null, format);
 			this.time = time;
 		}
@@ -66,20 +75,6 @@ public class DateFormat extends Column {
 			sb.append("DATE_FORMAT(");
 			SQLString.appendValue(sb, time);
 			sb.append(", ");
-			SQLString.appendValue(sb, format);
-			sb.append(')');
-		}
-
-	}
-
-	public static class DateFormatNow extends DateFormat {
-		public DateFormatNow(String format) {
-			super((String) null, format);
-		}
-
-		@Override
-		public void toSQL(StringBuilder sb) {
-			sb.append("DATE_FORMAT(NOW(), ");
 			SQLString.appendValue(sb, format);
 			sb.append(')');
 		}
